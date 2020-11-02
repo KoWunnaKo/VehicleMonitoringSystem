@@ -1,1 +1,5 @@
-.DS_Store
+*.mov
+*.DS_Store
+**/.idea
+**/bin
+**/obj
