@@ -1,0 +1,10 @@
+﻿{
+  "profiles": {
+    "GeodataProcessingService": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
