@@ -11,4 +11,11 @@
     <string name="error_handler__timeout">No connection error</string>
     <string name="error_handler__no_connection">Connection timeout error</string>
 
+    <!--    Main activity-->
+    <string name="main_activity__track_button__start">Start</string>
+    <string name="main_activity__track_button__stop">Stop</string>
+
+    <!--   LocationService -->
+    <string name="location_service__notification_text">Is locating your device…</string>
+
 </resources>

@@ -1,4 +1,4 @@
-package com.siroytman.vehiclemonitoringsystemmobile.services;
+package com.siroytman.vehiclemonitoringsystemmobile.interfaces;
 
 import android.location.Location;
 

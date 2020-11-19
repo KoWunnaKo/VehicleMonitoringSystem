@@ -3,6 +3,7 @@
     package="com.siroytman.vehiclemonitoringsystemmobile">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
@@ -13,6 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.VehicleMonitoringSystemMobile">
+
+        <service
+            android:name=".services.LocationForegroundService"
+            android:enabled="true"
+            android:exported="true"/>
+
         <activity
             android:name=".ui.activity.MainActivity"
             android:label="@string/app_name"
