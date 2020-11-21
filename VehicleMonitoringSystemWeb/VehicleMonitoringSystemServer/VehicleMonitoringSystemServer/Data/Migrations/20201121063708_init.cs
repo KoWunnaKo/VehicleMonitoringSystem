@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace VehicleMonitoringSystemServer.Data.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,7 +17,10 @@ namespace VehicleMonitoringSystemServer.Data.Migrations
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true)
                 },
-                constraints: table => { table.PrimaryKey("PK_AspNetRoles", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "AspNetUsers",
@@ -36,9 +40,13 @@ namespace VehicleMonitoringSystemServer.Data.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    telegram_nickname = table.Column<string>(maxLength: 34, nullable: true)
                 },
-                constraints: table => { table.PrimaryKey("PK_AspNetUsers", x => x.Id); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "DeviceCodes",
@@ -52,7 +60,10 @@ namespace VehicleMonitoringSystemServer.Data.Migrations
                     Expiration = table.Column<DateTime>(nullable: false),
                     Data = table.Column<string>(maxLength: 50000, nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_DeviceCodes", x => x.UserCode); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DeviceCodes", x => x.UserCode);
+                });
 
             migrationBuilder.CreateTable(
                 name: "PersistedGrants",
@@ -66,14 +77,64 @@ namespace VehicleMonitoringSystemServer.Data.Migrations
                     Expiration = table.Column<DateTime>(nullable: true),
                     Data = table.Column<string>(maxLength: 50000, nullable: false)
                 },
-                constraints: table => { table.PrimaryKey("PK_PersistedGrants", x => x.Key); });
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PersistedGrants", x => x.Key);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "vehicle",
+                columns: table => new
+                {
+                    id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    driver_id = table.Column<Guid>(nullable: false),
+                    name = table.Column<string>(maxLength: 50, nullable: true),
+                    model = table.Column<string>(maxLength: 100, nullable: true),
+                    production_year = table.Column<short>(type: "smallint", nullable: false),
+                    mileage = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_vehicle", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "work_task",
+                columns: table => new
+                {
+                    id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    driver_id = table.Column<Guid>(nullable: false),
+                    operator_id = table.Column<Guid>(nullable: false),
+                    create_date = table.Column<DateTime>(nullable: false),
+                    due_date = table.Column<DateTime>(nullable: false),
+                    status_id = table.Column<short>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_work_task", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "work_task_status",
+                columns: table => new
+                {
+                    id = table.Column<short>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(maxLength: 30, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_work_task_status", x => x.id);
+                });
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -94,7 +155,7 @@ namespace VehicleMonitoringSystemServer.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
@@ -121,7 +182,7 @@ namespace VehicleMonitoringSystemServer.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUserLogins", x => new {x.LoginProvider, x.ProviderKey});
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
                         name: "FK_AspNetUserLogins_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -139,7 +200,7 @@ namespace VehicleMonitoringSystemServer.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUserRoles", x => new {x.UserId, x.RoleId});
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
                         column: x => x.RoleId,
@@ -165,12 +226,35 @@ namespace VehicleMonitoringSystemServer.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AspNetUserTokens", x => new {x.UserId, x.LoginProvider, x.Name});
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
                         name: "FK_AspNetUserTokens_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "vehicle_data",
+                columns: table => new
+                {
+                    id = table.Column<long>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    vehicle_id = table.Column<int>(nullable: false),
+                    date = table.Column<DateTime>(nullable: false),
+                    latitude = table.Column<decimal>(nullable: false),
+                    longitude = table.Column<decimal>(nullable: false),
+                    fuel_lever = table.Column<decimal>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_vehicle_data", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_vehicle_data_vehicle_vehicle_id",
+                        column: x => x.vehicle_id,
+                        principalTable: "vehicle",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -230,7 +314,12 @@ namespace VehicleMonitoringSystemServer.Data.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_PersistedGrants_SubjectId_ClientId_Type",
                 table: "PersistedGrants",
-                columns: new[] {"SubjectId", "ClientId", "Type"});
+                columns: new[] { "SubjectId", "ClientId", "Type" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_vehicle_data_vehicle_id",
+                table: "vehicle_data",
+                column: "vehicle_id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -257,10 +346,22 @@ namespace VehicleMonitoringSystemServer.Data.Migrations
                 name: "PersistedGrants");
 
             migrationBuilder.DropTable(
+                name: "vehicle_data");
+
+            migrationBuilder.DropTable(
+                name: "work_task");
+
+            migrationBuilder.DropTable(
+                name: "work_task_status");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "vehicle");
         }
     }
 }

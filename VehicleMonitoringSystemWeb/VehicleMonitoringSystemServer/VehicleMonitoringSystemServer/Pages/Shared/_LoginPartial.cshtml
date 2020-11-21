@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@using VehicleMonitoringSystemServer.Models;
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+@using VehicleMonitoringSystemServer.Data.Models
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
 
 @{
     string returnUrl = null;
