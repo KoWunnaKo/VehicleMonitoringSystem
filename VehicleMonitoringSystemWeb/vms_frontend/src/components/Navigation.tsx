@@ -2,7 +2,8 @@ import * as React from "react";
 import { Link } from "react-router-dom";
 import * as routes from "../constants/routes";
 import { AuthUserContext } from "../firebase/AuthUserContext";
-import { SignOutButton } from "./SignOutButton";
+import "./Navigation.css";
+import {auth} from "../firebase";
 
 export const Navigation = () => (
   <AuthUserContext.Consumer>
@@ -13,16 +14,16 @@ export const Navigation = () => (
 const NavigationAuth = () => (
   <ul>
     <li>
-      <Link to={routes.LANDING}>Landing</Link>
+        <Link to={routes.LANDING}>Landing</Link>
     </li>
     <li>
-      <Link to={routes.HOME}>Home</Link>
+        <Link to={routes.HOME}>Home</Link>
     </li>
     <li>
-      <Link to={routes.ACCOUNT}>Account</Link>
+        <Link to={routes.ACCOUNT}>Account</Link>
     </li>
     <li>
-      <SignOutButton />
+        <a onClick={auth.doSignOut}>Sign Out</a>
     </li>
   </ul>
 );
@@ -30,10 +31,10 @@ const NavigationAuth = () => (
 const NavigationNonAuth = () => (
   <ul>
     <li>
-      <Link to={routes.LANDING}>Landing</Link>
+        <Link to={routes.LANDING}>Landing</Link>
     </li>
     <li>
-      <Link to={routes.SIGN_IN}>Sign In</Link>
+        <Link to={routes.SIGN_IN}>Sign In</Link>
     </li>
   </ul>
 );

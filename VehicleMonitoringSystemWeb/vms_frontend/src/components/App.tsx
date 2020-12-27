@@ -33,7 +33,6 @@ class AppComponent extends React.Component {
       <BrowserRouter>
         <div>
           <Navigation />
-          <hr />
           <Switch>
             <Route exact={true} path={routes.LANDING} component={Landing} />
             <Route exact={true} path={routes.SIGN_UP} component={SignUp} />
