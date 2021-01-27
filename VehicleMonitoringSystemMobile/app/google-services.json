@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "951694245051",
+    "firebase_url": "https://vehiclemonitoringsystem-20248.firebaseio.com",
+    "project_id": "vehiclemonitoringsystem-20248",
+    "storage_bucket": "vehiclemonitoringsystem-20248.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951694245051:android:ff92345e5128d885b03d9e",
+        "android_client_info": {
+          "package_name": "com.siroytman.vehiclemonitoringsystemmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951694245051-ih8jah8l47i4om2t2df6j690n9g8584d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIHt9I0HHuhK8voI_jmyOkwhNqB6c50j0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951694245051-ih8jah8l47i4om2t2df6j690n9g8584d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
