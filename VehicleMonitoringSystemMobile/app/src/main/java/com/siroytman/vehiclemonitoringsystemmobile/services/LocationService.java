@@ -1,22 +1,24 @@
 package com.siroytman.vehiclemonitoringsystemmobile.services;
 
-import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
 import android.util.Log;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.siroytman.vehiclemonitoringsystemmobile.interfaces.ILocationManager;
+
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
-import static androidx.core.app.ActivityCompat.requestPermissions;
 import static androidx.core.content.ContextCompat.checkSelfPermission;
 
-// Service which gets updates about the current device location
+/**
+ * Service which gets updates about the current device location
+ */
 public class LocationService {
     public static final String TAG = "LocationService";
 
@@ -26,7 +28,7 @@ public class LocationService {
     private static final int UPDATE_INTERVAL_MS = 10000;
     private static final int FASTEST_UPDATE_INTERVAL_MS = 5000;
     private static final int REQUEST_LOCATION = 1234;
-    private static final String[] PERMISSIONS = new String[]{ ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION };
+    private static final String[] PERMISSIONS = new String[]{ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION};
 
     private FusedLocationProviderClient fusedLocationClient;
 
@@ -83,8 +85,7 @@ public class LocationService {
         Log.d(TAG, "startLocationUpdates");
         if (checkSelfPermission(context, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED
                 && checkSelfPermission(context, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
-
-            requestPermissions((Activity) context, PERMISSIONS, REQUEST_LOCATION);
+            Log.d(TAG, "No permissions to get location");
             return;
         }
 

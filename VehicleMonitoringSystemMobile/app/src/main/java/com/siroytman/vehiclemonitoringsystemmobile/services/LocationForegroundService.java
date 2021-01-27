@@ -1,5 +1,6 @@
 package com.siroytman.vehiclemonitoringsystemmobile.services;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -17,15 +18,27 @@ import com.siroytman.vehiclemonitoringsystemmobile.interfaces.ILocationManager;
 import com.siroytman.vehiclemonitoringsystemmobile.ui.activity.MainActivity;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
-// Foreground service for running locationService in background
-// Sends location to GeodataProcessingService via volley
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
+
+
+/**
+ * Foreground service for running locationService in background
+ * Sends location to GeodataProcessingService via volley
+ */
 public class LocationForegroundService extends Service implements ILocationManager {
     public static final String TAG = "LocationForeService";
     public static final String NOTIFICATION_CHANNEL_ID = "ForegroundServiceNotificationChannel";
     public static final int CHANNEL_ID = 420;
+    private static final int REQUEST_LOCATION = 1234;
+    private static final String[] PERMISSIONS = new String[]{ ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION };
+
 
     @Override
     public void onCreate() {
@@ -49,7 +62,8 @@ public class LocationForegroundService extends Service implements ILocationManag
         startForeground(CHANNEL_ID, notification);
 
         // Starts locationService on a background thread
-        LocationService.getInstance(getApplicationContext(), this).startLocationUpdates(getApplicationContext());
+        LocationService.getInstance(getApplicationContext(), this)
+                .startLocationUpdates(getApplicationContext());
 
         return START_STICKY;
     }
@@ -76,6 +90,15 @@ public class LocationForegroundService extends Service implements ILocationManag
         context.stopService(serviceIntent);
     }
 
+    public static boolean checkPermissions(Context context) {
+        return ContextCompat.checkSelfPermission(context, ACCESS_FINE_LOCATION) == PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(context, ACCESS_COARSE_LOCATION) == PERMISSION_GRANTED;
+    }
+
+    public static void requestPermissions(Activity activity) {
+        ActivityCompat.requestPermissions(activity, PERMISSIONS, REQUEST_LOCATION);
+    }
+
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel serviceChannel = new NotificationChannel(
@@ -92,7 +115,8 @@ public class LocationForegroundService extends Service implements ILocationManag
     @Override
     public void onDestroy() {
         super.onDestroy();
-        LocationService.getInstance(getApplicationContext(), this).stopLocationUpdates();
+        LocationService.getInstance(getApplicationContext(), this)
+                .stopLocationUpdates();
     }
 
     @Nullable

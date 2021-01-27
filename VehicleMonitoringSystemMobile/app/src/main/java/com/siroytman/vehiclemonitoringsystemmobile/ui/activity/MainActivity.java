@@ -28,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
                 LocationForegroundService.startService(getApplicationContext());
             } else
             {
+                if (!LocationForegroundService.checkPermissions(this)) {
+                    LocationForegroundService.requestPermissions(this);
+                }
                 btnStartTrack.setText(R.string.main_activity__track_button__start);
                 LocationForegroundService.stopService(getApplicationContext());
             }
