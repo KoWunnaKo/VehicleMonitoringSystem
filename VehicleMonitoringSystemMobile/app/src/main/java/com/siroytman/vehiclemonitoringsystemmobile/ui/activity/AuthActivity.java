@@ -1,40 +1,17 @@
 package com.siroytman.vehiclemonitoringsystemmobile.ui.activity;
 
-/*
- * Copyright 2016 Google Inc. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the
- * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.RadioButton;
 
-import com.firebase.ui.auth.AuthMethodPickerLayout;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.AuthUI.IdpConfig;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.firebase.ui.auth.util.ExtraConstants;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.ActionCodeSettings;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.siroytman.vehiclemonitoringsystemmobile.R;
 
@@ -57,17 +34,10 @@ public class AuthActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 100;
     private static final boolean ALLOW_NEW_EMAIL_ACCOUNTS = false;
     private static final boolean REQUIRE_EMAIL_NAME = false;
+    private static final boolean ENABLE_CREDENTIALS = true;
+    private static final boolean ENABLE_HINTS= true;
 
     @BindView(R.id.root) View mRootView;
-
-    @BindView(R.id.email_provider) CheckBox mUseEmailProvider;
-    @BindView(R.id.email_link_provider) CheckBox mUseEmailLinkProvider;
-
-    @BindView(R.id.default_layout) RadioButton mDefaultLayout;
-    @BindView(R.id.custom_layout) RadioButton mCustomLayout;
-
-    @BindView(R.id.credential_selector_enabled) CheckBox mEnableCredentialSelector;
-    @BindView(R.id.hint_selector_enabled) CheckBox mEnableHintSelector;
 
     @NonNull
     public static Intent createIntent(@NonNull Context context) {
@@ -80,34 +50,6 @@ public class AuthActivity extends AppCompatActivity {
         setContentView(R.layout.activity_firebase_ui);
         ButterKnife.bind(this);
 
-        mUseEmailLinkProvider.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                flipPasswordProviderCheckbox(isChecked);
-            }
-        });
-
-        mUseEmailProvider.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                flipEmailLinkProviderCheckbox(isChecked);
-            }
-        });
-
-        mUseEmailLinkProvider.setChecked(false);
-        mUseEmailProvider.setChecked(true);
-
-        // The custom layout in this app only supports Email and Google providers.
-        mCustomLayout.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if (checked) {
-                    mUseEmailProvider.setChecked(true);
-                    mUseEmailLinkProvider.setChecked(false);
-                }
-            }
-        });
-
         catchEmailLinkSignIn();
     }
 
@@ -118,18 +60,6 @@ public class AuthActivity extends AppCompatActivity {
         String link = getIntent().getExtras().getString(ExtraConstants.EMAIL_LINK_SIGN_IN);
         if (link != null) {
             signInWithEmailLink(link);
-        }
-    }
-
-    public void flipPasswordProviderCheckbox(boolean emailLinkProviderIsChecked) {
-        if (emailLinkProviderIsChecked) {
-            mUseEmailProvider.setChecked(false);
-        }
-    }
-
-    public void flipEmailLinkProviderCheckbox(boolean passwordProviderIsChecked) {
-        if (passwordProviderIsChecked) {
-            mUseEmailLinkProvider.setChecked(false);
         }
     }
 
@@ -154,20 +84,7 @@ public class AuthActivity extends AppCompatActivity {
                 .setTheme(getSelectedTheme())
                 .setLogo(getSelectedLogo())
                 .setAvailableProviders(getSelectedProviders())
-                .setIsSmartLockEnabled(mEnableCredentialSelector.isChecked(),
-                        mEnableHintSelector.isChecked());
-
-        if (mCustomLayout.isChecked()) {
-            AuthMethodPickerLayout customLayout = new AuthMethodPickerLayout
-                    .Builder(R.layout.auth_method_picker_custom_layout)
-                    .setGoogleButtonId(R.id.custom_google_signin_button)
-                    .setEmailButtonId(R.id.custom_email_signin_clickable_text)
-                    .setTosAndPrivacyPolicyId(R.id.custom_tos_pp)
-                    .build();
-
-            builder.setTheme(R.style.CustomTheme);
-            builder.setAuthMethodPickerLayout(customLayout);
-        }
+                .setIsSmartLockEnabled(ENABLE_CREDENTIALS, ENABLE_HINTS);
 
         if (link != null) {
             builder.setEmailLink(link);
@@ -180,21 +97,6 @@ public class AuthActivity extends AppCompatActivity {
         }
 
         return builder.build();
-    }
-
-    @OnClick(R.id.sign_in_silent)
-    public void silentSignIn() {
-        getAuthUI().silentSignIn(this, getSelectedProviders())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            startSignedInActivity(null);
-                        } else {
-                            showSnackbar(R.string.sign_in_failed);
-                        }
-                    }
-                });
     }
 
     @Override
@@ -246,7 +148,7 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     private void startSignedInActivity(@Nullable IdpResponse response) {
-        startActivity(SignedInActivity.createIntent(this, response));
+        startActivity(new Intent(this, MainActivity.class));
     }
 
     @StyleRes
@@ -262,26 +164,11 @@ public class AuthActivity extends AppCompatActivity {
     private List<IdpConfig> getSelectedProviders() {
         List<IdpConfig> selectedProviders = new ArrayList<>();
 
-        if (mUseEmailProvider.isChecked()) {
-            selectedProviders.add(new IdpConfig.EmailBuilder()
-                    .setRequireName(REQUIRE_EMAIL_NAME)
-                    .setAllowNewAccounts(ALLOW_NEW_EMAIL_ACCOUNTS)
-                    .build());
-        }
-
-        if (mUseEmailLinkProvider.isChecked()) {
-            ActionCodeSettings actionCodeSettings = ActionCodeSettings.newBuilder()
-                    .setAndroidPackageName("com.siroytman.vehiclemonitoringsystemmobile", true, null)
-                    .setHandleCodeInApp(true)
-                    .setUrl("https://google.com")
-                    .build();
-
-            selectedProviders.add(new IdpConfig.EmailBuilder()
-                    .setAllowNewAccounts(ALLOW_NEW_EMAIL_ACCOUNTS)
-                    .setActionCodeSettings(actionCodeSettings)
-                    .enableEmailLinkSignIn()
-                    .build());
-        }
+        // UseEmailProvider
+        selectedProviders.add(new IdpConfig.EmailBuilder()
+                .setRequireName(REQUIRE_EMAIL_NAME)
+                .setAllowNewAccounts(ALLOW_NEW_EMAIL_ACCOUNTS)
+                .build());
 
         return selectedProviders;
     }
