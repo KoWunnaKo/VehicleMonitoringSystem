@@ -15,7 +15,7 @@ import android.util.Log;
 
 import com.siroytman.vehiclemonitoringsystemmobile.R;
 import com.siroytman.vehiclemonitoringsystemmobile.interfaces.ILocationManager;
-import com.siroytman.vehiclemonitoringsystemmobile.ui.activity.MainActivity;
+import com.siroytman.vehiclemonitoringsystemmobile.ui.fragments.LocationFragment;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -49,7 +49,7 @@ public class LocationForegroundService extends Service implements ILocationManag
     public int onStartCommand(Intent intent, int flags, int startId) {
         createNotificationChannel();
 
-        Intent notificationIntent = new Intent(this, MainActivity.class);
+        Intent notificationIntent = new Intent(this, LocationFragment.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
 

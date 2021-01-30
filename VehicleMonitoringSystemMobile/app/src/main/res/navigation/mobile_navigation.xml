@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_location">
+
+    <fragment
+        android:id="@+id/navigation_location"
+        android:name="com.siroytman.vehiclemonitoringsystemmobile.ui.fragments.LocationFragment"
+        android:label="@string/navigation__title_location"
+        tools:layout="@layout/fragment_location" />
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.siroytman.vehiclemonitoringsystemmobile.ui.fragments.DashboardFragment"
+        android:label="@string/navigation__title_dashboard"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.siroytman.vehiclemonitoringsystemmobile.ui.fragments.SettingsFragment"
+        android:label="@string/navigation__title_settings"
+        tools:layout="@layout/fragment_settings" />
+</navigation>

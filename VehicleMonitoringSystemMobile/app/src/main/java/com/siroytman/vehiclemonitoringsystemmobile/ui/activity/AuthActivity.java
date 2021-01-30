@@ -148,7 +148,7 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     private void startSignedInActivity(@Nullable IdpResponse response) {
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, NavigationActivity.class));
     }
 
     @StyleRes
