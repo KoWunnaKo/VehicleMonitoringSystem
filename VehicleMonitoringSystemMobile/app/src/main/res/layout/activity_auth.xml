@@ -26,7 +26,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="@string/launch_title"
+                android:text="@string/location_service__title"
                 app:drawableTopCompat="@mipmap/firebase_auth_120dp"/>
 
             <Button
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
-                android:text="@string/sign_in_start" />
+                android:text="@string/auth__sign_in" />
 
         </LinearLayout>
 
