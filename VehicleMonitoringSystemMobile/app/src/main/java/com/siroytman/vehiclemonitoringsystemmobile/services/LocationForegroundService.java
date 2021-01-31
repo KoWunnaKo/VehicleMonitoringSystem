@@ -13,10 +13,27 @@ import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.type.DateTime;
 import com.siroytman.vehiclemonitoringsystemmobile.R;
+import com.siroytman.vehiclemonitoringsystemmobile.db.DbAddCallback;
+import com.siroytman.vehiclemonitoringsystemmobile.db.DbController;
+import com.siroytman.vehiclemonitoringsystemmobile.db.DbGetCallback;
 import com.siroytman.vehiclemonitoringsystemmobile.interfaces.ILocationManager;
+import com.siroytman.vehiclemonitoringsystemmobile.model.VehicleData;
 import com.siroytman.vehiclemonitoringsystemmobile.ui.fragments.LocationFragment;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
@@ -38,12 +55,7 @@ public class LocationForegroundService extends Service implements ILocationManag
     public static final int CHANNEL_ID = 420;
     private static final int REQUEST_LOCATION = 1234;
     private static final String[] PERMISSIONS = new String[]{ ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION };
-
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
+    private final DbController dbController = DbController.getInstance();
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -72,12 +84,22 @@ public class LocationForegroundService extends Service implements ILocationManag
     @Override
     public void getLastKnownLocation(Location location) {
         Log.d(TAG, "LastKnownLocation: Latitude: " + location.getLatitude() + "; Longitude: " + location.getLongitude());
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        VehicleData vehicleData =
+                new VehicleData(123, user.getEmail(), new Date(), location.getLatitude(), location.getLongitude());
+        writeVehicleDataToDb(vehicleData);
     }
 
     // Callback for locationService
     @Override
     public void onLocationChanged(Location location) {
         Log.d(TAG, "LocationChanged: Latitude: " + location.getLatitude() + "; Longitude: " + location.getLongitude());
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        VehicleData vehicleData =
+                new VehicleData(123, user.getEmail(), new Date(), location.getLatitude(), location.getLongitude());
+        writeVehicleDataToDb(vehicleData);
     }
 
     public static void startService(Context context) {
@@ -123,5 +145,19 @@ public class LocationForegroundService extends Service implements ILocationManag
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    private void writeVehicleDataToDb(VehicleData vehicleData) {
+        dbController.add("vehicle_data", vehicleData.toMap(), new DbAddCallback() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Log.d(TAG, "vehicle_data added: " + documentReference.getId());
+            }
+
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "Error: vehicle_data NOT added: " + e);
+            }
+        });
     }
 }

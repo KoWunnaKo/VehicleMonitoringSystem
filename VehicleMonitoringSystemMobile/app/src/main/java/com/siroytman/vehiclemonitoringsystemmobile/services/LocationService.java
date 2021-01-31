@@ -27,8 +27,6 @@ public class LocationService {
 
     private static final int UPDATE_INTERVAL_MS = 10000;
     private static final int FASTEST_UPDATE_INTERVAL_MS = 5000;
-    private static final int REQUEST_LOCATION = 1234;
-    private static final String[] PERMISSIONS = new String[]{ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION};
 
     private FusedLocationProviderClient fusedLocationClient;
 
