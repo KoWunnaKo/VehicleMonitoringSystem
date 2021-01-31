@@ -8,7 +8,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.siroytman.vehiclemonitoringsystemmobile.BuildConfig;
 import com.siroytman.vehiclemonitoringsystemmobile.R;
 import com.siroytman.vehiclemonitoringsystemmobile.controller.AppController;
 
@@ -28,14 +27,14 @@ public class ApiController {
     static {
         // Choosing server url
         int serverUrlId = R.string.server_url;
-        serverUrl = AppController.getContext().getString(serverUrlId);
+        serverUrl = AppController.getInstance().getAppContext().getString(serverUrlId);
     }
 
     private ApiController() {
         // initialize the singleton
         instance = this;
         // initialize volley queue
-        volleyQueue = new VolleyQueue(AppController.getContext());
+        volleyQueue = new VolleyQueue(AppController.getInstance().getAppContext());
     }
 
     /**

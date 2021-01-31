@@ -8,7 +8,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -16,24 +15,24 @@ import java.util.Map;
 
 import androidx.annotation.NonNull;
 
-public class DbController {
-    public static final String TAG = "DbController";
+public class FirestoreController {
+    public static final String TAG = "FirestoreController";
 
     // A singleton instance of the application class for easy access in other places
-    private static DbController instance;
+    private static FirestoreController instance;
 
     private final FirebaseFirestore db;
 
-    private DbController() {
+    private FirestoreController() {
         // initialize the singleton
         instance = this;
         // initialize firestore
         db = FirebaseFirestore.getInstance();
     }
 
-    public static synchronized DbController getInstance() {
+    public static synchronized FirestoreController getInstance() {
         if (instance == null) {
-            instance = new DbController();
+            instance = new FirestoreController();
         }
         return instance;
     }

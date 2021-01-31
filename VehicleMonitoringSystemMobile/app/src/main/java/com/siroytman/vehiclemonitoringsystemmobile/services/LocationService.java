@@ -25,8 +25,9 @@ public class LocationService {
     // Singleton
     public static LocationService instance;
 
+    // Release = 120000; Debug = 10000
     private static final int UPDATE_INTERVAL_MS = 10000;
-    private static final int FASTEST_UPDATE_INTERVAL_MS = 5000;
+    private static final int FASTEST_UPDATE_INTERVAL_MS = 10000;
 
     private FusedLocationProviderClient fusedLocationClient;
 
