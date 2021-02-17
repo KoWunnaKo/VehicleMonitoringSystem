@@ -9,27 +9,26 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.siroytman.vehiclemonitoringsystemmobile.R;
-import com.siroytman.vehiclemonitoringsystemmobile.db.DbAddCallback;
-import com.siroytman.vehiclemonitoringsystemmobile.db.FirestoreController;
-import com.siroytman.vehiclemonitoringsystemmobile.interfaces.ILocationManager;
-import com.siroytman.vehiclemonitoringsystemmobile.model.VehicleData;
-import com.siroytman.vehiclemonitoringsystemmobile.ui.fragments.LocationFragment;
-
-import java.util.Date;
-
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.siroytman.vehiclemonitoringsystemmobile.R;
+import com.siroytman.vehiclemonitoringsystemmobile.controller.AppController;
+import com.siroytman.vehiclemonitoringsystemmobile.interfaces.ILocationManager;
+import com.siroytman.vehiclemonitoringsystemmobile.model.VehicleData;
+import com.siroytman.vehiclemonitoringsystemmobile.room.AppRoomDatabase;
+import com.siroytman.vehiclemonitoringsystemmobile.ui.fragments.LocationFragment;
+
+import java.util.Date;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -45,7 +44,6 @@ public class LocationForegroundService extends Service implements ILocationManag
     public static final int CHANNEL_ID = 420;
     private static final int REQUEST_LOCATION = 1234;
     private static final String[] PERMISSIONS = new String[]{ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION};
-    private final FirestoreController firestoreController = FirestoreController.getInstance();
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -106,11 +104,12 @@ public class LocationForegroundService extends Service implements ILocationManag
     @Override
     public void getLastKnownLocation(Location location) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         VehicleData vehicleData =
-                new VehicleData(123, user.getEmail(), new Date(), location.getLatitude(), location.getLongitude());
+                new VehicleData(123, user.getUid(), new Date(), location.getLatitude(), location.getLongitude());
 
         Log.d(TAG, "LastKnownLocation: " + vehicleData.toString());
-        insertVehicleDataToFirestore(vehicleData);
+        saveVehicleDataInDb(vehicleData);
     }
 
     // Callback for locationService
@@ -118,27 +117,22 @@ public class LocationForegroundService extends Service implements ILocationManag
     public void onLocationChanged(Location location) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         VehicleData vehicleData =
-                new VehicleData(123, user.getEmail(), new Date(), location.getLatitude(), location.getLongitude());
+                new VehicleData(123, user.getUid(), new Date(), location.getLatitude(), location.getLongitude());
 
         Log.d(TAG, "LocationChanged: " + vehicleData.toString());
-        insertVehicleDataToFirestore(vehicleData);
+        saveVehicleDataInDb(vehicleData);
     }
 
     /**
-     * Inerts vehicle data into to Cloud Firestore
-     * If android is offline then data will be inserted automaticaly
-     * by Firestore mechanisms wheh the connection is restored
+     * Inserts data in android room
      * @param vehicleData - piece of data
      */
-    private void insertVehicleDataToFirestore(VehicleData vehicleData) {
-        firestoreController.add("vehicle_data", vehicleData.toMap(), new DbAddCallback() {
+    private void saveVehicleDataInDb(VehicleData vehicleData) {
+        AsyncTask.execute(new Runnable() {
             @Override
-            public void onSuccess(DocumentReference documentReference) {
-                Log.d(TAG, "insertVehicleDataToFirestore: added to cloud firestore: " + vehicleData.toString());
-            }
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "insertVehicleDataToFirestore: Error. NOT added to firestore: " + e);
+            public void run() {
+                AppRoomDatabase roomDb = AppController.getInstance().getRoomDatabase();
+                roomDb.vehicleDataDao().insert(vehicleData);
             }
         });
     }

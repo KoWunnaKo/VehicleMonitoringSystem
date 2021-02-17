@@ -19,7 +19,7 @@ public class ApiController {
     private static final String serverUrl;
 
     // Volley queue for executing requests to server
-    private VolleyQueue volleyQueue;
+    private final VolleyQueue volleyQueue;
 
     // A singleton instance of the application class for easy access in other places
     private static ApiController instance;
