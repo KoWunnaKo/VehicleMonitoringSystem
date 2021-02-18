@@ -71,6 +71,9 @@ public class LocationForegroundService extends Service implements ILocationManag
     public static void startService(Context context) {
         Intent serviceIntent = new Intent(context, LocationForegroundService.class);
         ContextCompat.startForegroundService(context, serviceIntent);
+
+        // Starts synchronization AsyncTask mechanism
+        VehicleDataSynchronizationService.scheduleSynchronizationTask();
     }
 
     public static void stopService(Context context) {

@@ -23,6 +23,6 @@ public interface VehicleDataDao {
     @Delete
     void delete(VehicleData vehicleData);
 
-    @Query("DELETE FROM vehicledata")
-    void deleteAll();
+    @Delete
+    void deleteAll(List<VehicleData> vehicleData);
 }

@@ -1,17 +1,16 @@
 package com.siroytman.vehiclemonitoringsystemmobile.model;
 
-import com.google.firebase.Timestamp;
-import com.siroytman.vehiclemonitoringsystemmobile.room.Converters;
-
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
+
+import com.siroytman.vehiclemonitoringsystemmobile.room.Converters;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity
 public class VehicleData {
@@ -42,7 +41,7 @@ public class VehicleData {
         Map<String, Object> vehicle_data = new HashMap<>();
         vehicle_data.put("vehicle_id", vehicle_id);
         vehicle_data.put("user_id", user_id);
-        vehicle_data.put("timestamp", new Timestamp(datetime));
+        vehicle_data.put("timestamp", datetime);
         vehicle_data.put("latitude", latitude);
         vehicle_data.put("longitude", longitude);
 
