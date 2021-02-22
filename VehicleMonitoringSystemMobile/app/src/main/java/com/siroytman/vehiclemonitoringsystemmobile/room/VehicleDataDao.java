@@ -11,7 +11,7 @@ import java.util.List;
 
 @Dao
 public interface VehicleDataDao {
-    @Query("SELECT * FROM vehicledata")
+    @Query("SELECT * FROM vehicledata ORDER BY Id LIMIT 50")
     List<VehicleData> getAll();
 
     @Insert
@@ -23,6 +23,7 @@ public interface VehicleDataDao {
     @Delete
     void delete(VehicleData vehicleData);
 
+    // @Query("DELETE FROM vehicledata WHERE Id in (SELECT Id FROM vehicledata ORDER BY Id LIMIT 50)")
     @Delete
     void deleteAll(List<VehicleData> vehicleData);
 }

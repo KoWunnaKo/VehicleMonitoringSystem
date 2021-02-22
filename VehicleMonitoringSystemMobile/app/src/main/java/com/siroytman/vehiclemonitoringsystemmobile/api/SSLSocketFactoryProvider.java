@@ -60,8 +60,7 @@ final class SSLSocketFactoryProvider {
             HostnameVerifier hostnameVerifier = new HostnameVerifier() {
                 @Override
                 public boolean verify(String hostname, SSLSession session) {
-                    return hostname.compareTo(appContext.getString(R.string.server_host))==0;
-
+                    return hostname.compareTo(appContext.getString(R.string.geodata_processing_service_host))==0;
                 }
             };
 

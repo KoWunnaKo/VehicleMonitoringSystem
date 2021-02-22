@@ -14,9 +14,15 @@ import com.siroytman.vehiclemonitoringsystemmobile.controller.AppController;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+
 public class ApiController {
     public static final String TAG = "ApiController";
-    private static final String serverUrl;
+    public static final String geodataProcessingServiceUrl;
+    private static final int RESPONSE_TIMEOUT = 100000;
 
     // Volley queue for executing requests to server
     private final VolleyQueue volleyQueue;
@@ -25,9 +31,8 @@ public class ApiController {
     private static ApiController instance;
 
     static {
-        // Choosing server url
-        int serverUrlId = R.string.server_url;
-        serverUrl = AppController.getInstance().getAppContext().getString(serverUrlId);
+        int geodataProcessingServiceUrlId = R.string.geodata_processing_service_url;
+        geodataProcessingServiceUrl = AppController.getInstance().getAppContext().getString(geodataProcessingServiceUrlId);
     }
 
     private ApiController() {
@@ -47,14 +52,14 @@ public class ApiController {
         return instance;
     }
 
-
     /**
      * Returns string response from server
      * @param method restMethod: GET, POST, ... {@link com.android.volley.Request.Method}
+     * @param serverUrl server address
      * @param apiUrl api address
      * @param callback function to call when got response
      */
-    public void getStringResponse(int method, String apiUrl, final VolleyCallbackString callback) {
+    public void getStringResponse(int method, String serverUrl, String apiUrl, final VolleyCallbackString callback) {
         StringRequest request = new StringRequest(method,
                 serverUrl + "/" + apiUrl,
         new Response.Listener <String> () {
@@ -67,17 +72,23 @@ public class ApiController {
             public void onErrorResponse(VolleyError e) {
                 Log.d(TAG, "Error: " + e.toString());
             }
-        });
-
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+        };
         request.setRetryPolicy(new RetryPolicy() {
             @Override
             public int getCurrentTimeout() {
-                return 50000;
+                return RESPONSE_TIMEOUT;
             }
 
             @Override
             public int getCurrentRetryCount() {
-                return 50000;
+                return RESPONSE_TIMEOUT;
             }
 
             @Override
@@ -88,7 +99,7 @@ public class ApiController {
         volleyQueue.addToRequestQueue(request);
     }
 
-    public void getJSONObjectResponse(String apiUrl, JSONObject json, final VolleyCallbackJSONObject callback) {
+    public void getJSONObjectResponse(String serverUrl, String apiUrl, JSONObject json, final VolleyCallbackJSONObject callback) {
         JsonObjectRequest request = new JsonObjectRequest(serverUrl + "/" + apiUrl,
                 json,
                 new Response.Listener<JSONObject>() {
@@ -102,19 +113,25 @@ public class ApiController {
                 callback.onErrorResponse(e);
                 Log.d(TAG, "Error: " + e.toString());
             }
-        });
-
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+        };
         volleyQueue.addToRequestQueue(request);
 
         request.setRetryPolicy(new RetryPolicy() {
             @Override
             public int getCurrentTimeout() {
-                return 50000;
+                return RESPONSE_TIMEOUT;
             }
 
             @Override
             public int getCurrentRetryCount() {
-                return 50000;
+                return RESPONSE_TIMEOUT;
             }
 
             @Override
@@ -124,7 +141,8 @@ public class ApiController {
         });
     }
 
-    public void getJSONArrayResponse(int method, String apiUrl, JSONArray json, final VolleyCallbackJSONArray callback) {
+    public void getJSONArrayResponse(int method, String serverUrl, String apiUrl, JSONArray json, final VolleyCallbackJSONArray callback) {
+        String jsonString = String.valueOf(json);
         JsonArrayRequest request = new JsonArrayRequest(method, serverUrl + "/" + apiUrl,
                 json,
                 new Response.Listener<JSONArray> () {
@@ -132,23 +150,36 @@ public class ApiController {
                     public void onResponse(JSONArray response) {
                         callback.onSuccessResponse(response);
                     }
-                }, new Response.ErrorListener() {
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError e) {
+                        callback.onErrorResponse(e);
+                        Log.d(TAG, "Error: " + e.toString());
+                    }
+        }) {
             @Override
-            public void onErrorResponse(VolleyError e) {
-                callback.onErrorResponse(e);
-                Log.d(TAG, "Error: " + e.toString());
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
             }
-        });
+
+            @Override
+            public byte[] getBody() {
+                return jsonString.getBytes(StandardCharsets.UTF_8);
+            }
+        };
 
         request.setRetryPolicy(new RetryPolicy() {
             @Override
             public int getCurrentTimeout() {
-                return 50000;
+                return RESPONSE_TIMEOUT;
             }
 
             @Override
             public int getCurrentRetryCount() {
-                return 50000;
+                return RESPONSE_TIMEOUT;
             }
 
             @Override

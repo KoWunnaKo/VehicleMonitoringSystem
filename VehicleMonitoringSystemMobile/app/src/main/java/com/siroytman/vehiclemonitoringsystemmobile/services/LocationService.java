@@ -26,8 +26,8 @@ public class LocationService {
     public static LocationService instance;
 
     // Release = 120000; Debug = 10000
-    private static final int UPDATE_INTERVAL_MS = 10000;
-    private static final int FASTEST_UPDATE_INTERVAL_MS = 10000;
+    private static final int UPDATE_INTERVAL_MS = 1000;
+    private static final int FASTEST_UPDATE_INTERVAL_MS = 1000;
 
     private FusedLocationProviderClient fusedLocationClient;
 
@@ -81,13 +81,13 @@ public class LocationService {
     }
 
     public void startLocationUpdates(Context context) {
-        Log.d(TAG, "startLocationUpdates");
         if (checkSelfPermission(context, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED
                 && checkSelfPermission(context, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
             Log.d(TAG, "No permissions to get location");
             return;
         }
 
+        Log.d(TAG, "startLocationUpdates");
         fusedLocationClient.requestLocationUpdates(locationRequest,
                 locationCallback,
                 null /* Looper */);

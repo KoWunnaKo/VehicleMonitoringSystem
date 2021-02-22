@@ -29,6 +29,7 @@ import com.siroytman.vehiclemonitoringsystemmobile.room.AppRoomDatabase;
 import com.siroytman.vehiclemonitoringsystemmobile.ui.fragments.LocationFragment;
 
 import java.util.Date;
+import java.util.Objects;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -106,10 +107,9 @@ public class LocationForegroundService extends Service implements ILocationManag
     // Callback for locationService
     @Override
     public void getLastKnownLocation(Location location) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
+        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         VehicleData vehicleData =
-                new VehicleData(123, user.getUid(), new Date(), location.getLatitude(), location.getLongitude());
+                new VehicleData(2, userId, new Date(), location.getLatitude(), location.getLongitude());
 
         Log.d(TAG, "LastKnownLocation: " + vehicleData.toString());
         saveVehicleDataInDb(vehicleData);
@@ -118,9 +118,9 @@ public class LocationForegroundService extends Service implements ILocationManag
     // Callback for locationService
     @Override
     public void onLocationChanged(Location location) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
         VehicleData vehicleData =
-                new VehicleData(123, user.getUid(), new Date(), location.getLatitude(), location.getLongitude());
+                new VehicleData(2, userId, new Date(), location.getLatitude(), location.getLongitude());
 
         Log.d(TAG, "LocationChanged: " + vehicleData.toString());
         saveVehicleDataInDb(vehicleData);
