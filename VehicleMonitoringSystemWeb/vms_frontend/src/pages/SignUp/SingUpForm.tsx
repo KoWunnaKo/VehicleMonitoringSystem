@@ -1,6 +1,10 @@
 import * as React from "react";
-import * as routes from "../../constants/routes";
 import { auth, db } from "../../firebase";
+// import * as AuthApi from "../../api/AuthApi";
+// import Employee from "../../models/Employee";
+import {IStylesDictionary} from "../../utils/IStylesDictionary";
+import Colors from "../../constants/Colors";
+import * as Routes from "constants/Routes"
 
 interface InterfaceProps {
   email?: string;
@@ -16,13 +20,10 @@ interface InterfaceState {
   error: any;
   passwordOne: string;
   passwordTwo: string;
-  username: string;
+    username: string;
 }
 
-export class SignUpForm extends React.Component<
-  InterfaceProps,
-  InterfaceState
-> {
+export class SignUpForm extends React.Component<InterfaceProps, InterfaceState> {
   private static INITIAL_STATE = {
     email: "",
     error: null,
@@ -40,30 +41,34 @@ export class SignUpForm extends React.Component<
     this.state = { ...SignUpForm.INITIAL_STATE };
   }
 
-  public onSubmit(event: any) {
-    event.preventDefault();
+  public async onSubmit(event: any) {
+      event.preventDefault();
 
-    const { email, passwordOne, username } = this.state;
-    const { history } = this.props;
+      const {email, passwordOne, username} = this.state;
+      const {history} = this.props;
 
-    auth
-      .doCreateUserWithEmailAndPassword(email, passwordOne)
-      .then((authUser: any) => {
+      // Firebase create user
+      auth
+          .doCreateUserWithEmailAndPassword(email, passwordOne)
+          .then((authUser: any) => {
 
-        // Create a user in your own accessible Firebase Database too
-        db.doCreateUser(authUser.user.uid, username, email)
-          .then(() => {
+              // Create a user in your own accessible Firebase Database too
+              db.doCreateUser(authUser.user.uid, username, email)
+                  .then(() => {
 
-            this.setState(() => ({ ...SignUpForm.INITIAL_STATE }));
-            history.push(routes.HOME);
+                      this.setState(() => ({...SignUpForm.INITIAL_STATE}));
+                      history.push(Routes.HOME);
+
+                      // const employee: Employee = new Employee(authUser.user.uid);
+                      // AuthApi.signUp(employee);
+                  })
+                  .catch(error => {
+                      this.setState(SignUpForm.propKey("error", error));
+                  });
           })
           .catch(error => {
-            this.setState(SignUpForm.propKey("error", error));
+              this.setState(SignUpForm.propKey("error", error));
           });
-      })
-      .catch(error => {
-        this.setState(SignUpForm.propKey("error", error));
-      });
   }
 
   public render() {
@@ -73,36 +78,40 @@ export class SignUpForm extends React.Component<
       passwordOne !== passwordTwo ||
       passwordOne === "" ||
       email === "" ||
-      username === "";
+        username === "";
 
     return (
-      <form onSubmit={(event) => this.onSubmit(event)}>
+      <form onSubmit={(event) => this.onSubmit(event)} style={styles.container}>
         <input
           value={username}
           onChange={event => this.setStateWithEvent(event, "username")}
           type="text"
-          placeholder="Full Name"
+          placeholder="First Name"
+          style={styles.textInput}
         />
         <input
           value={email}
           onChange={event => this.setStateWithEvent(event, "email")}
           type="text"
           placeholder="Email Address"
+          style={styles.textInput}
         />
         <input
           value={passwordOne}
           onChange={event => this.setStateWithEvent(event, "passwordOne")}
           type="password"
           placeholder="Password"
+          style={styles.textInput}
         />
         <input
           value={passwordTwo}
           onChange={event => this.setStateWithEvent(event, "passwordTwo")}
           type="password"
           placeholder="Confirm Password"
+          style={styles.textInput}
         />
-        <button disabled={isInvalid} type="submit">
-          Sign Up
+        <button disabled={isInvalid} style={styles.button}>
+            <text style={{color: Colors.white}}>Sign Up</text>
         </button>
 
         {error && <p>{error.message}</p>}
@@ -114,3 +123,19 @@ export class SignUpForm extends React.Component<
     this.setState(SignUpForm.propKey(columnType, (event.target as any).value));
   }
 }
+
+const styles: IStylesDictionary  = {
+    container: {
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    textInput: {
+        width: 200,
+        marginTop: 5,
+        marginBottom: 5,
+    },
+    button: {
+        width: 100,
+        backgroundColor: Colors.primaryBlue
+    }
+};

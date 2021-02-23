@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as routes from "../../constants/routes";
+import * as routes from "../../constants/Routes";
 import { auth } from "../../firebase";
 
 interface InterfaceProps {

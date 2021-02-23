@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import * as routes from "../constants/routes";
+import * as routes from "../constants/Routes";
 import { AuthUserContext } from "../firebase/AuthUserContext";
 import "./Navigation.css";
 import {auth} from "../firebase";

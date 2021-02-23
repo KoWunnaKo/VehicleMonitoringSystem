@@ -1,6 +1,6 @@
 import * as React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import * as routes from "../constants/routes";
+import * as routes from "../constants/Routes";
 import { firebase } from "../firebase";
 import { withAuthentication } from "../firebase/withAuthentication";
 import { Account } from "../pages/Account";
