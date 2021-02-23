@@ -56,25 +56,7 @@ namespace VMS_Backend.Data.Migrations
                     b.ToTable("company_settings");
                 });
 
-            modelBuilder.Entity("VMS_Backend.Data.Models.Role", b =>
-                {
-                    b.Property<short>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint")
-                        .HasColumnName("id")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("role");
-                });
-
-            modelBuilder.Entity("VMS_Backend.Data.Models.User", b =>
+            modelBuilder.Entity("VMS_Backend.Data.Models.Employee", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text")
@@ -114,7 +96,25 @@ namespace VMS_Backend.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("user");
+                    b.ToTable("employee");
+                });
+
+            modelBuilder.Entity("VMS_Backend.Data.Models.Role", b =>
+                {
+                    b.Property<short>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint")
+                        .HasColumnName("id")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("role");
                 });
 
             modelBuilder.Entity("VMS_Backend.Data.Models.Vehicle", b =>
@@ -293,7 +293,7 @@ namespace VMS_Backend.Data.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("VMS_Backend.Data.Models.User", b =>
+            modelBuilder.Entity("VMS_Backend.Data.Models.Employee", b =>
                 {
                     b.HasOne("VMS_Backend.Data.Models.Company", "Company")
                         .WithMany()
@@ -325,7 +325,7 @@ namespace VMS_Backend.Data.Migrations
 
             modelBuilder.Entity("VMS_Backend.Data.Models.VehicleData", b =>
                 {
-                    b.HasOne("VMS_Backend.Data.Models.User", "User")
+                    b.HasOne("VMS_Backend.Data.Models.Employee", "Employee")
                         .WithMany()
                         .HasForeignKey("UserId");
 
@@ -335,7 +335,7 @@ namespace VMS_Backend.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Employee");
 
                     b.Navigation("Vehicle");
                 });

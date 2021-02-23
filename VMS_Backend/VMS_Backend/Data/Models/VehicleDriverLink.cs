@@ -15,7 +15,7 @@ namespace VMS_Backend.Data.Models
         [Column("driver_id")]
         public string DriverId { get; set; }
         [ForeignKey("DriverId")]
-        public User Driver;
+        public Employee Driver;
         
         [Column("vehicle_id")]
         public int VehicleId { get; set; }

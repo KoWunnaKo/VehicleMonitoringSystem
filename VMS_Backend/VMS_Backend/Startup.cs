@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using VMS_Backend.Data;
+using VMS_Backend.Data.Models;
+using VMS_Backend.DatabaseServices;
 
 namespace VMS_Backend
 {
@@ -20,10 +22,22 @@ namespace VMS_Backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Database services
+            services.AddScoped<CompanyService>();
+            services.AddScoped<EmployeeService>();
+            services.AddScoped<RoleService>();
+            services.AddScoped<VehicleDataService>();
+            services.AddScoped<VehicleDriverLink>();
+            services.AddScoped<VehicleService>();
+            
             services.AddControllers();
             
-            services.AddEntityFrameworkNpgsql().AddDbContext<ApplicationDbContext>(opt =>
+            services.AddEntityFrameworkNpgsql()
+                .AddDbContext<ApplicationDbContext>(opt =>
                 opt.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            
+            // Dapper mapping configuration
+            // DapperMappingConfiguration.Configure();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -34,11 +48,11 @@ namespace VMS_Backend
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            // app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }

@@ -20,7 +20,7 @@ namespace VMS_Backend.Data.Models
         [Column("user_id")]
         public string UserId { get; set; }
         [ForeignKey("UserId")]
-        public User User { get; set; }
+        public Employee Employee { get; set; }
 
         [Column("datetime")] 
         public DateTime Datetime { get; set; }

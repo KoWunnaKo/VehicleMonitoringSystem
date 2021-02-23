@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Identity;
 
 namespace VMS_Backend.Data.Models
 {
-    [Table("user")]
-    public class User
+    [Table("employee")]
+    public class Employee
     {
         [Key]
         [Column("id")]

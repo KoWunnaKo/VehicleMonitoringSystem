@@ -14,7 +14,7 @@ dotnet ef database update
         {
         }
         
-        public DbSet<User> User { get; set; }
+        public DbSet<Employee> Employee { get; set; }
         public DbSet<Role> Role { get; set; }
         public DbSet<Company> Company { get; set; }
         public DbSet<CompanySettings> CompanySettings { get; set; }

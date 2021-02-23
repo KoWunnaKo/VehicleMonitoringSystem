@@ -15,12 +15,12 @@ namespace VMS_Backend.Data.Models
         [Column("driver_id")]
         public string DriverId { get; set; }
         [ForeignKey("DriverId")]
-        public User Driver;
+        public Employee Driver;
         
         [Column("operator_id")]
         public string OperatorId { get; set; }
         [ForeignKey("OperatorId")]
-        public User Operator;
+        public Employee Operator;
         
         [Column("create_date")] 
         public DateTime CreateDate { get; set; }
