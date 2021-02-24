@@ -4,7 +4,7 @@ import { auth, db } from "../../firebase";
 // import Employee from "../../models/Employee";
 import {IStylesDictionary} from "../../utils/IStylesDictionary";
 import Colors from "../../constants/Colors";
-import * as Routes from "constants/Routes"
+import * as Routes from "../../constants/Routes"
 
 interface InterfaceProps {
   email?: string;
@@ -20,7 +20,7 @@ interface InterfaceState {
   error: any;
   passwordOne: string;
   passwordTwo: string;
-    username: string;
+  username: string;
 }
 
 export class SignUpForm extends React.Component<InterfaceProps, InterfaceState> {
