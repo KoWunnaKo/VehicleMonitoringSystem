@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
 
-export interface IStylesDictionary {
+export interface StylesDictionary {
     [Key: string]: CSSProperties;
 }

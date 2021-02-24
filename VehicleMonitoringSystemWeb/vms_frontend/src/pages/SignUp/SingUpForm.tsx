@@ -2,7 +2,7 @@ import * as React from "react";
 import { auth, db } from "../../firebase";
 // import * as AuthApi from "../../api/AuthApi";
 // import Employee from "../../models/Employee";
-import {IStylesDictionary} from "../../utils/IStylesDictionary";
+import {StylesDictionary} from "../../utils/StylesDictionary";
 import Colors from "../../constants/Colors";
 import * as Routes from "../../constants/Routes"
 
@@ -124,7 +124,7 @@ export class SignUpForm extends React.Component<InterfaceProps, InterfaceState> 
   }
 }
 
-const styles: IStylesDictionary  = {
+const styles: StylesDictionary  = {
     container: {
         display: 'flex',
         flexDirection: 'column',
