@@ -137,8 +137,8 @@ export class SignUpForm extends React.Component<InterfaceProps, InterfaceState> 
                   </Select>
               </FormControl>
 
-            <Button disabled={this.isSignUpDisabled()} style={styles.button}>
-                <InputLabel style={styles.buttonText}>Sign Up</InputLabel>
+            <Button disabled={this.isSignUpDisabled()} variant='contained' type='submit' color='primary' style={styles.button}>
+                Sign Up
             </Button>
 
             {error && <p>{error.message}</p>}
@@ -178,7 +178,6 @@ const styles: StylesDictionary  = {
     },
     button: {
         width: 200,
-        backgroundColor: Colors.primaryBlue,
         marginTop: 20
     },
     buttonText: {

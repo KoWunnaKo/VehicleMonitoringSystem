@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as routes from "../../constants/Routes";
 import { auth } from "../../firebase";
-import {Button, InputLabel, TextField} from "@material-ui/core";
+import {Button, TextField} from "@material-ui/core";
 import {StylesDictionary} from "../../utils/StylesDictionary";
 import Colors from "../../constants/Colors";
 import {PasswordForgetLink} from "../PasswordForget";
@@ -70,8 +70,8 @@ export class SignInForm extends React.Component<InterfaceProps, InterfaceState> 
           placeholder="Password"
           style={styles.textInput}
         />
-        <Button disabled={this.isSignInDisabled()} style={styles.button}>
-          <InputLabel style={styles.buttonText}>Sign In</InputLabel>
+        <Button disabled={this.isSignInDisabled()} variant='contained' type='submit' color='primary'>
+          Sign In
         </Button>
 
         {error && <p>{error.message}</p>}
@@ -105,10 +105,7 @@ const styles: StylesDictionary  = {
   button: {
     width: 200,
     backgroundColor: Colors.primaryBlue,
-    marginTop: 20
-  },
-  buttonText: {
-    color: Colors.white,
-    alignContent: 'center'
+    marginTop: 20,
+    textDecorationColor: Colors.white
   }
 };

@@ -5,6 +5,6 @@ import "./index.css";
 import registerServiceWorker from "./registerServiceWorker";
 import {configureAxios} from "./api";
 
-ReactDOM.render(<App />, document.getElementById("root"));
 registerServiceWorker();
 configureAxios();
+ReactDOM.render(<App />, document.getElementById("root"));
