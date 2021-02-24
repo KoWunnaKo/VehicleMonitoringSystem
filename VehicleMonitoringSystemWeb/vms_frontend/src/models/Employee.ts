@@ -1,7 +1,8 @@
+import Role from "./Role";
 
 export default class Employee {
   public id: string | undefined;
-  public roleId: number | undefined;
+  public role: Role | undefined | null;
   public companyId: number | undefined;
   public firstName: string | undefined;
   public lastName: string | undefined;
@@ -9,12 +10,12 @@ export default class Employee {
   public telegramName: string | undefined;
   public password: string | undefined;
 
-  constructor(id: string|undefined, roleId: number|undefined,
+  constructor(id: string|undefined, role: Role|null,
               companyId: number|undefined, firstName: string|undefined,
               lastName: string|undefined, email: string|undefined,
               telegramName: string|undefined, password: string|undefined) {
     this.id = id;
-    this.roleId = roleId;
+    this.role = role;
     this.companyId = companyId;
     this.firstName = firstName;
     this.lastName = lastName;

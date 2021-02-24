@@ -38,7 +38,7 @@ namespace VMS_Backend.DatabaseServices
             return success ? itemInDb.Entity : null;
         }
         
-        public virtual async Task<Boolean> DeleteItem<T>(T item)
+        public virtual async Task<Boolean> DeleteItem(T item)
         {
             try
             {

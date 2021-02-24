@@ -21,6 +21,7 @@ import Employee from "../models/Employee";
 
 export async function signUp(employee: Employee): Promise<Employee | null> {
   try {
+    console.log(`signUp, employee: ${employee}`);
     const response = await axios.post(`auth/signUp`, { employee });
     if (response.status !== 200) {
       return null;

@@ -22,6 +22,13 @@ namespace VMS_Backend
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // CORS
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder => builder.WithOrigins("http://localhost:3000"));
+            });
+            
             // Database services
             services.AddScoped<CompanyService>();
             services.AddScoped<EmployeeService>();
@@ -47,6 +54,9 @@ namespace VMS_Backend
             {
                 app.UseDeveloperExceptionPage();
             }
+            
+            // CORS
+            app.UseCors("AllowSpecificOrigin");
 
             // app.UseHttpsRedirection();
 

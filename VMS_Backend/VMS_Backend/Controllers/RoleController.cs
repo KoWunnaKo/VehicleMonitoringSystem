@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using VMS_Backend.Data.Models;
 using VMS_Backend.DatabaseServices;
@@ -21,6 +22,13 @@ namespace VMS_Backend.Controllers
         {
             await _roleService.AddNewItem(role);
             return Ok();
+        }
+        
+        [HttpGet]
+        [Route("getAll")]
+        public List<Role> GetAll()
+        {
+            return _roleService.GetAll();
         }
     }
 }
