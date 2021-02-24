@@ -1,12 +1,14 @@
 import * as React from "react";
 import * as routes from "../../constants/Routes";
 import { auth } from "../../firebase";
+import {Button, InputLabel, TextField} from "@material-ui/core";
+import {StylesDictionary} from "../../utils/StylesDictionary";
+import Colors from "../../constants/Colors";
+import {PasswordForgetLink} from "../PasswordForget";
 
 interface InterfaceProps {
-  email?: string;
   error?: any;
   history?: any;
-  password?: string;
 }
 
 interface InterfaceState {
@@ -15,10 +17,7 @@ interface InterfaceState {
   password: string;
 }
 
-export class SignInForm extends React.Component<
-  InterfaceProps,
-  InterfaceState
-> {
+export class SignInForm extends React.Component<InterfaceProps, InterfaceState> {
   private static INITIAL_STATE = {
     email: "",
     error: null,
@@ -31,13 +30,11 @@ export class SignInForm extends React.Component<
 
   constructor(props: InterfaceProps) {
     super(props);
-
     this.state = { ...SignInForm.INITIAL_STATE };
   }
 
   public onSubmit = (event: any) => {
     const { email, password } = this.state;
-
     const { history } = this.props;
 
     auth
@@ -56,27 +53,30 @@ export class SignInForm extends React.Component<
   public render() {
     const { email, password, error } = this.state;
 
-    const isInvalid = password === "" || email === "";
-
     return (
-      <form onSubmit={event => this.onSubmit(event)}>
-        <input
+      <form onSubmit={event => this.onSubmit(event)} style={styles.container}>
+        <h1>Sign In</h1>
+        <TextField
           value={email}
           onChange={event => this.setStateWithEvent(event, "email")}
           type="text"
           placeholder="Email Address"
+          style={styles.textInput}
         />
-        <input
+        <TextField
           value={password}
           onChange={event => this.setStateWithEvent(event, "password")}
           type="password"
           placeholder="Password"
+          style={styles.textInput}
         />
-        <button disabled={isInvalid} type="submit">
-          Sign In
-        </button>
+        <Button disabled={this.isSignInDisabled()} style={styles.button}>
+          <InputLabel style={styles.buttonText}>Sign In</InputLabel>
+        </Button>
 
         {error && <p>{error.message}</p>}
+
+        <PasswordForgetLink />
       </form>
     );
   }
@@ -84,4 +84,31 @@ export class SignInForm extends React.Component<
   private setStateWithEvent(event: any, columnType: string): void {
     this.setState(SignInForm.propKey(columnType, (event.target as any).value));
   }
+
+  private isSignInDisabled() {
+    const { email, password } = this.state;
+    return password === "" || email === "";
+  }
 }
+
+const styles: StylesDictionary  = {
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  textInput: {
+    width: 200,
+    marginTop: 5,
+    marginBottom: 5,
+  },
+  button: {
+    width: 200,
+    backgroundColor: Colors.primaryBlue,
+    marginTop: 20
+  },
+  buttonText: {
+    color: Colors.white,
+    alignContent: 'center'
+  }
+};
