@@ -9,7 +9,7 @@ namespace VMS_Backend.DatabaseServices
 {
     public class BaseDatabaseService<T> where T : class
     {
-        private readonly ApplicationDbContext _dbContext;
+        protected readonly ApplicationDbContext _dbContext;
 
         protected BaseDatabaseService(ApplicationDbContext dbContext)
         {
@@ -29,11 +29,11 @@ namespace VMS_Backend.DatabaseServices
         /// <summary>
         /// Returns an item that was inserted in db
         /// </summary>
-        /// <param name="vehicleDriverLink"></param>
+        /// <param name="item"></param>
         /// <returns>null if no item was inserted</returns>
-        public virtual async Task<T> AddNewItem(T vehicleDriverLink)
+        public virtual async Task<T> AddNewItem(T item)
         {
-            var itemInDb = await _dbContext.AddAsync(vehicleDriverLink);
+            var itemInDb = await _dbContext.AddAsync(item);
             var success = await SaveChangesAsync();
             return success ? itemInDb.Entity : null;
         }

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Employee from "../models/Employee";
+import {firebase} from "../firebase";
 
 // export async function signIn(email: string, password: string): Promise<Employee | null> {
 //   try {
@@ -19,10 +20,11 @@ import Employee from "../models/Employee";
 //   }
 // }
 
-export async function signUp(employee: Employee): Promise<Employee | null> {
+export async function signUp(employee: Employee) {
   try {
-    console.log(`signUp, employee: ${employee}`);
-    const response = await axios.post(`auth/signUp`, { employee });
+    // TODO catch error responses
+    console.log(`signUp, employee: ${JSON.stringify(employee)}`);
+    const response = await axios.post(`auth/create`, employee);
     if (response.status !== 200) {
       return null;
     }
@@ -43,12 +45,18 @@ export async function signUp(employee: Employee): Promise<Employee | null> {
 //   }
 // }
 
-// export async function getCurrentUser(): Promise<Employee | null> {
-//   try {
-//     const response = await axios.get('auth/current');
-//     return response.data;
-//   } catch (e) {
-//     // console.log("Error:getCurrentUser ", e.response);
-//     return null;
-//   }
-// }
+export async function getCurrentUser(): Promise<Employee | null> {
+  try {
+    let firebaseUserId: string|null = null;
+    if (firebase.auth.currentUser) {
+      firebaseUserId = firebase.auth.currentUser.uid;
+      const response = await axios.get(`auth/current/${firebaseUserId}`);
+      return response.data;
+    } else {
+      return null;
+    }
+  } catch (e) {
+    // console.log("Error:getCurrentUser ", e.response);
+    return null;
+  }
+}

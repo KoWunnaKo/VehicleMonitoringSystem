@@ -8,9 +8,9 @@ namespace VMS_Backend.DatabaseServices
     {
         public CompanyService(ApplicationDbContext dbContext) : base(dbContext) { }
 
-        public override async Task<Company> AddNewItem(Company vehicleDriverLink)
+        public override async Task<Company> AddNewItem(Company item)
         {
-            return await base.AddNewItem(vehicleDriverLink);
+            return await base.AddNewItem(item);
         }
     }
 }

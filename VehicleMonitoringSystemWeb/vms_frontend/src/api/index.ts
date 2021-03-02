@@ -3,6 +3,12 @@ import axios from "axios";
 export function configureAxios() {
     // URL бэкенд сервера
     axios.defaults.baseURL = 'http://192.168.1.110:5000/';
+    // Axios все реквесты вместе с куки-авторизации
+    // axios.defaults.withCredentials = true;
+    // Content Type - json
+    axios.defaults.headers.post['Content-Type'] = 'application/json; charset=utf-8';
+    // No cache header
+    axios.defaults.headers.post['Cache-Control'] = 'no-cache';
 }
 
 // const ASYNC_STORAGE_COOKIE_KEY = 'authCookie';

@@ -8,9 +8,9 @@ namespace VMS_Backend.DatabaseServices
     {
         public RoleService(ApplicationDbContext dbContext) : base(dbContext) { }
 
-        public override async Task<Role> AddNewItem(Role vehicleDriverLink)
+        public override async Task<Role> AddNewItem(Role item)
         {
-            return await base.AddNewItem(vehicleDriverLink);
+            return await base.AddNewItem(item);
         }
     }
 }

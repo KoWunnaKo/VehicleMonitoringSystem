@@ -15,10 +15,17 @@ namespace VMS_Backend.Controllers
         {
             _employeeService = employeeService;
         }
+
+        [HttpGet]
+        [Route("current/{firebaseUserId}")]
+        public async Task<Employee> Current(string firebaseUserId)
+        {
+            return await _employeeService.GetCurrent(firebaseUserId);
+        }
         
         [HttpPost]
-        [Route("signUp")]
-        public async Task<IActionResult> SignUp([FromBody] Employee employee)
+        [Route("create")]
+        public async Task<IActionResult> Create([FromBody] Employee employee)
         {
             await _employeeService.AddNewItem(employee);
             return Ok();

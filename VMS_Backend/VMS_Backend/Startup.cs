@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,8 +26,12 @@ namespace VMS_Backend
             // CORS
             services.AddCors(options =>
             {
-                options.AddPolicy("AllowSpecificOrigin",
-                    builder => builder.WithOrigins("http://localhost:3000"));
+                options.AddDefaultPolicy(builder => builder
+                        //.WithOrigins("http://localhost:3000")
+                        .AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                );
             });
             
             // Database services
@@ -37,7 +42,8 @@ namespace VMS_Backend
             services.AddScoped<VehicleDriverLink>();
             services.AddScoped<VehicleService>();
             
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
             
             services.AddEntityFrameworkNpgsql()
                 .AddDbContext<ApplicationDbContext>(opt =>
@@ -56,7 +62,7 @@ namespace VMS_Backend
             }
             
             // CORS
-            app.UseCors("AllowSpecificOrigin");
+            app.UseCors();
 
             // app.UseHttpsRedirection();
 

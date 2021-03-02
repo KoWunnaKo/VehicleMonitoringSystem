@@ -1,5 +1,5 @@
 import * as React from "react";
-import { auth, db } from "../../firebase";
+import { auth} from "../../firebase";
 import * as AuthApi from "../../api/AuthApi";
 import * as RolesApi from "../../api/RolesApi";
 import Employee from "../../models/Employee";
@@ -20,19 +20,20 @@ interface InterfaceState {
     email: string;
     firstName: string;
     lastName: string;
-    role: Role|null;
+    roleId: number|undefined;
     passwordOne: string;
     passwordTwo: string;
     roles: Role[]|null;
 }
 
+// TODO https://stackoverflow.com/questions/47012169/a-component-is-changing-an-uncontrolled-input-of-type-text-to-be-controlled-erro
 export class SignUpForm extends React.Component<InterfaceProps, InterfaceState> {
   private static INITIAL_STATE = {
     error: null,
     email: "",
     firstName: "",
     lastName: "",
-    role: null,
+    roleId: undefined,
     passwordOne: "",
     passwordTwo: "",
     roles: []
@@ -51,29 +52,20 @@ export class SignUpForm extends React.Component<InterfaceProps, InterfaceState> 
   public async onSubmit(event: any) {
       event.preventDefault();
 
-      const { firstName, lastName, role, email, passwordOne } = this.state;
-      const {history} = this.props;
+      const { firstName, lastName, roleId, email, passwordOne } = this.state;
+      const { history } = this.props;
 
       // Firebase create user
       auth
           .doCreateUserWithEmailAndPassword(email, passwordOne)
-          .then((authUser: any) => {
+          .then(async (authUser: any) => {
+              const employee: Employee = new Employee(authUser.user.uid,
+                  roleId, undefined, firstName, lastName,
+                  email, undefined, passwordOne);
+              await AuthApi.signUp(employee);
 
-              // Create a user in your own accessible Firebase Database too
-              db.doCreateUser(authUser.user.uid, '', email)
-                  .then(() => {
-
-                      this.setState(() => ({...SignUpForm.INITIAL_STATE}));
-                      history.push(Routes.HOME);
-
-                      const employee: Employee = new Employee(authUser.user.uid,
-                          role, undefined, firstName, lastName,
-                              email, undefined, passwordOne);
-                      AuthApi.signUp(employee);
-                  })
-                  .catch(error => {
-                      this.setState(SignUpForm.propKey("error", error));
-                  });
+              this.setState(() => ({...SignUpForm.INITIAL_STATE}));
+              history.push(Routes.HOME);
           })
           .catch(error => {
               this.setState(SignUpForm.propKey("error", error));
@@ -81,7 +73,7 @@ export class SignUpForm extends React.Component<InterfaceProps, InterfaceState> 
   }
 
     public render() {
-        const { firstName, lastName, email, role, passwordOne, passwordTwo, error } = this.state;
+        const { firstName, lastName, email, roleId, roles, passwordOne, passwordTwo, error } = this.state;
 
         return (
           <form onSubmit={(event) => this.onSubmit(event)} style={styles.container}>
@@ -120,17 +112,15 @@ export class SignUpForm extends React.Component<InterfaceProps, InterfaceState> 
                 placeholder="Confirm Password"
                 style={styles.textInput}
             />
-
               <FormControl style={styles.formControl}>
                   <InputLabel id="role-name-label">Role</InputLabel>
                   <Select
-                      defaultValue=''
                       labelId="role-name-label"
                       id="role-select"
-                      value={role}
-                      onChange={event => this.setStateWithEvent(event, "role")}>
-                      {this.state.roles && this.state.roles.map((selectedRole) => (
-                          <MenuItem key={selectedRole.id} value={selectedRole.name} style={{color: Colors.white}}>
+                      value={roleId}
+                      onChange={event => this.setStateWithEvent(event, "roleId")}>
+                      {roles && roles.map((selectedRole) => (
+                          <MenuItem key={selectedRole.id} value={selectedRole.id} style={{color: Colors.white}}>
                               {selectedRole.name}
                           </MenuItem>
                       ))}
@@ -155,13 +145,13 @@ export class SignUpForm extends React.Component<InterfaceProps, InterfaceState> 
     }
 
     private isSignUpDisabled() {
-        const {firstName, lastName, email, role, passwordOne, passwordTwo } = this.state;
+        const {firstName, lastName, email, roleId, passwordOne, passwordTwo } = this.state;
         return passwordOne !== passwordTwo ||
             passwordOne === "" ||
             email === "" ||
             firstName === "" ||
             lastName === "" ||
-            role === null;
+            roleId === undefined;
     }
 }
 
