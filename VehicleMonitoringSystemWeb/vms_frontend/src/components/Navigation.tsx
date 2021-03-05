@@ -42,7 +42,7 @@ export const Navigation: React.FunctionComponent<InterfaceProps> = (props) => {
                 <a onClick={() => navigateWithoutSidebar(ACCOUNT)}>Account</a>
             </li>
             <li>
-                <a onClick={auth.doSignOut}>Sign Out</a>
+                <a onClick={signOutClick}>Sign Out</a>
             </li>
         </ul>
     );
@@ -59,7 +59,7 @@ export const Navigation: React.FunctionComponent<InterfaceProps> = (props) => {
                 <a onClick={() => navigateWithoutSidebar(ACCOUNT)}>Account</a>
             </li>
             <li>
-                <a onClick={auth.doSignOut}>Sign Out</a>
+                <a onClick={signOutClick}>Sign Out</a>
             </li>
         </ul>
     );
@@ -74,6 +74,11 @@ export const Navigation: React.FunctionComponent<InterfaceProps> = (props) => {
             </li>
         </ul>
     );
+
+    function signOutClick() {
+        auth.doSignOut();
+        props.setSidebarDisplay(false);
+    }
 
     function homeClick() {
         history.push(HOME);
