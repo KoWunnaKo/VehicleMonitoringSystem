@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using VMS_Backend.Data.Models;
 using VMS_Backend.DatabaseServices;
 
 namespace VMS_Backend.Controllers
@@ -12,6 +15,13 @@ namespace VMS_Backend.Controllers
         public EmployeeController(EmployeeService employeeService)
         {
             _employeeService = employeeService;
+        }
+        
+        [HttpGet]
+        [Route("getAllDrivers/{companyId}")]
+        public async Task<List<Employee>> Current(int companyId)
+        {
+            return await _employeeService.GetAllDrivers(companyId);
         }
     }
 }

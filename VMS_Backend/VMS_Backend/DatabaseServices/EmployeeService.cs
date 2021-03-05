@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,15 @@ namespace VMS_Backend.DatabaseServices
                 .Include((e => e.Role))
                 .FirstOrDefaultAsync();
             return employee;
+        }
+        
+        public async Task<List<Employee>> GetAllDrivers(int companyId)
+        {
+            var employees = await _dbContext.Employee
+                .Include((e => e.Role))
+                .Where((e => e.CompanyId.Equals(companyId) && e.Role.Name.Equals("Driver")))
+                .ToListAsync();
+            return employees;
         }
     }
 }

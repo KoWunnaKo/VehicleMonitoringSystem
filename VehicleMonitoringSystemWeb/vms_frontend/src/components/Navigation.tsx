@@ -1,16 +1,21 @@
 import * as React from "react";
-import { Link } from "react-router-dom";
-import * as routes from "../constants/Routes";
+import { useHistory } from "react-router-dom";
 import "./Navigation.css";
 import {auth} from "../firebase";
 import Employee from "../models/Employee";
 import Role from "../models/Role";
+import {ACCOUNT, HOME, LANDING, SIGN_IN} from "../constants/Routes";
+import {SidebarDrivers} from "./Sidebar/SidebarDrivers";
+
 
 interface InterfaceProps {
     dbUser: Employee|null;
+    setSidebarDisplay: (display: boolean) => void;
+    setSidebarComponent: (comp: React.ReactNode) => void;
 }
 
 export const Navigation: React.FunctionComponent<InterfaceProps> = (props) => {
+    const history = useHistory();
     const dbUser = props.dbUser;
 
     const getNavigationByRole = () => {
@@ -25,53 +30,69 @@ export const Navigation: React.FunctionComponent<InterfaceProps> = (props) => {
         }
     }
 
+    const NavigationAuthOperator = () => (
+        <ul>
+            <li>
+                <a onClick={homeClick}>Home</a>
+            </li>
+            <li>
+                <a onClick={driversClick}>Drivers</a>
+            </li>
+            <li>
+                <a onClick={() => navigateWithoutSidebar(ACCOUNT)}>Account</a>
+            </li>
+            <li>
+                <a onClick={auth.doSignOut}>Sign Out</a>
+            </li>
+        </ul>
+    );
+
+    const NavigationAuthAdministrator = () => (
+        <ul>
+            <li>
+                <a onClick={homeClick}>Home</a>
+            </li>
+            <li>
+                <a onClick={driversClick}>Drivers</a>
+            </li>
+            <li>
+                <a onClick={() => navigateWithoutSidebar(ACCOUNT)}>Account</a>
+            </li>
+            <li>
+                <a onClick={auth.doSignOut}>Sign Out</a>
+            </li>
+        </ul>
+    );
+
+    const NavigationNonAuth = () => (
+        <ul>
+            <li>
+                <a onClick={() => navigateWithoutSidebar(LANDING)}>Landing</a>
+            </li>
+            <li>
+                <a onClick={() => navigateWithoutSidebar(SIGN_IN)}>Sign In</a>
+            </li>
+        </ul>
+    );
+
+    function homeClick() {
+        history.push(HOME);
+        props.setSidebarDisplay(false);
+        // const ChildComp1: React.FC = () => (<h1>This is a child component 1</h1>);
+        // props.setSidebarComponent(<ChildComp1/>);
+    }
+
+    function driversClick() {
+        history.push(HOME);
+        props.setSidebarDisplay(true);
+        props.setSidebarComponent(<SidebarDrivers/>);
+    }
+
+    function navigateWithoutSidebar(pageName: string){
+        history.push(pageName);
+        props.setSidebarDisplay(false);
+    }
+
     return getNavigationByRole();
 }
 
-const NavigationAuthOperator = () => (
-    <ul>
-        <li>
-            <Link to={routes.LANDING}>Landing</Link>
-        </li>
-        <li>
-            <Link to={routes.HOME}>Home</Link>
-        </li>
-        <li>
-            <Link to={routes.ACCOUNT}>Account</Link>
-        </li>
-        <li>
-            <a onClick={auth.doSignOut}>Sign Out</a>
-        </li>
-    </ul>
-);
-
-const NavigationAuthAdministrator = () => (
-    <ul>
-        <li>
-            <Link to={routes.LANDING}>Landing</Link>
-        </li>
-        <li>
-            <Link to={routes.HOME}>Home</Link>
-        </li>
-        <li>
-            <Link to={routes.ADMIN_CONSOLE}>Admin console</Link>
-        </li>
-        <li>
-            <Link to={routes.ACCOUNT}>Account</Link>
-        </li>
-        <li>
-            <a onClick={auth.doSignOut}>Sign Out</a>
-        </li>
-    </ul>
-);
-
-const NavigationNonAuth = () => (
-    <ul>
-        <li>
-            <Link to={routes.LANDING}>Landing</Link>
-        </li>
-        <li>
-            <Link to={routes.SIGN_IN}>Sign In</Link>
-        </li>
-    </ul>
-);

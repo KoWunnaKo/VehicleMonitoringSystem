@@ -1,18 +1,15 @@
 import * as React from "react";
-import { auth} from "../../firebase";
-import * as AuthApi from "../../api/AuthApi";
-import * as RolesApi from "../../api/RolesApi";
-import Employee from "../../models/Employee";
-import {StylesDictionary} from "../../utils/StylesDictionary";
-import Colors from "../../constants/Colors";
-import * as Routes from "../../constants/Routes"
+import * as AuthApi from "../api/AuthApi";
+import * as RolesApi from "../api/RoleApi";
+import { auth} from "../firebase";
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from '@material-ui/core';
-import Role from "../../models/Role";
-
+import Role from "../models/Role";
+import Employee from "../models/Employee";
+import Colors from "../constants/Colors";
+import {StylesDictionary} from "../utils/StylesDictionary";
 
 interface InterfaceProps {
-  error?: any;
-  history?: any;
+  closeModal: () => void;
 }
 
 interface InterfaceState {
@@ -27,7 +24,7 @@ interface InterfaceState {
 }
 
 // TODO https://stackoverflow.com/questions/47012169/a-component-is-changing-an-uncontrolled-input-of-type-text-to-be-controlled-erro
-export class SignUpForm extends React.Component<InterfaceProps, InterfaceState> {
+export class CreateEmployeeForm extends React.Component<InterfaceProps, InterfaceState> {
   private static INITIAL_STATE = {
     error: null,
     email: "",
@@ -45,15 +42,13 @@ export class SignUpForm extends React.Component<InterfaceProps, InterfaceState> 
 
   constructor(props: InterfaceProps) {
       super(props);
-      this.state = {...SignUpForm.INITIAL_STATE};
+      this.state = {...CreateEmployeeForm.INITIAL_STATE};
       this.setRolesOptions();
   }
 
   public async onSubmit(event: any) {
       event.preventDefault();
-
       const { firstName, lastName, roleId, email, passwordOne } = this.state;
-      const { history } = this.props;
 
       // Firebase create user
       auth
@@ -64,11 +59,11 @@ export class SignUpForm extends React.Component<InterfaceProps, InterfaceState> 
                   email, undefined, passwordOne);
               await AuthApi.signUp(employee);
 
-              this.setState(() => ({...SignUpForm.INITIAL_STATE}));
-              history.push(Routes.HOME);
+              this.setState(() => ({...CreateEmployeeForm.INITIAL_STATE}));
+              this.props.closeModal();
           })
           .catch(error => {
-              this.setState(SignUpForm.propKey("error", error));
+              this.setState(CreateEmployeeForm.propKey("error", error));
           });
   }
 
@@ -128,7 +123,7 @@ export class SignUpForm extends React.Component<InterfaceProps, InterfaceState> 
               </FormControl>
 
             <Button disabled={this.isSignUpDisabled()} variant='contained' type='submit' color='primary' style={styles.button}>
-                Sign Up
+                Create
             </Button>
 
             {error && <p>{error.message}</p>}
@@ -137,7 +132,7 @@ export class SignUpForm extends React.Component<InterfaceProps, InterfaceState> 
   }
 
     private setStateWithEvent(event: any, columnType: string) {
-        this.setState(SignUpForm.propKey(columnType, (event.target as any).value));
+        this.setState(CreateEmployeeForm.propKey(columnType, (event.target as any).value));
     }
 
     private async setRolesOptions() {
@@ -159,7 +154,8 @@ const styles: StylesDictionary  = {
     container: {
         display: 'flex',
         flexDirection: 'column',
-        marginLeft: 20
+        marginLeft: 20,
+        marginRight: 20
     },
     textInput: {
         width: 200,

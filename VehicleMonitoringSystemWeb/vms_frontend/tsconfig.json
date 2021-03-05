@@ -19,6 +19,7 @@
     "skipLibCheck": true,
     "noUnusedLocals": false, /* Not report errors on unused locals. */
     "noUnusedParameters": false /* Not report errors on unused parameters. */,
+    "allowSyntheticDefaultImports": true
   },
   "exclude": [
     "node_modules",
