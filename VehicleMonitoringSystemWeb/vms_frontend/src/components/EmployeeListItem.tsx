@@ -12,6 +12,7 @@ interface InterfaceProps {
 export const EmployeeListItem: React.FunctionComponent<InterfaceProps> = (props) => {
     return (
         <ListItem
+            key={props.employee.id}
             button={true}
             // onPress={() => this.onLearnMore(driver)}
             style={styles.listItem}

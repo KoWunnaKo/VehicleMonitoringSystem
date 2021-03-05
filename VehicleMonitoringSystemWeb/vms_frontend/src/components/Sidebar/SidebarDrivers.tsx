@@ -32,6 +32,7 @@ export const SidebarDrivers: React.FunctionComponent = () => {
             >
                 {(close: any) => {
                     // Update drivers list
+                    // TODO remove - constantly updating
                     EmployeeApi.getAllDrivers(1).then(res => setDrivers(res));
 
                     return (
@@ -50,7 +51,7 @@ export const SidebarDrivers: React.FunctionComponent = () => {
 
             <List style={{backgroundColor: Colors.white}}>
                 {drivers && drivers.map((driver) => (
-                    <EmployeeListItem employee={driver}/>
+                    <EmployeeListItem key={driver.id} employee={driver}/>
                 ))}
             </List>
         </div>

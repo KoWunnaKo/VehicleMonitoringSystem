@@ -10,25 +10,25 @@ namespace VMS_Backend.Data.Models
         [Key]
         [Column("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
+        public long id { get; set; }
         
         [Column("vehicle_id")]
-        public int VehicleId { get; set; }
-        [ForeignKey("VehicleId")]
-        public Vehicle Vehicle { get; set; }
+        public int vehicle_id { get; set; }
+        [ForeignKey("vehicle_id")]
+        public Vehicle vehicle { get; set; }
         
         [Column("user_id")]
-        public string UserId { get; set; }
-        [ForeignKey("UserId")]
-        public Employee Employee { get; set; }
+        public string user_id { get; set; }
+        [ForeignKey("user_id")]
+        public Employee employee { get; set; }
 
         [Column("datetime")] 
-        public DateTime Datetime { get; set; }
+        public DateTime datetime { get; set; }
         
         [Column("latitude", TypeName = "numeric")] 
-        public decimal Latitude { get; set; }
+        public decimal latitude { get; set; }
         
         [Column("longitude", TypeName = "numeric")] 
-        public decimal Longitude { get; set; }
+        public decimal longitude { get; set; }
     }
 }

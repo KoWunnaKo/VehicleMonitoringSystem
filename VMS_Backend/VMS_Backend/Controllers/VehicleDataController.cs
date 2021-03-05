@@ -17,11 +17,12 @@ namespace VMS_Backend.Controllers
             _vehicleDataService = vehicleDataService;
         }
 
+        // TODO add companyId
         [HttpGet]
         [Route("getVehiclesLastData")]
-        public List<VehicleData> GetVehiclesLastData()
+        public async Task<List<VehicleData>> GetVehiclesLastData()
         {
-            return _vehicleDataService.GetVehiclesLastData();
+            return await _vehicleDataService.GetVehiclesLastData();
         }
     }
 }

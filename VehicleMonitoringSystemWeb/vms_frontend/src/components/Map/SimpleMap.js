@@ -1,15 +1,29 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
-
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
+import {Marker} from "./Marker";
+import * as VehicleDataApi from "../../api/VehicleDataApi";
 
 class SimpleMap extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            markersData: null
+        }
+    }
+
+    async componentDidMount() {
+        const vehicleData = await VehicleDataApi.getVehiclesLastData();
+        // console.log(`vehicleData: ${JSON.stringify(vehicleData)}`);
+        this.setState({markersData: vehicleData})
+    }
+
     static defaultProps = {
         center: {
-            lat: 59.95,
-            lng: 30.33
+            lat: 56.0,
+            lng: 37.8
         },
-        zoom: 11
+        zoom: 10
     };
 
     render() {
@@ -21,11 +35,15 @@ class SimpleMap extends Component {
                     defaultCenter={this.props.center}
                     defaultZoom={this.props.zoom}
                 >
-                    <AnyReactComponent
-                        lat={59.955413}
-                        lng={30.337844}
-                        text="My Marker"
-                    />
+                    {this.state.markersData && this.state.markersData.map((vehicleData) => (
+                        <Marker
+                            key={vehicleData.id}
+                            lat={+vehicleData.latitude}
+                            lng={+vehicleData.longitude}
+                            name={vehicleData.vehicle.name}
+                        />
+                    ))}
+
                 </GoogleMapReact>
             </div>
         );
