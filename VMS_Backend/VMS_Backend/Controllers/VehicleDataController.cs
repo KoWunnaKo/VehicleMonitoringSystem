@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using VMS_Backend.Data.Models;
 using VMS_Backend.DatabaseServices;
 
 namespace VMS_Backend.Controllers
@@ -12,6 +15,14 @@ namespace VMS_Backend.Controllers
         public VehicleDataController(VehicleDataService vehicleDataService)
         {
             _vehicleDataService = vehicleDataService;
+        }
+
+        // TODO add companyId
+        [HttpGet]
+        [Route("getVehiclesLastData")]
+        public async Task<List<VehicleData>> GetVehiclesLastData()
+        {
+            return await _vehicleDataService.GetVehiclesLastData();
         }
     }
 }

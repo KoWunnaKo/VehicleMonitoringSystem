@@ -94,8 +94,11 @@ export class SignInForm extends React.Component<InterfaceProps, InterfaceState> 
 const styles: StylesDictionary  = {
   container: {
     display: 'flex',
+    height: '100vh',
+    flex: 1,
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    alignSelf: 'center'
   },
   textInput: {
     width: 200,

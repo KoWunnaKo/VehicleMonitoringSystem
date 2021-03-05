@@ -58,6 +58,7 @@ export class CreateEmployeeForm extends React.Component<InterfaceProps, Interfac
                   roleId, undefined, firstName, lastName,
                   email, undefined, passwordOne);
               await AuthApi.signUp(employee);
+              // TODO avoid login out
 
               this.setState(() => ({...CreateEmployeeForm.INITIAL_STATE}));
               this.props.closeModal();

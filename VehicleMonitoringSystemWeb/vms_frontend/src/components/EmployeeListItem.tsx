@@ -1,36 +1,50 @@
 import * as React from "react";
 import Employee from "../models/Employee";
 import {IconButton, ListItem, ListItemSecondaryAction} from "@material-ui/core";
-import CommentIcon from "@material-ui/icons/Comment";
+import DeleteIcon from "@material-ui/icons/Delete";
 import {StylesDictionary} from "../utils/StylesDictionary";
 import Colors from "../constants/Colors";
+import * as EmployeeApi from "../api/EmployeeApi";
+
 
 interface InterfaceProps {
     employee: Employee;
 }
 
 export const EmployeeListItem: React.FunctionComponent<InterfaceProps> = (props) => {
-    return (
-        <ListItem
-            button={true}
-            // onPress={() => this.onLearnMore(driver)}
-            style={styles.listItem}
-        >
-            {`${props.employee.firstName} ${props.employee.lastName}`}
+    async function onDeleteClick() {
+        if(props.employee.id) {
+            await EmployeeApi.deleteEmployee(props.employee.id);
+        }
+    }
 
-            {/*<ListItemSecondaryAction>*/}
-            {/*    <IconButton edge="end" aria-label="comments">*/}
-            {/*        <CommentIcon />*/}
-            {/*    </IconButton>*/}
-            {/*</ListItemSecondaryAction>*/}
-        </ListItem>
+    return (
+        <div style={styles.container}>
+            <ListItem
+                key={props.employee.id}
+                button={true}
+                // onPress={() => this.onLearnMore(driver)}
+                style={styles.listItem}
+            >
+                {`${props.employee.firstName} ${props.employee.lastName}`}
+
+                <ListItemSecondaryAction>
+                    <IconButton edge="end" onClick={onDeleteClick}>
+                        <DeleteIcon />
+                    </IconButton>
+                </ListItemSecondaryAction>
+            </ListItem>
+        </div>
     );
 }
 
 const styles: StylesDictionary  = {
     container: {
+        display: 'flex',
+        flexDirection: 'column'
     },
     listItem: {
-        height: 50
+        height: 50,
+        flex: 1
     }
 };

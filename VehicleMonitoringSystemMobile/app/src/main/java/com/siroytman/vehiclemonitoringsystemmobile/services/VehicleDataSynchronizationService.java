@@ -26,7 +26,7 @@ import java.util.TimerTask;
 
 public class VehicleDataSynchronizationService {
     public static final String TAG = "LocationDataSyncService";
-    private static final int TIME_INTERVAL = 5000;
+    private static final int TIME_INTERVAL = 10000;
     private static boolean isSynchronizationTaskScheduled = false;
 
     private static List<VehicleData> vehicleDataList;
@@ -93,8 +93,7 @@ public class VehicleDataSynchronizationService {
             JSONObject item = new JSONObject();
             try {
                 item.put("vehicle_id", vehicleDataList.get(i).vehicle_id);
-                item.put("user_id", "test_adm");
-//                item.put("user_id", vehicleDataList.get(i).user_id);
+                item.put("user_id", vehicleDataList.get(i).user_id);
                 item.put("datetime", datetimeFormat);
                 item.put("latitude", vehicleDataList.get(i).latitude);
                 item.put("longitude", vehicleDataList.get(i).longitude);

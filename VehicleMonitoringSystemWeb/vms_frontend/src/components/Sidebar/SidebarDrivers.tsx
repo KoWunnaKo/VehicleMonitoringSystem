@@ -23,7 +23,7 @@ export const SidebarDrivers: React.FunctionComponent = () => {
     }, []);
 
     return (
-        <div>
+        <div style={styles.container}>
             <h2>Drivers</h2>
             <Popup
                 trigger={<Button variant="contained" style={styles.addButton}>Create driver</Button>}
@@ -32,6 +32,7 @@ export const SidebarDrivers: React.FunctionComponent = () => {
             >
                 {(close: any) => {
                     // Update drivers list
+                    // TODO remove - constantly updating
                     EmployeeApi.getAllDrivers(1).then(res => setDrivers(res));
 
                     return (
@@ -50,7 +51,7 @@ export const SidebarDrivers: React.FunctionComponent = () => {
 
             <List style={{backgroundColor: Colors.white}}>
                 {drivers && drivers.map((driver) => (
-                    <EmployeeListItem employee={driver}/>
+                    <EmployeeListItem key={driver.id} employee={driver}/>
                 ))}
             </List>
         </div>
@@ -59,14 +60,14 @@ export const SidebarDrivers: React.FunctionComponent = () => {
 
 const styles: StylesDictionary  = {
     container: {
+        display: 'flex',
+        flexDirection: 'column'
     },
     addButton: {
-        width: 280,
+        flex: 1,
         marginTop: 10,
         marginBottom: 10,
         backgroundColor: Colors.primaryBlue
-    },
-    listItem: {
     }
 };
 
