@@ -3,7 +3,7 @@ import GoogleMapReact from 'google-map-react';
 import {Marker} from "./Marker";
 import * as VehicleDataApi from "../../api/VehicleDataApi";
 
-class SimpleMap extends Component {
+class Map extends Component {
     constructor(props) {
         super(props);
 
@@ -50,4 +50,4 @@ class SimpleMap extends Component {
     }
 }
 
-export default SimpleMap;
+export default Map;

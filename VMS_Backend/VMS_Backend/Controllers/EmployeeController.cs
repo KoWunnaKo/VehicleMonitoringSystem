@@ -23,5 +23,12 @@ namespace VMS_Backend.Controllers
         {
             return await _employeeService.GetAllDrivers(companyId);
         }
+
+        [HttpDelete]
+        [Route("delete/{userId}")]
+        public async Task<bool> Delete(string userId)
+        {
+            return await _employeeService.DeleteItemById(userId);
+        }
     }
 }

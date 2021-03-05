@@ -3,7 +3,7 @@ import { withAuthorization } from "../../firebase/withAuthorization";
 import {StylesDictionary} from "../../utils/StylesDictionary";
 import {AppController} from "../../controllers/AppController";
 import Role from "../../models/Role";
-import SimpleMap from "../../components/Map/SimpleMap";
+import Map from "../../components/Map/Map";
 
 class HomeComponent extends React.Component {
   constructor(props: any) {
@@ -15,7 +15,7 @@ class HomeComponent extends React.Component {
       <div style={styles.container}>
         {/*<h2>Home Page</h2> */}
         {/*<p>The Home Page is accessible by every signed in user.</p>*/}
-        <SimpleMap/>
+        <Map/>
       </div>
     );
   }
