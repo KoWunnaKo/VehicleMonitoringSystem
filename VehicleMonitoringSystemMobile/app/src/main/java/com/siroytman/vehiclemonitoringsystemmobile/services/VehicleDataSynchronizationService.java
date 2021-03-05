@@ -93,8 +93,7 @@ public class VehicleDataSynchronizationService {
             JSONObject item = new JSONObject();
             try {
                 item.put("vehicle_id", vehicleDataList.get(i).vehicle_id);
-                item.put("user_id", "test_adm");
-//                item.put("user_id", vehicleDataList.get(i).user_id);
+                item.put("user_id", vehicleDataList.get(i).user_id);
                 item.put("datetime", datetimeFormat);
                 item.put("latitude", vehicleDataList.get(i).latitude);
                 item.put("longitude", vehicleDataList.get(i).longitude);

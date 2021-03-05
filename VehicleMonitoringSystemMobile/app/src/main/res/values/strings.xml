@@ -2,8 +2,8 @@
     <string name="app_name">VehicleMonitoringSystemMobile</string>
 
     <!--    Geodata processing service URL-->
-    <string name="geodata_processing_service_url" translatable="false">http://192.168.1.229:5006</string>
-    <string name="geodata_processing_service_host" translatable="false">192.168.1.229</string>
+    <string name="geodata_processing_service_url" translatable="false">http://192.168.1.110:5010</string>
+    <string name="geodata_processing_service_host" translatable="false">192.168.1.110</string>
 
     <!--    Errors-->
     <string name="error_handler__timeout">No connection error</string>

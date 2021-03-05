@@ -11,15 +11,15 @@
   "profiles": {
     "IIS Express": {
       "commandName": "IISExpress",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "GeodataProcessingService": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "applicationUrl": "http://192.168.1.229:5006",
+      "launchBrowser": false,
+      "applicationUrl": "http://192.168.1.110:5010",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
