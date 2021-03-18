@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using VMS_Backend.Data;
+using VMS_Backend.Data.Models;
 
 namespace VMS_Backend.DatabaseServices
 {
@@ -37,7 +38,7 @@ namespace VMS_Backend.DatabaseServices
             var success = await SaveChangesAsync();
             return success ? itemInDb.Entity : null;
         }
-        
+
         public virtual async Task<Boolean> DeleteItem(T item)
         {
             try
@@ -60,7 +61,15 @@ namespace VMS_Backend.DatabaseServices
         /// <returns></returns>
         public async Task<T> FindItemByIdAsync(string id)
         {
-            return await _dbContext.FindAsync<T>(id);
+            try
+            {
+                return await _dbContext.FindAsync<T>(id);
+            }
+            catch (ArgumentException)
+            {
+                var res = int.TryParse(id, out var intId);
+                return res ? await _dbContext.FindAsync<T>(intId) : null;
+            }
         }
 
         /// <summary>

@@ -5,11 +5,10 @@ import {Button, List} from "@material-ui/core";
 import {StylesDictionary} from "../../utils/StylesDictionary";
 import * as EmployeeApi from "../../api/EmployeeApi";
 import Colors from "../../constants/Colors";
-import {EmployeeListItem} from "../EmployeeListItem";
+import {EmployeeListItem} from "./EmployeeListItem";
 import Popup from "reactjs-popup";
+import {CreateEmployeeForm} from "./CreateEmployeeForm";
 import "./SidebarDrivers.css";
-import {useHistory} from "react-router-dom";
-import {CreateEmployeeForm} from "../CreateEmployeeForm";
 
 
 export const SidebarDrivers: React.FunctionComponent = () => {

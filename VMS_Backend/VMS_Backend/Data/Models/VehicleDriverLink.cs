@@ -26,6 +26,6 @@ namespace VMS_Backend.Data.Models
         public DateTime StartDate { get; set; }
         
         [Column("end_date")] 
-        public DateTime EndDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 }

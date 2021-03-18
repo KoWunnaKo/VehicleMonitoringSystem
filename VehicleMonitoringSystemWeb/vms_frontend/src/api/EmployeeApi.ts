@@ -3,9 +3,10 @@ import Employee from "../models/Employee";
 
 export async function getAllDrivers(companyId: number): Promise<Employee[] | null> {
   try {
-    const response = await axios.get(`employee/getAllDrivers/${companyId}`);
-    // console.log(`drivers: ${JSON.stringify(response.data)}`);
-    return response.data;
+    const response = await axios.get<Employee[]>(`employee/getAllDrivers/${companyId}`);
+    const drivers = response.data;
+    drivers.map(driver => Object.setPrototypeOf(driver, Employee.prototype))
+    return drivers;
   } catch (e) {
     // console.log("Error:getAllDrivers ", e.response);
     return null;

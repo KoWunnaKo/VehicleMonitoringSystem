@@ -10,26 +10,26 @@ namespace VMS_Backend.Data.Models
         [Key]
         [Column("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int id { get; set; }
+        public int Id { get; set; }
 
         [Column("company_id")] 
-        public int company_id { get; set; }
-        [ForeignKey("company_id")]
-        public Company company { get; set; }  
+        public int CompanyId { get; set; }
+        [ForeignKey("CompanyId")]
+        public Company Company { get; set; }  
         
         [Column("name")]
         [MaxLength(50)]
-        public string name { get; set; }
+        public string Name { get; set; }
         
         [Column("number")]
         [MaxLength(20)]
-        public string number { get; set; }
+        public string Number { get; set; }
         
         [Column("model")]
         [MaxLength(50)]
-        public string model { get; set; }
+        public string Model { get; set; }
         
         [Column("production_year", TypeName = "smallint")]
-        public short production_year { get; set; }
+        public short ProductionYear { get; set; }
     }
 }
