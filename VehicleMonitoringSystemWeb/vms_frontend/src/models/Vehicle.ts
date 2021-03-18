@@ -1,15 +1,24 @@
 export default class Vehicle {
   public id: number | undefined;
-  public company_id: number | undefined;
+  public companyId: number | undefined;
   public name: string | undefined;
   public number: string | undefined;
   public model: string | undefined;
-  public production_year: number | undefined;
+  public productionYear: number | undefined;
 
-  // public toJSON() {
-  //   return {
-  //     Id: this.id, VehicleId: this.vehicleId, UserId: this.userId,
-  //     Datetime: this.datetime, Latitude: this.latitude, Longitude: this.longitude
-  //   }
-  // }
+  constructor(companyId: number | undefined,
+              name: string | undefined,
+              number: string | undefined,
+              model: string | undefined,
+              productionYear: number | undefined,
+              vehicle?: Vehicle) {
+    if (!!vehicle) {
+      this.id = vehicle.id;
+    }
+    this.companyId = companyId;
+    this.name = name;
+    this.number = number;
+    this.model = model;
+    this.productionYear = productionYear;
+  }
 }

@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using VMS_Backend.Data;
-using VMS_Backend.Data.Models;
 using VMS_Backend.DatabaseServices;
 
 namespace VMS_Backend
@@ -39,11 +37,10 @@ namespace VMS_Backend
             services.AddScoped<EmployeeService>();
             services.AddScoped<RoleService>();
             services.AddScoped<VehicleDataService>();
-            services.AddScoped<VehicleDriverLink>();
+            services.AddScoped<VehicleDriverLinkService>();
             services.AddScoped<VehicleService>();
-            
-            services.AddControllers()
-                .AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
+
+            services.AddControllers();
             
             services.AddEntityFrameworkNpgsql()
                 .AddDbContext<ApplicationDbContext>(opt =>

@@ -5,7 +5,8 @@ import {auth} from "../firebase";
 import Employee from "../models/Employee";
 import Role from "../models/Role";
 import {ACCOUNT, HOME, LANDING, SIGN_IN} from "../constants/Routes";
-import {SidebarDrivers} from "./Sidebar/SidebarDrivers";
+import {SidebarDrivers} from "./Employee/SidebarDrivers";
+import {SidebarVehicles} from "./Vehicle/SidebarVehicles";
 
 
 interface InterfaceProps {
@@ -56,6 +57,9 @@ export const Navigation: React.FunctionComponent<InterfaceProps> = (props) => {
                 <a onClick={driversClick}>Drivers</a>
             </li>
             <li>
+                <a onClick={vehiclesClick}>Vehicles</a>
+            </li>
+            <li>
                 <a onClick={() => navigateWithoutSidebar(ACCOUNT)}>Account</a>
             </li>
             <li>
@@ -91,6 +95,12 @@ export const Navigation: React.FunctionComponent<InterfaceProps> = (props) => {
         history.push(HOME);
         props.setSidebarDisplay(true);
         props.setSidebarComponent(<SidebarDrivers/>);
+    }
+
+    function vehiclesClick() {
+        history.push(HOME);
+        props.setSidebarDisplay(true);
+        props.setSidebarComponent(<SidebarVehicles/>);
     }
 
     function navigateWithoutSidebar(pageName: string){

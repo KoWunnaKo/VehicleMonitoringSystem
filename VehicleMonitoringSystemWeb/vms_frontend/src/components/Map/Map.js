@@ -14,7 +14,6 @@ class Map extends Component {
 
     async componentDidMount() {
         const vehicleData = await VehicleDataApi.getVehiclesLastData();
-        // console.log(`vehicleData: ${JSON.stringify(vehicleData)}`);
         this.setState({markersData: vehicleData})
     }
 
@@ -29,7 +28,7 @@ class Map extends Component {
     render() {
         return (
             // Important! Always set the container height explicitly
-            <div style={{ height: '100vh', width: '100%' }}>
+            <div style={{ height: '100%', width: '100%' }}>
                 <GoogleMapReact
                     bootstrapURLKeys={{ key: 'AIzaSyAJ0rt86agF-rASxiSC-pyzxWceMMga-ss' }}
                     defaultCenter={this.props.center}

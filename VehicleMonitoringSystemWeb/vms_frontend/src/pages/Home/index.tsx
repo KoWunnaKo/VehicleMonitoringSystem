@@ -1,8 +1,6 @@
 import * as React from "react";
 import { withAuthorization } from "../../firebase/withAuthorization";
 import {StylesDictionary} from "../../utils/StylesDictionary";
-import {AppController} from "../../controllers/AppController";
-import Role from "../../models/Role";
 import Map from "../../components/Map/Map";
 
 class HomeComponent extends React.Component {
@@ -13,8 +11,6 @@ class HomeComponent extends React.Component {
   public render() {
       return (
       <div style={styles.container}>
-        {/*<h2>Home Page</h2> */}
-        {/*<p>The Home Page is accessible by every signed in user.</p>*/}
         <Map/>
       </div>
     );
@@ -23,8 +19,10 @@ class HomeComponent extends React.Component {
 
 const styles: StylesDictionary  = {
     container: {
+        display: 'flex',
         flex: 1,
-        // backgroundColor:'#b642f4'
+        flexDirection: 'column',
+        overflow: 'hidden'
     }
 };
 

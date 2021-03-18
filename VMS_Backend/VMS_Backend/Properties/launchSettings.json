@@ -19,6 +19,7 @@
     "VMS_Backend": {
       "commandName": "Project",
       "launchBrowser": false,
+      "mobile_applicationUrl": "http://192.168.43.197:5000",
       "applicationUrl": "http://192.168.1.110:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"

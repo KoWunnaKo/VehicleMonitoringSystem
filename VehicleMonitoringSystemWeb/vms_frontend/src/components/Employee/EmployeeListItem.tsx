@@ -1,10 +1,9 @@
 import * as React from "react";
-import Employee from "../models/Employee";
+import Employee from "../../models/Employee";
 import {IconButton, ListItem, ListItemSecondaryAction} from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import {StylesDictionary} from "../utils/StylesDictionary";
-import Colors from "../constants/Colors";
-import * as EmployeeApi from "../api/EmployeeApi";
+import {StylesDictionary} from "../../utils/StylesDictionary";
+import * as EmployeeApi from "../../api/EmployeeApi";
 
 
 interface InterfaceProps {

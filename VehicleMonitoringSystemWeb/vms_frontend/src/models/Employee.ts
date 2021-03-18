@@ -23,11 +23,7 @@ export default class Employee {
     this.password = password;
   }
 
-  public toJSON() {
-    return {
-      Id: this.id, RoleId: this.roleId, CompanyId: this.companyId,
-      FirstName: this.firstName, LastName: this.lastName, Email: this.email,
-      TelegramNickname: this.telegramNickname,
-    }
+  public getFullName () : string|undefined {
+    return this.firstName + ' ' + this.lastName;
   }
 }

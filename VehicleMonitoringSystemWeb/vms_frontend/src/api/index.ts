@@ -2,7 +2,8 @@ import axios from "axios";
 
 export function configureAxios() {
     // URL бэкенд сервера
-    axios.defaults.baseURL = 'http://192.168.1.110:5000/';
+    // axios.defaults.baseURL = 'http://192.168.43.197:5000/'; // Mobile network
+    axios.defaults.baseURL = 'http://192.168.1.110:5000/'; // Home wifi
     // Axios все реквесты вместе с куки-авторизации
     // axios.defaults.withCredentials = true;
     // Content Type - json
