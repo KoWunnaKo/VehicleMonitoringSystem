@@ -7,6 +7,7 @@ import Colors from "../../constants/Colors";
 import {PasswordForgetLink} from "../PasswordForget";
 import {STORAGE_KEY_AUTH_USER} from "../../constants/AsyncStorageKeys";
 import {HOME} from "../../constants/Routes";
+import * as AuthApi from "../../api/AuthApi";
 
 interface InterfaceProps {
   error?: any;
@@ -36,9 +37,11 @@ export class SignInForm extends React.Component<InterfaceProps, InterfaceState> 
   }
 
    public componentDidMount() {
+    console.log('SignIn.componentDidMount');
     // Redirect back to home if user is logged in
-    const dbUser = localStorage.getItem(STORAGE_KEY_AUTH_USER);
+     const dbUser = localStorage.getItem(STORAGE_KEY_AUTH_USER);
     if (!!dbUser) {
+      console.log(`SignIn.componentDidMount, dbUser: ${JSON.stringify(dbUser)}`);
       const { history } = this.props;
       history.push(HOME);
     }
@@ -50,9 +53,12 @@ export class SignInForm extends React.Component<InterfaceProps, InterfaceState> 
 
     auth
       .doSignInWithEmailAndPassword(email, password)
-      .then(() => {
+      .then(async () => {
         this.setState(() => ({ ...SignInForm.INITIAL_STATE }));
-        history.push(routes.HOME);
+        const dbUser = await AuthApi.getCurrentUser();
+        if(!!dbUser) {
+          history.push(routes.HOME);
+        }
       })
       .catch(error => {
         this.setState(SignInForm.propKey("error", error));
