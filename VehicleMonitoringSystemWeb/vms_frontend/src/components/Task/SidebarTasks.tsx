@@ -2,30 +2,30 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import {Button, List} from "@material-ui/core";
 import {StylesDictionary} from "../../utils/StylesDictionary";
-import * as VehicleApi from "../../api/VehicleApi";
+import * as TaskApi from "../../api/TaskApi";
 import Colors from "../../constants/Colors";
 import Popup from "reactjs-popup";
-import Vehicle from "../../models/Vehicle";
-import {VehicleListItem} from "./VehicleListItem";
-import {CreateVehicleForm} from "./CreateVehicleForm";
 import "../Employee/SidebarDrivers.css";
+import {CreateTaskForm} from "./CreateTaskForm";
+import Task from "../../models/Task";
+import {TaskListItem} from "./TaskListItem";
 
 
-export const SidebarVehicles: React.FunctionComponent = () => {
-    const [vehicles, setVehicles] = useState<Vehicle[]|null>(null);
+export const SidebarTasks: React.FunctionComponent = () => {
+    const [tasks, setTasks] = useState<Task[]|null>(null);
 
     useEffect(() => {
         (async function() {
             // TODO companyId number
-            setVehicles(await VehicleApi.getAllVehicles(1));
+            setTasks(await TaskApi.getAllTasks(1));
         })();
     }, []);
 
     return (
         <div style={styles.container}>
-            <h2>Vehicles</h2>
+            <h2>Tasks</h2>
             <Popup
-                trigger={<Button variant="contained" style={styles.addButton}>Create vehicle</Button>}
+                trigger={<Button variant="contained" style={styles.addButton}>Create task</Button>}
                 modal={true}
                 nested={true}
             >
@@ -35,9 +35,9 @@ export const SidebarVehicles: React.FunctionComponent = () => {
                             <button className="close" onClick={close}>
                                 &times;
                             </button>
-                            <div className="header">Create vehicle</div>
+                            <div className="header">Create task</div>
                             <div className="content">
-                                <CreateVehicleForm closeModal={close}/>
+                                <CreateTaskForm closeModal={close}/>
                             </div>
                         </div>
                     )
@@ -45,8 +45,8 @@ export const SidebarVehicles: React.FunctionComponent = () => {
             </Popup>
 
             <List style={{backgroundColor: Colors.white}}>
-                {vehicles && vehicles.map((vehicle) => (
-                    <VehicleListItem key={vehicle.id} vehicle={vehicle}/>
+                {tasks && tasks.map((task) => (
+                    <TaskListItem key={task.id} task={task}/>
                 ))}
             </List>
         </div>

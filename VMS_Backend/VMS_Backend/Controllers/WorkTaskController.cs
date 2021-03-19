@@ -7,7 +7,7 @@ using VMS_Backend.DatabaseServices;
 namespace VMS_Backend.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("task")]
     public class WorkTaskController : ControllerBase
     {
         private readonly WorkTaskService _workTaskService;
@@ -18,23 +18,24 @@ namespace VMS_Backend.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] WorkTask task)
+        public async Task<ActionResult<WorkTask>> Create([FromBody] WorkTask task)
         {
             var res = await _workTaskService.AddNewItem(task);
             return Ok(res);
         }
-        
+
         [HttpGet]
-        [Route("getAll")]
-        public IActionResult GetAll()
+        [Route("getAll/{companyId}")]
+        public async Task<ActionResult<List<WorkTask>>> GetAll(int companyId)
         {
-            return Ok(_workTaskService.GetAll());
+            return Ok(await _workTaskService.GetAll(companyId));
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(WorkTask task)
+        [Route("{taskId}")]
+        public async Task<ActionResult> Delete(string taskId)
         {
-            var res = await _workTaskService.DeleteItem(task);
+            var res = await _workTaskService.DeleteItemById(taskId);
             if (!res)
             {
                 return NotFound();
@@ -43,10 +44,18 @@ namespace VMS_Backend.Controllers
             return Ok();
         }
 
-        // [HttpPut]
-        // public async Task<IActionResult> Edit(WorkTask task)
-        // {
-        //     _workTaskService
-        // }
+        [HttpPut]
+        public async Task<ActionResult> Edit([FromBody] WorkTask task)
+        {
+            var res = await _workTaskService.Edit(task);
+            if (res != null)
+            {
+                return Ok(res);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
     }
 }
