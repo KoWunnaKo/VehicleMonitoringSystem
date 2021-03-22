@@ -28,8 +28,7 @@ export const CreateTaskForm: React.FunctionComponent<InterfaceProps> = (props) =
     useEffect(() => {
         (async function() {
             // TODO companyId number
-            const varDrivers = await EmployeeApi.getAllDrivers(1);
-            setDrivers(varDrivers);
+            setDrivers(await EmployeeApi.getAllDrivers(1));
         })();
     }, []);
 
@@ -84,6 +83,7 @@ export const CreateTaskForm: React.FunctionComponent<InterfaceProps> = (props) =
             label="Due datetime"
             type="datetime-local"
             style={styles.textInput}
+            value={dueDatetime}
             onChange={event => setDueDatetime(moment(event.target.value, 'DD.MM.YY HH:mm').toDate())}
             InputLabelProps={{shrink: true}}
         />

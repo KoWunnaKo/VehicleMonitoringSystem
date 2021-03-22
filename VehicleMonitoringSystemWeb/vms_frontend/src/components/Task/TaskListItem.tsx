@@ -2,12 +2,11 @@ import * as React from "react";
 import { IconButton, ListItem, ListItemSecondaryAction} from "@material-ui/core";
 import SettingsIcon from "@material-ui/icons/Settings";
 import {StylesDictionary} from "../../utils/StylesDictionary";
-import Vehicle from "../../models/Vehicle";
 import Popup from "reactjs-popup";
 import {useEffect, useState} from "react";
-import * as VehicleDriverLinkApi from "../../api/VehicleDriverLinkApi";
 import Employee from "../../models/Employee";
 import Task from "../../models/Task";
+import {PropertiesTaskForm} from "./Properties/PropertiesTaskForm";
 
 
 interface InterfaceProps {
@@ -53,7 +52,7 @@ export const TaskListItem: React.FunctionComponent<InterfaceProps> = (props) => 
                                     &times;
                                 </button>
                                 <div>
-                                    {/*<PropertiesVehicleForm closeModal={close} vehicle={vehicle}/>*/}
+                                    <PropertiesTaskForm closeModal={close} task={task}/>
                                 </div>
                             </div>
                         )
