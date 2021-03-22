@@ -11,9 +11,9 @@ import { PasswordForget } from "./pages/PasswordForget";
 import { SignIn } from "./pages/SignIn";
 import { Navigation } from "./components/Navigation";
 import Employee from "./models/Employee";
-import {AppController} from "./controllers/AppController";
 import {Sidebar} from "./components/Sidebar/Sidebar";
 import {StylesDictionary} from "./utils/StylesDictionary";
+import {STORAGE_KEY_AUTH_USER, STORAGE_KEY_DB_AUTH_USER} from "./constants/AsyncStorageKeys";
 
 interface AppComponentState {
   authUser: any;
@@ -35,17 +35,25 @@ class AppComponent extends React.Component<{}, AppComponentState> {
   }
 
   public componentDidMount() {
+    // console.log(`App.componentDidMount`);
+    localStorage.clear();
     firebase.auth.onAuthStateChanged(async authUser => {
       if (!!authUser) {
+        localStorage.setItem(STORAGE_KEY_AUTH_USER, JSON.stringify(authUser));
         const dbUser = await AuthApi.getCurrentUser();
-        AppController.dbUser = dbUser;
+        localStorage.setItem(STORAGE_KEY_DB_AUTH_USER, JSON.stringify(dbUser));
         this.setState(() => ({ authUser, dbAuthUser: dbUser }))
       }
       else {
         this.setState(() => ({ authUser: null, dbAuthUser: null }))
-        AppController.dbUser = null;
+        localStorage.clear();
       }
     });
+  }
+
+  public componentWillUnmount() {
+    // console.log(`App.componentWillUnmount`);
+    localStorage.clear();
   }
 
   public setSidebarDisplay = (display: boolean) => {
