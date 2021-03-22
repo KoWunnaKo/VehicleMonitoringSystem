@@ -9,7 +9,7 @@ import {STORAGE_KEY_AUTH_USER} from "../../constants/AsyncStorageKeys";
 import Employee from "../../models/Employee";
 import * as EmployeeApi from "../../api/EmployeeApi";
 import Select from "../../../node_modules/@material-ui/core/Select/Select";
-
+import moment from "moment";
 
 interface InterfaceProps {
   closeModal: () => void;
@@ -21,6 +21,7 @@ export const CreateTaskForm: React.FunctionComponent<InterfaceProps> = (props) =
     const [name, setName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [comment, setComment] = useState<string>('');
+    const [dueDatetime, setDueDatetime] = useState<Date|undefined >();
     const [drivers, setDrivers] = useState<Employee[]|null>(null);
     const [selectedDriver, setSelectedDriver] = useState<string|undefined>('');
 
@@ -38,6 +39,7 @@ export const CreateTaskForm: React.FunctionComponent<InterfaceProps> = (props) =
         if (!!jsonDbUser) {
             const dbUser = JSON.parse(jsonDbUser);
             if (!!dbUser) {
+                // TODO duedate
                 const task = new Task(1, selectedDriver, dbUser.id, undefined,
                     undefined, name, description, undefined, comment);
                 await TaskApi.createTask(task)
@@ -56,14 +58,6 @@ export const CreateTaskForm: React.FunctionComponent<InterfaceProps> = (props) =
 
     return (
       <form onSubmit={(event) => onSubmit(event)} style={styles.container}>
-        {/* TODO date picker*/}
-        {/*<TextField*/}
-        {/*    value={name}*/}
-        {/*    onChange={event => setName(event.target.value)}*/}
-        {/*    type="text"*/}
-        {/*    placeholder="Due date"*/}
-        {/*    style={styles.textInput}*/}
-        {/*/>*/}
         <TextField
             value={name}
             onChange={event => setName(event.target.value)}
@@ -84,6 +78,14 @@ export const CreateTaskForm: React.FunctionComponent<InterfaceProps> = (props) =
             type="text"
             placeholder="Comment"
             style={styles.textInput}
+        />
+
+        <TextField
+            label="Due datetime"
+            type="datetime-local"
+            style={styles.textInput}
+            onChange={event => setDueDatetime(moment(event.target.value, 'DD.MM.YY HH:mm').toDate())}
+            InputLabelProps={{shrink: true}}
         />
 
         <FormControl>

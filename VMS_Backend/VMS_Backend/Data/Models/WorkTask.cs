@@ -46,5 +46,23 @@ namespace VMS_Backend.Data.Models
 
         [Column("comment")]
         public string Comment { get; set; }
+        
+        // [Column("from_name")]
+        // public string FromName { get; set; }
+        //
+        // [Column("from_latitude")]
+        // public string FromLatitude { get; set; }
+        //
+        // [Column("from_longitude")]
+        // public string FromLongitude { get; set; }
+        //
+        // [Column("to_name")]
+        // public string ToName { get; set; }
+        //
+        // [Column("to_latitude")]
+        // public string ToLatitude { get; set; }
+        //
+        // [Column("to_longitude")]
+        // public string ToLongitude { get; set; }
     }
 }
