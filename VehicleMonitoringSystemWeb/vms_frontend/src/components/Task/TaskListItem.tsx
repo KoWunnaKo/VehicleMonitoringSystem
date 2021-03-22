@@ -31,8 +31,8 @@ export const TaskListItem: React.FunctionComponent<InterfaceProps> = (props) => 
                 button={true}
                 style={styles.listItem}
             >
-                <text>{`${task.id} ${task.name}`}</text>
-                {/*<text>{`Driver: ${!!driver ? driver.getFullName() : 'none'}`}</text>*/}
+                <div>{`${task.id} ${task.name}`}</div>
+                {/*<div>{`Driver: ${!!driver ? driver.getFullName() : 'none'}`}</div>*/}
                 <Popup
                     trigger={
                         <ListItemSecondaryAction>
