@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Button, FormControl, InputLabel, Select} from '@material-ui/core';
+import {Button, FormControl, InputLabel, MenuItem, Select} from '@material-ui/core';
 import {StylesDictionary} from "../../../utils/StylesDictionary";
 import Vehicle from "../../../models/Vehicle";
 import {useEffect, useState} from "react";
@@ -7,6 +7,7 @@ import * as EmployeeApi from "../../../api/EmployeeApi";
 import Employee from "../../../models/Employee";
 import VehicleDriverLink from "../../../models/VehicleDriverLink";
 import * as VehicleDriverLinkApi from "../../../api/VehicleDriverLinkApi";
+import Colors from "../../../constants/Colors";
 
 
 interface InterfaceProps {
@@ -45,12 +46,12 @@ export const PropertiesDriversVehicleForm: React.FunctionComponent<InterfaceProp
         <div style={styles.container}>
             <FormControl style={styles.formControl}>
                 <Select
-                    color={"secondary"}
+                    color={"primary"}
                     value={selectedDriver}
                     onChange={event => setSelectedDriver(event.target.value)}
                 >
                     {drivers && drivers.map((d: Employee, index) => (
-                        <option value={index}>{d.getFullName()}</option>
+                        <MenuItem key={index} value={index} style={{color: Colors.white}}>{d.getFullName()}</MenuItem>
                     ))}
                 </Select>
             </FormControl>
@@ -79,4 +80,5 @@ const styles: StylesDictionary  = {
         maxWidth: 300,
         alignSelf: 'center'
     },
+
 };

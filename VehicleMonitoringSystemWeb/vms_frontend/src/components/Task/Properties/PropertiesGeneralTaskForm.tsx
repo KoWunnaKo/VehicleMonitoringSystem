@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as TaskApi from "../../../api/TaskApi";
-import {Button, FormControl, FormHelperText, IconButton, TextField} from '@material-ui/core';
+import {Button, FormControl, FormHelperText, IconButton, MenuItem, TextField} from '@material-ui/core';
 import {StylesDictionary} from "../../../utils/StylesDictionary";
 import {useEffect, useState} from "react";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -9,6 +9,7 @@ import Employee from "../../../models/Employee";
 import moment from "moment";
 import Select from "@material-ui/core/Select/Select";
 import * as EmployeeApi from "../../../api/EmployeeApi";
+import Colors from "../../../constants/Colors";
 
 interface InterfaceProps {
     closeModal: () => void;
@@ -93,10 +94,10 @@ export const PropertiesGeneralTaskForm: React.FunctionComponent<InterfaceProps> 
                     color={"secondary"}
                     value={selectedDriver}
                     onChange={event => setSelectedDriver(event.target.value)}
-                    style={styles.textInput}
+                    style={styles.select}
                 >
                     {drivers && drivers.map((d: Employee) => (
-                        <option value={d.id}>{d.getFullName()}</option>
+                        <MenuItem key={d.id} value={d.id} style={{color: Colors.white}}>{d.getFullName()}</MenuItem>
                     ))}
                 </Select>
                 <FormHelperText style={styles.textInput}>Driver</FormHelperText>
@@ -120,6 +121,12 @@ const styles: StylesDictionary  = {
         flex: 1,
     },
     textInput: {
+        width: 200,
+        marginTop: 5,
+        marginBottom: 5,
+        alignSelf: 'center'
+    },
+    select: {
         width: 200,
         marginTop: 5,
         marginBottom: 5,

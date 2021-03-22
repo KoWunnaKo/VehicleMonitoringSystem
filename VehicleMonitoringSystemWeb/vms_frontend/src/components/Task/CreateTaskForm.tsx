@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Button, FormControl, FormHelperText, TextField} from '@material-ui/core';
+import {Button, FormControl, FormHelperText, MenuItem, TextField} from '@material-ui/core';
 import Colors from "../../constants/Colors";
 import {StylesDictionary} from "../../utils/StylesDictionary";
 import {useEffect, useState} from "react";
@@ -90,12 +90,12 @@ export const CreateTaskForm: React.FunctionComponent<InterfaceProps> = (props) =
 
         <FormControl>
             <Select
-                color={"secondary"}
+                color={"primary"}
                 value={selectedDriver}
                 onChange={event => setSelectedDriver(event.target.value)}
             >
                 {drivers && drivers.map((d: Employee) => (
-                <option value={d.id}>{d.getFullName()}</option>
+                    <MenuItem key={d.id} value={d.id} style={{color: Colors.white}}>{d.getFullName()}</MenuItem>
                 ))}
             </Select>
             <FormHelperText>Driver</FormHelperText>

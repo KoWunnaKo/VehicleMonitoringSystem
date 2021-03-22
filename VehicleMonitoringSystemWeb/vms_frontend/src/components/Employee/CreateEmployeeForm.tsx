@@ -95,7 +95,7 @@ export const CreateEmployeeForm: React.FunctionComponent<InterfaceProps> = (prop
                     value={roleId}
                     onChange={event => setRoleId(event.target.value)}>
                     {roles && roles.map((selectedRole) => (
-                    <MenuItem key={selectedRole.id} value={selectedRole.id} style={{color: Colors.white}}>
+                    <MenuItem key={selectedRole.id} value={selectedRole.id} style={{backgroundColor: Colors.white}}>
                     {selectedRole.name}
                     </MenuItem>
                     ))}
