@@ -20,12 +20,12 @@ namespace VMS_Backend.Data.Models
         [Column("driver_id")]
         public string DriverId { get; set; }
         [ForeignKey("DriverId")]
-        public Employee Driver;
+        public Employee Driver { get; set; }
         
         [Column("operator_id")]
         public string OperatorId { get; set; }
         [ForeignKey("OperatorId")]
-        public Employee Operator;
+        public Employee Operator { get; set; }
         
         [Column("create_date")] 
         public DateTime CreateDate { get; set; }
@@ -42,7 +42,7 @@ namespace VMS_Backend.Data.Models
         [Column("status_id")]
         public short StatusId { get; set; }
         [ForeignKey("StatusId")]
-        public WorkTaskStatus Status;
+        public WorkTaskStatus Status { get; set; }
 
         [Column("comment")]
         public string Comment { get; set; }

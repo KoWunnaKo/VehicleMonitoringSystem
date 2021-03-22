@@ -33,8 +33,11 @@ export const VehicleListItem: React.FunctionComponent<InterfaceProps> = (props) 
                 button={true}
                 style={styles.listItem}
             >
-                <div>{`${vehicle.name} ${vehicle.number}`}</div>
-                <div>{`Driver: ${!!driver ? driver.getFullName() : 'none'}`}</div>
+                <div>
+                    {`${vehicle.name} ${vehicle.number}`}
+                    {<br/>}
+                    {`Driver: ${!!driver ? driver.getFullName() : 'none'}`}
+                </div>
                 <Popup
                     trigger={
                         <ListItemSecondaryAction>

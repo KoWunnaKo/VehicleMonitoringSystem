@@ -15,14 +15,6 @@ interface InterfaceProps {
 
 export const TaskListItem: React.FunctionComponent<InterfaceProps> = (props) => {
     const { task } = props;
-    const [driver, setDriver] = useState<Employee|null>(null);
-
-
-    useEffect(() => {
-        (async function() {
-            // setDriver(await VehicleDriverLinkApi.getCurrentDriver(vehicle.id));
-        })();
-    }, []);
 
     return (
         <div style={styles.container}>
@@ -31,8 +23,11 @@ export const TaskListItem: React.FunctionComponent<InterfaceProps> = (props) => 
                 button={true}
                 style={styles.listItem}
             >
-                <div>{`${task.id} ${task.name}`}</div>
-                {/*<div>{`Driver: ${!!driver ? driver.getFullName() : 'none'}`}</div>*/}
+                <div>
+                    {`${task.id}. ${task.name}`}
+                    {<br/>}
+                    {`Driver: ${!!task.driver ? task.driver.getFullName() : 'none'}`}
+                </div>
                 <Popup
                     trigger={
                         <ListItemSecondaryAction>

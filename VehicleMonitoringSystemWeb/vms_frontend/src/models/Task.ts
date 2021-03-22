@@ -1,7 +1,10 @@
+import Employee from "./Employee";
+
 export default class Task {
   public id: number | undefined;
   public companyId: number | undefined;
   public driverId: string | undefined;
+  public driver: Employee | undefined
   public operatorId: string | undefined;
   public createDate: Date | undefined;
   public dueDate: Date | undefined;

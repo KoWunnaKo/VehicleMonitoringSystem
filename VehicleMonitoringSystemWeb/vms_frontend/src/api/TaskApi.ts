@@ -1,12 +1,13 @@
 import axios from 'axios';
-import Vehicle from "../models/Vehicle";
 import Task from "../models/Task";
+import Employee from "../models/Employee";
 
 export async function getAllTasks(companyId: number): Promise<Task[] | null> {
   try {
     const response = await axios.get<Task[]>(`task/getAll/${companyId}`);
     const tasks = response.data;
-    tasks.map(task => Object.setPrototypeOf(task, Task.prototype))
+    tasks.map(task => Object.setPrototypeOf(task, Task.prototype));
+    tasks.map(task => Object.setPrototypeOf(task.driver, Employee.prototype))
     return tasks;
   } catch (e) {
     // console.log("Error:getAllVehicles ", e.response);

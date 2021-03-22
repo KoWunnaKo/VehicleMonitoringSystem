@@ -14,7 +14,8 @@ namespace VMS_Backend.DatabaseServices
         public async Task<List<WorkTask>> GetAll(int companyId)
         {
             var tasks = await _dbContext.WorkTask
-                .Where(v => v.CompanyId.Equals(companyId))
+                .Include(t => (t as WorkTask).Driver)
+                .Where(t => t.CompanyId.Equals(companyId))
                 .ToListAsync();
             return tasks;
         }
