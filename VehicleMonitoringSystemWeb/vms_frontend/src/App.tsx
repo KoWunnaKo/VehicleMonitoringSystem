@@ -35,6 +35,8 @@ class AppComponent extends React.Component<{}, AppComponentState> {
   }
 
   public componentDidMount() {
+    // console.log(`App.componentDidMount`);
+    localStorage.clear();
     firebase.auth.onAuthStateChanged(async authUser => {
       if (!!authUser) {
         localStorage.setItem(STORAGE_KEY_AUTH_USER, JSON.stringify(authUser));
@@ -50,6 +52,7 @@ class AppComponent extends React.Component<{}, AppComponentState> {
   }
 
   public componentWillUnmount() {
+    // console.log(`App.componentWillUnmount`);
     localStorage.clear();
   }
 

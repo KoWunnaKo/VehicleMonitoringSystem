@@ -37,11 +37,11 @@ export class SignInForm extends React.Component<InterfaceProps, InterfaceState> 
   }
 
    public componentDidMount() {
-    console.log('SignIn.componentDidMount');
+    // console.log('SignIn.componentDidMount');
     // Redirect back to home if user is logged in
-     const dbUser = localStorage.getItem(STORAGE_KEY_AUTH_USER);
+    const dbUser = localStorage.getItem(STORAGE_KEY_AUTH_USER);
     if (!!dbUser) {
-      console.log(`SignIn.componentDidMount, dbUser: ${JSON.stringify(dbUser)}`);
+      // console.log(`SignIn.componentDidMount, dbUser: ${JSON.stringify(dbUser)}`);
       const { history } = this.props;
       history.push(HOME);
     }

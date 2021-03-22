@@ -23,7 +23,7 @@ import {firebase} from "../firebase";
 export async function signUp(employee: Employee) {
   try {
     // TODO catch error responses
-    console.log(`signUp, employee: ${JSON.stringify(employee)}`);
+    // console.log(`signUp, employee: ${JSON.stringify(employee)}`);
     const response = await axios.post(`auth/create`, employee);
     if (response.status !== 200) {
       return null;
