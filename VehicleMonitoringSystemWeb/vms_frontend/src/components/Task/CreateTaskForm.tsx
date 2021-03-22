@@ -1,14 +1,19 @@
 import * as React from "react";
-import {Button, TextField} from '@material-ui/core';
+import {Button, FormControl, FormHelperText, TextField} from '@material-ui/core';
 import Colors from "../../constants/Colors";
 import {StylesDictionary} from "../../utils/StylesDictionary";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Task from "../../models/Task";
 import * as TaskApi from "../../api/TaskApi";
+import {STORAGE_KEY_AUTH_USER} from "../../constants/AsyncStorageKeys";
+import Employee from "../../models/Employee";
+import * as EmployeeApi from "../../api/EmployeeApi";
+import Select from "../../../node_modules/@material-ui/core/Select/Select";
 
 
 interface InterfaceProps {
   closeModal: () => void;
+  updateTasks: () => void;
 }
 
 export const CreateTaskForm: React.FunctionComponent<InterfaceProps> = (props) => {
@@ -16,13 +21,30 @@ export const CreateTaskForm: React.FunctionComponent<InterfaceProps> = (props) =
     const [name, setName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [comment, setComment] = useState<string>('');
+    const [drivers, setDrivers] = useState<Employee[]|null>(null);
+    const [selectedDriver, setSelectedDriver] = useState<string|undefined>('');
+
+    useEffect(() => {
+        (async function() {
+            // TODO companyId number
+            const varDrivers = await EmployeeApi.getAllDrivers(1);
+            setDrivers(varDrivers);
+        })();
+    }, []);
 
     async function onSubmit(event: any) {
         event.preventDefault();
-        const task = new Task(1, undefined, undefined, undefined,
-            undefined, name, description, undefined, comment);
-        await TaskApi.createTask(task)
+        const jsonDbUser = localStorage.getItem(STORAGE_KEY_AUTH_USER);
+        if (!!jsonDbUser) {
+            const dbUser = JSON.parse(jsonDbUser);
+            if (!!dbUser) {
+                const task = new Task(1, selectedDriver, dbUser.id, undefined,
+                    undefined, name, description, undefined, comment);
+                await TaskApi.createTask(task)
+            }
+        }
 
+        await props.updateTasks();
         props.closeModal();
     }
 
@@ -63,6 +85,19 @@ export const CreateTaskForm: React.FunctionComponent<InterfaceProps> = (props) =
             placeholder="Comment"
             style={styles.textInput}
         />
+
+        <FormControl>
+            <Select
+                color={"secondary"}
+                value={selectedDriver}
+                onChange={event => setSelectedDriver(event.target.value)}
+            >
+                {drivers && drivers.map((d: Employee) => (
+                <option value={d.id}>{d.getFullName()}</option>
+                ))}
+            </Select>
+            <FormHelperText>Driver</FormHelperText>
+        </FormControl>
 
         <Button disabled={isCreateButtonDisabled()} variant='contained' type='submit' color='primary' style={styles.button}>
             Create

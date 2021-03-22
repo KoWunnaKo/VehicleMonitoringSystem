@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,8 @@ namespace VMS_Backend.Controllers
         [HttpPost]
         public async Task<ActionResult<WorkTask>> Create([FromBody] WorkTask task)
         {
+            task.CreateDate = DateTime.Now;
+            task.StatusId = 1; // Created
             var res = await _workTaskService.AddNewItem(task);
             return Ok(res);
         }

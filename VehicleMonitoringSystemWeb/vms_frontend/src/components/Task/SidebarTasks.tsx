@@ -16,10 +16,14 @@ export const SidebarTasks: React.FunctionComponent = () => {
 
     useEffect(() => {
         (async function() {
-            // TODO companyId number
-            setTasks(await TaskApi.getAllTasks(1));
+            await updateTasks();
         })();
     }, []);
+
+    async function updateTasks() {
+        // TODO companyId number
+        setTasks(await TaskApi.getAllTasks(1));
+    }
 
     return (
         <div style={styles.container}>
@@ -37,7 +41,7 @@ export const SidebarTasks: React.FunctionComponent = () => {
                             </button>
                             <div className="header">Create task</div>
                             <div className="content">
-                                <CreateTaskForm closeModal={close}/>
+                                <CreateTaskForm updateTasks={updateTasks} closeModal={close}/>
                             </div>
                         </div>
                     )
