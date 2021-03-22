@@ -18,7 +18,7 @@ namespace VMS_Backend.Controllers
         }
         
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Vehicle vehicle)
+        public async Task<ActionResult<Vehicle>> Create([FromBody] Vehicle vehicle)
         {
             var res = await _vehicleService.AddNewItem(vehicle);
             return Ok(res);

@@ -45,9 +45,6 @@ export const SidebarVehicles: React.FunctionComponent = () => {
             </Popup>
 
             <List style={{backgroundColor: Colors.white}}>
-                {/*{drivers && drivers.map((driver) => (*/}
-                {/*    <EmployeeListItem key={driver.id} employee={driver}/>*/}
-                {/*))}*/}
                 {vehicles && vehicles.map((vehicle) => (
                     <VehicleListItem key={vehicle.id} vehicle={vehicle}/>
                 ))}

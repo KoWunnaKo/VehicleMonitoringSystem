@@ -2,41 +2,31 @@ import * as React from "react";
 import { IconButton, ListItem, ListItemSecondaryAction} from "@material-ui/core";
 import SettingsIcon from "@material-ui/icons/Settings";
 import {StylesDictionary} from "../../utils/StylesDictionary";
-import Vehicle from "../../models/Vehicle";
 import Popup from "reactjs-popup";
-import {PropertiesVehicleForm} from "./Properties/PropertiesVehicleForm";
 import {useEffect, useState} from "react";
-import * as VehicleApi from "../../api/VehicleApi";
-import * as VehicleDriverLinkApi from "../../api/VehicleDriverLinkApi";
 import Employee from "../../models/Employee";
+import Task from "../../models/Task";
+import {PropertiesTaskForm} from "./Properties/PropertiesTaskForm";
 
 
 interface InterfaceProps {
-    vehicle: Vehicle;
+    task: Task;
 }
 
-export const VehicleListItem: React.FunctionComponent<InterfaceProps> = (props) => {
-    const { vehicle } = props;
-    const [driver, setDriver] = useState<Employee|null>(null);
-
-
-    useEffect(() => {
-        (async function() {
-            setDriver(await VehicleDriverLinkApi.getCurrentDriver(vehicle.id));
-        })();
-    }, []);
+export const TaskListItem: React.FunctionComponent<InterfaceProps> = (props) => {
+    const { task } = props;
 
     return (
         <div style={styles.container}>
             <ListItem
-                key={vehicle.id}
+                key={task.id}
                 button={true}
                 style={styles.listItem}
             >
                 <div>
-                    {`${vehicle.name} ${vehicle.number}`}
+                    {`${task.id}. ${task.name}`}
                     {<br/>}
-                    {`Driver: ${!!driver ? driver.getFullName() : 'none'}`}
+                    {`Driver: ${!!task.driver ? task.driver.getFullName() : 'none'}`}
                 </div>
                 <Popup
                     trigger={
@@ -57,7 +47,7 @@ export const VehicleListItem: React.FunctionComponent<InterfaceProps> = (props) 
                                     &times;
                                 </button>
                                 <div>
-                                    <PropertiesVehicleForm closeModal={close} vehicle={vehicle}/>
+                                    <PropertiesTaskForm closeModal={close} task={task}/>
                                 </div>
                             </div>
                         )

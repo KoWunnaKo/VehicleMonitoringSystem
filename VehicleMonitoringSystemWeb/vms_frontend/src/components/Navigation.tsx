@@ -7,6 +7,7 @@ import Role from "../models/Role";
 import {ACCOUNT, HOME, LANDING, SIGN_IN} from "../constants/Routes";
 import {SidebarDrivers} from "./Employee/SidebarDrivers";
 import {SidebarVehicles} from "./Vehicle/SidebarVehicles";
+import {SidebarTasks} from "./Task/SidebarTasks";
 
 
 interface InterfaceProps {
@@ -40,6 +41,12 @@ export const Navigation: React.FunctionComponent<InterfaceProps> = (props) => {
                 <a onClick={driversClick}>Drivers</a>
             </li>
             <li>
+                <a onClick={vehiclesClick}>Vehicles</a>
+            </li>
+            <li>
+                <a onClick={tasksClick}>Tasks</a>
+            </li>
+            <li>
                 <a onClick={() => navigateWithoutSidebar(ACCOUNT)}>Account</a>
             </li>
             <li>
@@ -58,6 +65,9 @@ export const Navigation: React.FunctionComponent<InterfaceProps> = (props) => {
             </li>
             <li>
                 <a onClick={vehiclesClick}>Vehicles</a>
+            </li>
+            <li>
+                <a onClick={tasksClick}>Tasks</a>
             </li>
             <li>
                 <a onClick={() => navigateWithoutSidebar(ACCOUNT)}>Account</a>
@@ -101,6 +111,12 @@ export const Navigation: React.FunctionComponent<InterfaceProps> = (props) => {
         history.push(HOME);
         props.setSidebarDisplay(true);
         props.setSidebarComponent(<SidebarVehicles/>);
+    }
+
+    function tasksClick() {
+        history.push(HOME);
+        props.setSidebarDisplay(true);
+        props.setSidebarComponent(<SidebarTasks/>);
     }
 
     function navigateWithoutSidebar(pageName: string){

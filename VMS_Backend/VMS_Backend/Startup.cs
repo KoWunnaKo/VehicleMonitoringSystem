@@ -39,6 +39,7 @@ namespace VMS_Backend
             services.AddScoped<VehicleDataService>();
             services.AddScoped<VehicleDriverLinkService>();
             services.AddScoped<VehicleService>();
+            services.AddScoped<WorkTaskService>();
 
             services.AddControllers();
             
