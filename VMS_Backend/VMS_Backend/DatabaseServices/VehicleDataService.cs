@@ -34,5 +34,25 @@ namespace VMS_Backend.DatabaseServices
                 });
             return res.ToList();
         }
+
+        public async Task<List<VehicleData>> GetVehiclesRangeData(string from, string to)
+        {
+            await using var con = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection"));
+            var res = await con.QueryAsync<VehicleData, Vehicle, VehicleData>(
+                @"SELECT vd.*, v.*
+                    FROM vehicle_data vd
+                    JOIN vehicle v on v.id = vd.vehicle_id
+                    WHERE vd.datetime >= to_timestamp(@fromDate, 'YYYY-MM-DD hh24:mi') 
+                      and vd.datetime <= to_timestamp(@toDate, 'YYYY-MM-DD hh24:mi')
+                    ORDER BY vd.vehicle_id, vd.datetime DESC",
+                (vehicleData, vehicle) =>
+                {
+                    vehicleData.vehicle = vehicle;
+                    return vehicleData;
+                },
+                new {fromDate = from, toDate = to});
+            return res.ToList();
+        }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using VMS_Backend.Data.Models;
@@ -23,6 +24,17 @@ namespace VMS_Backend.Controllers
         public async Task<List<VehicleData>> GetVehiclesLastData()
         {
             return await _vehicleDataService.GetVehiclesLastData();
+        }
+        
+        // TODO add companyId
+        [HttpGet]
+        [Route("getVehiclesRangeData/{from}/{to}")]
+        public async Task<List<VehicleData>> GetVehiclesRangeData(string from, string to)
+        {
+            // TODO remove
+            from = "2021-03-05 17:00";
+            to = "2021-03-05 18:45";
+            return await _vehicleDataService.GetVehiclesRangeData(from, to);
         }
     }
 }

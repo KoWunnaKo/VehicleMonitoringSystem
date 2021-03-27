@@ -5,13 +5,33 @@ import Map from "../../components/Map/Map";
 import * as VehicleDataApi from "../../api/VehicleDataApi";
 import {useEffect, useState} from "react";
 import VehicleData from "../../models/VehicleData";
+import {padStart} from "../../utils/StringFunctions";
+import moment from "moment";
 
 export const HomeComponent: React.FunctionComponent = (props) => {
     const [vehicleData, setVehicleData] = useState<VehicleData[]|null>();
 
+    // TODO remove
+    const [fromHour, setFromHour] = useState<string>('09');
+    const [fromMinute, setFromMinute] = useState<string>('00');
+    const [fromMonth, setFromMonth] = useState<string>(padStart(String(moment().toDate().getMonth() + 1), 2, '0'));
+    const [fromDay, setFromDay] = useState<string>(padStart(String(moment().toDate().getDate()),2, '0'));
+    const [fromYear, setFromYear] = useState<string>(padStart(String(moment().toDate().getFullYear()), 2, '0'));
+
+    const [toHour, setToHour] = useState<string>('09');
+    const [toMinute, setToMinute] = useState<string>('00');
+    const [toMonth, setToMonth] = useState<string>(padStart(String(moment().toDate().getMonth() + 1), 2, '0'));
+    const [toDay, setToDay] = useState<string>(padStart(String(moment().toDate().getDate()),2, '0'));
+    const [toYear, setToYear] = useState<string>(padStart(String(moment().toDate().getFullYear()), 2, '0'));
+
+
     useEffect(() => {
         (async function() {
-            const res = await VehicleDataApi.getVehiclesLastData();
+            const res =
+                await VehicleDataApi.getVehiclesRangeData(
+                    `${fromYear}-${fromMonth}-${fromDay} ${fromHour}:${fromMinute}`,
+                    `${toYear}-${toMonth}-${toDay} ${toHour}:${toMinute}`,
+                );
             setVehicleData(res);
         })();
     }, []);

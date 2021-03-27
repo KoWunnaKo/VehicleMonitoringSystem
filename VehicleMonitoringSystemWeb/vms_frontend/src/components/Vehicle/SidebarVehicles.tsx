@@ -26,9 +26,9 @@ export const SidebarVehicles: React.FunctionComponent = () => {
 
     const [toHour, setToHour] = useState<string>('09');
     const [toMinute, setToMinute] = useState<string>('00');
-    const [toMonth, setToMonth] = useState<string>(padStart(String(moment().add(1, 'days').toDate().getMonth() + 1), 2, '0'));
-    const [toDay, setToDay] = useState<string>(padStart(String(moment().add(1, 'days').toDate().getDate()),2, '0'));
-    const [toYear, setToYear] = useState<string>(padStart(String(moment().add(1, 'days').toDate().getFullYear()), 2, '0'));
+    const [toMonth, setToMonth] = useState<string>(padStart(String(moment().toDate().getMonth() + 1), 2, '0'));
+    const [toDay, setToDay] = useState<string>(padStart(String(moment().toDate().getDate()),2, '0'));
+    const [toYear, setToYear] = useState<string>(padStart(String(moment().toDate().getFullYear()), 2, '0'));
 
     useEffect(() => {
         (async function() {
