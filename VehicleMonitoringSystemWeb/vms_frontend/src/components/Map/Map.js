@@ -1,23 +1,17 @@
-import React, { Component } from 'react';
+import React, {useEffect, useState} from 'react';
 import GoogleMapReact from 'google-map-react';
 import {Marker} from "./Marker";
-import * as VehicleDataApi from "../../api/VehicleDataApi";
 
-class Map extends Component {
-    constructor(props) {
-        super(props);
+function Map(props) {
+    const [markersData, setMarkersData] = useState();
 
-        this.state = {
-            markersData: null
-        }
-    }
+    useEffect(() => {
+        (async function() {
+            setMarkersData(props.vehicleData);
+        })();
+    }, [props.vehicleData]);
 
-    async componentDidMount() {
-        const vehicleData = await VehicleDataApi.getVehiclesLastData();
-        this.setState({markersData: vehicleData})
-    }
-
-    static defaultProps = {
+    const defaultProps = {
         center: {
             lat: 56.0,
             lng: 37.8
@@ -25,28 +19,26 @@ class Map extends Component {
         zoom: 10
     };
 
-    render() {
-        return (
-            // Important! Always set the container height explicitly
-            <div style={{ height: '100%', width: '100%' }}>
-                <GoogleMapReact
-                    bootstrapURLKeys={{ key: 'AIzaSyAJ0rt86agF-rASxiSC-pyzxWceMMga-ss' }}
-                    defaultCenter={this.props.center}
-                    defaultZoom={this.props.zoom}
-                >
-                    {this.state.markersData && this.state.markersData.map((vehicleData) => (
-                        <Marker
-                            key={vehicleData.id}
-                            lat={+vehicleData.latitude}
-                            lng={+vehicleData.longitude}
-                            name={vehicleData.vehicle.name}
-                        />
-                    ))}
+    return (
+        // Important! Always set the container height explicitly
+        <div style={{ height: '100%', width: '100%' }}>
+            <GoogleMapReact
+                bootstrapURLKeys={{ key: 'AIzaSyAJ0rt86agF-rASxiSC-pyzxWceMMga-ss' }}
+                defaultCenter={defaultProps.center}
+                defaultZoom={defaultProps.zoom}
+            >
+                {markersData && markersData.map((vehicleData) => (
+                    <Marker
+                        key={vehicleData.id}
+                        lat={+vehicleData.latitude}
+                        lng={+vehicleData.longitude}
+                        name={vehicleData.vehicle.name}
+                    />
+                ))}
 
-                </GoogleMapReact>
-            </div>
-        );
-    }
+            </GoogleMapReact>
+        </div>
+    );
 }
 
 export default Map;

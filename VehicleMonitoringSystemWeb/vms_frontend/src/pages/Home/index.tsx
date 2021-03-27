@@ -2,19 +2,26 @@ import * as React from "react";
 import { withAuthorization } from "../../firebase/withAuthorization";
 import {StylesDictionary} from "../../utils/StylesDictionary";
 import Map from "../../components/Map/Map";
+import * as VehicleDataApi from "../../api/VehicleDataApi";
+import {useEffect, useState} from "react";
+import VehicleData from "../../models/VehicleData";
 
-class HomeComponent extends React.Component {
-  constructor(props: any) {
-    super(props);
-  }
+export const HomeComponent: React.FunctionComponent = (props) => {
+    const [vehicleData, setVehicleData] = useState<VehicleData[]|null>();
 
-  public render() {
-      return (
-      <div style={styles.container}>
-        <Map/>
-      </div>
+    useEffect(() => {
+        (async function() {
+            const res = await VehicleDataApi.getVehiclesLastData();
+            setVehicleData(res);
+        })();
+    }, []);
+
+
+    return (
+        <div style={styles.container}>
+            <Map vehicleData={vehicleData}/>
+        </div>
     );
-  }
 }
 
 const styles: StylesDictionary  = {
