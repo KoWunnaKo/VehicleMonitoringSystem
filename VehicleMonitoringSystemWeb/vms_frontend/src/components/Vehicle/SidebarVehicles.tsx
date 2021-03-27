@@ -18,11 +18,17 @@ import {padStart} from "../../utils/StringFunctions";
 export const SidebarVehicles: React.FunctionComponent = () => {
     const [vehicles, setVehicles] = useState<Vehicle[]|null>(null);
 
-    const [hour, setHour] = useState('09');
-    const [minute, setMinute] = useState('00');
-    const [month, setMonth] = useState(padStart(String(moment().toDate().getMonth() + 1), 2, '0'));
-    const [date, setDate] = useState(padStart(String(moment().toDate().getDate()),2, '0'));
-    const [year, setYear] = useState(padStart(String(moment().toDate().getFullYear()), 2, '0'));
+    const [fromHour, setFromHour] = useState<string>('09');
+    const [fromMinute, setFromMinute] = useState<string>('00');
+    const [fromMonth, setFromMonth] = useState<string>(padStart(String(moment().toDate().getMonth() + 1), 2, '0'));
+    const [fromDay, setFromDay] = useState<string>(padStart(String(moment().toDate().getDate()),2, '0'));
+    const [fromYear, setFromYear] = useState<string>(padStart(String(moment().toDate().getFullYear()), 2, '0'));
+
+    const [toHour, setToHour] = useState<string>('09');
+    const [toMinute, setToMinute] = useState<string>('00');
+    const [toMonth, setToMonth] = useState<string>(padStart(String(moment().add(1, 'days').toDate().getMonth() + 1), 2, '0'));
+    const [toDay, setToDay] = useState<string>(padStart(String(moment().add(1, 'days').toDate().getDate()),2, '0'));
+    const [toYear, setToYear] = useState<string>(padStart(String(moment().add(1, 'days').toDate().getFullYear()), 2, '0'));
 
     useEffect(() => {
         (async function() {
@@ -30,6 +36,28 @@ export const SidebarVehicles: React.FunctionComponent = () => {
             setVehicles(await VehicleApi.getAllVehicles(1));
         })();
     }, []);
+
+    const setTimeRange = (res: string[]) => {
+        const fromDateTime = res[0].split(' ');
+        const fromDate = fromDateTime[0].split('-');
+        const fromTime = fromDateTime[1].split(':');
+
+        setFromYear(fromDate[0]);
+        setFromMonth(fromDate[1]);
+        setFromDay(fromDate[2]);
+        setFromHour(fromTime[0]);
+        setFromMinute(fromTime[1]);
+
+        const toDateTime = res[1].split(' ');
+        const toDate = toDateTime[0].split('-');
+        const toTime = toDateTime[1].split(':');
+
+        setToYear(toDate[0]);
+        setToMonth(toDate[1]);
+        setToDay(toDate[2]);
+        setToHour(toTime[0]);
+        setToMinute(toTime[1]);
+    }
 
     return (
         <div style={styles.container}>
@@ -65,25 +93,25 @@ export const SidebarVehicles: React.FunctionComponent = () => {
                 show={false} // default is false
                 disabled={false} // default is false
                 allowPageClickToClose={true} // default is true
-                onConfirm={(res: any) => console.log(res)}
+                onConfirm={(res: string[]) => setTimeRange(res)}
                 onClose={() => console.log('onClose')}
                 style={styles.timeRangePicker}
                 placeholder={['Start Time', 'End Time']}
                 ////////////////////
                 // IMPORTANT DESC //
                 ////////////////////
-                defaultDates={[year+'-'+month+'-'+date,year+'-'+month+'-'+date]}
+                defaultDates={[fromYear+'-'+fromMonth+'-'+fromDay,toYear+'-'+toMonth+'-'+toDay]}
                 // ['YYYY-MM-DD', 'YYYY-MM-DD']
                 // This is the value you choosed every time.
-                defaultTimes={[hour+':'+minute,hour+':'+minute]}
+                defaultTimes={[fromHour+':'+fromMinute,toHour+':'+toMinute]}
                 // ['hh:mm', 'hh:mm']
                 // This is the value you choosed every time.
-                initialDates={[year+'-'+month+'-'+date,year+'-'+month+'-'+date]}
+                initialDates={[fromYear+'-'+fromMonth+'-'+fromDay,toYear+'-'+toMonth+'-'+toDay]}
                 // ['YYYY-MM-DD', 'YYYY-MM-DD']
                 // This is the initial dates.
                 // If provied, input will be reset to this value when the clear icon hits,
                 // otherwise input will be display placeholder
-                initialTimes={[hour+':'+minute,hour+':'+minute]}
+                initialTimes={[fromHour+':'+fromMinute,toHour+':'+toMinute]}
                 // ['hh:mm', 'hh:mm']
                 // This is the initial times.
                 // If provied, input will be reset to this value when the clear icon hits,
