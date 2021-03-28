@@ -4,42 +4,59 @@ import {StylesDictionary} from "../../utils/StylesDictionary";
 import * as VehicleDataApi from "../../api/VehicleDataApi";
 import {useEffect, useState} from "react";
 import VehicleData from "../../models/VehicleData";
-import {padStart} from "../../utils/StringFunctions";
-import moment from "moment";
 import MapContainer from "../../components/Map/MapContainer";
+import 'react-minimal-datetime-range/lib/react-minimal-datetime-range.min.css';
+import { RangePicker } from 'react-minimal-datetime-range';
+import {formatDateTime, getDate, getDefaultDateTime, getTime} from "../../utils/DateFunctions";
 
 export const HomeComponent: React.FunctionComponent = (props) => {
     const [markersData, setMarkersData] = useState<VehicleData[]|null>();
     const [trajectoryData, setTrajectoryData] = useState<VehicleData[]|null>();
-
-    // TODO remove
-    const [fromHour, setFromHour] = useState<string>('09');
-    const [fromMinute, setFromMinute] = useState<string>('00');
-    const [fromMonth, setFromMonth] = useState<string>(padStart(String(moment().toDate().getMonth() + 1), 2, '0'));
-    const [fromDay, setFromDay] = useState<string>(padStart(String(moment().toDate().getDate()),2, '0'));
-    const [fromYear, setFromYear] = useState<string>(padStart(String(moment().toDate().getFullYear()), 2, '0'));
-
-    const [toHour, setToHour] = useState<string>('09');
-    const [toMinute, setToMinute] = useState<string>('00');
-    const [toMonth, setToMonth] = useState<string>(padStart(String(moment().toDate().getMonth() + 1), 2, '0'));
-    const [toDay, setToDay] = useState<string>(padStart(String(moment().toDate().getDate()),2, '0'));
-    const [toYear, setToYear] = useState<string>(padStart(String(moment().toDate().getFullYear()), 2, '0'));
+    const [startDateTime, setStartDateTime] = useState<string>(getDefaultDateTime());
+    const [endDateTime, setEndDateTime] = useState<string>(getDefaultDateTime());
 
 
     useEffect(() => {
         (async function() {
             setMarkersData(await VehicleDataApi.getVehiclesLastData());
-            setTrajectoryData(await VehicleDataApi.getVehiclesRangeData(
-                    `${fromYear}-${fromMonth}-${fromDay} ${fromHour}:${fromMinute}`,
-                    `${toYear}-${toMonth}-${toDay} ${toHour}:${toMinute}`,
-                ));
+            setTrajectoryData(
+                await VehicleDataApi.getVehiclesRangeData(startDateTime, endDateTime)
+            );
         })();
-    }, []);
+    }, [startDateTime, endDateTime]);
 
+    const setDateTimeRange = async (res: string[]) => {
+        const fromDateTime = res[0].split(' ');
+        const fromDate = fromDateTime[0].split('-');
+        const fromTime = fromDateTime[1].split(':');
+        setStartDateTime(formatDateTime(fromDate[0], fromDate[1], fromDate[2], fromTime[0], fromTime[1]));
+
+        const toDateTime = res[1].split(' ');
+        const toDate = toDateTime[0].split('-');
+        const toTime = toDateTime[1].split(':');
+        setEndDateTime(formatDateTime(toDate[0], toDate[1], toDate[2], toTime[0], toTime[1]));
+    }
 
     return (
         <div style={styles.container}>
-            <MapContainer markersData={markersData} trajectoryData={trajectoryData}/>
+            <div>
+                <MapContainer markersData={markersData} trajectoryData={trajectoryData}/>
+            </div>
+            <div style={styles.rangePickerContainer}>
+                <RangePicker
+                    locale="en-us"
+                    show={false} // default is false
+                    disabled={false} // default is false
+                    allowPageClickToClose={true} // default is true
+                    onConfirm={async (res: string[]) => await setDateTimeRange(res)}
+                    // onClose={() => console.log('rangePicker: onClose')}
+                    style={styles.timeRangePicker}
+                    defaultDates={[getDate(startDateTime), getDate(endDateTime)]}
+                    defaultTimes={[getTime(startDateTime), getTime(endDateTime)]}
+                    initialDates={[getDate(startDateTime), getDate(endDateTime)]}
+                    initialTimes={[getTime(startDateTime), getTime(endDateTime)]}
+                />
+            </div>
         </div>
     );
 }
@@ -50,6 +67,10 @@ const styles: StylesDictionary  = {
         flex: 1,
         flexDirection: 'column',
         overflow: 'hidden'
+    },
+    rangePickerContainer: {
+        width: 400,
+        alignSelf: 'flex-end'
     }
 };
 

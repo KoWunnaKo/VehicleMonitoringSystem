@@ -36,16 +36,16 @@ namespace VMS_Backend.DatabaseServices
             return res.ToList();
         }
 
-        public async Task<Dictionary<int, List<VehicleData>>> GetVehiclesRangeData(string from, string to)
+        public async Task<Dictionary<int, List<VehicleData>>> GetVehiclesRangeData(string startDateTime, string endDateTime)
         {
             await using var con = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection"));
             var vehicleData = await con.QueryAsync<VehicleData>(
                 @"SELECT vd.*
                     FROM vehicle_data vd
-                    WHERE vd.datetime >= to_timestamp(@fromDate, 'YYYY-MM-DD hh24:mi') 
-                      and vd.datetime <= to_timestamp(@toDate, 'YYYY-MM-DD hh24:mi')
+                    WHERE vd.datetime >= to_timestamp(@startDateTime, 'YYYY-MM-DD hh24:mi') 
+                      and vd.datetime <= to_timestamp(@endDateTime, 'YYYY-MM-DD hh24:mi')
                     ORDER BY vd.datetime DESC",
-                new {fromDate = from, toDate = to});
+                new {startDateTime, endDateTime});
 
 
             var res = new Dictionary<int, List<VehicleData>>();

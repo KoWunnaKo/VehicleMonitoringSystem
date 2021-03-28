@@ -26,8 +26,8 @@ public class LocationService {
     public static LocationService instance;
 
     // Release = 120000; Debug = 10000
-    private static final int UPDATE_INTERVAL_MS = 1000;
-    private static final int FASTEST_UPDATE_INTERVAL_MS = 1000;
+    private static final int UPDATE_INTERVAL_MS = 60000;
+    private static final int FASTEST_UPDATE_INTERVAL_MS = 60000;
 
     private FusedLocationProviderClient fusedLocationClient;
 

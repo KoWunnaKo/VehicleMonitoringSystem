@@ -97,8 +97,6 @@ export const Navigation: React.FunctionComponent<InterfaceProps> = (props) => {
     function homeClick() {
         history.push(HOME);
         props.setSidebarDisplay(false);
-        // const ChildComp1: React.FC = () => (<h1>This is a child component 1</h1>);
-        // props.setSidebarComponent(<ChildComp1/>);
     }
 
     function driversClick() {
