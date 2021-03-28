@@ -1,13 +1,12 @@
 import * as React from "react";
 import { withAuthorization } from "../../firebase/withAuthorization";
 import {StylesDictionary} from "../../utils/StylesDictionary";
-import Map from "../../components/Map/Map";
 import * as VehicleDataApi from "../../api/VehicleDataApi";
 import {useEffect, useState} from "react";
 import VehicleData from "../../models/VehicleData";
 import {padStart} from "../../utils/StringFunctions";
 import moment from "moment";
-import NewMap from "../../components/NewMap/NewMap";
+import MapContainer from "../../components/Map/MapContainer";
 
 export const HomeComponent: React.FunctionComponent = (props) => {
     const [markersData, setMarkersData] = useState<VehicleData[]|null>();
@@ -40,8 +39,7 @@ export const HomeComponent: React.FunctionComponent = (props) => {
 
     return (
         <div style={styles.container}>
-            {/*<Map markersData={markersData} trajectoryData={trajectoryData}/>*/}
-            <NewMap/>
+            <MapContainer markersData={markersData}/>
         </div>
     );
 }
