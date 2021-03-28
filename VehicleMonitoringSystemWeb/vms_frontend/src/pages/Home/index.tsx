@@ -69,6 +69,7 @@ const styles: StylesDictionary  = {
         overflow: 'hidden'
     },
     rangePickerContainer: {
+        marginTop: 10,
         width: 400,
         alignSelf: 'flex-end'
     }
