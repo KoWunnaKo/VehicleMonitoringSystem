@@ -9,7 +9,8 @@ import {padStart} from "../../utils/StringFunctions";
 import moment from "moment";
 
 export const HomeComponent: React.FunctionComponent = (props) => {
-    const [vehicleData, setVehicleData] = useState<VehicleData[]|null>();
+    const [markersData, setMarkersData] = useState<VehicleData[]|null>();
+    const [trajectoryData, setTrajectoryData] = useState<VehicleData[]|null>();
 
     // TODO remove
     const [fromHour, setFromHour] = useState<string>('09');
@@ -27,19 +28,18 @@ export const HomeComponent: React.FunctionComponent = (props) => {
 
     useEffect(() => {
         (async function() {
-            const res =
-                await VehicleDataApi.getVehiclesRangeData(
+            setMarkersData(await VehicleDataApi.getVehiclesLastData());
+            setTrajectoryData(await VehicleDataApi.getVehiclesRangeData(
                     `${fromYear}-${fromMonth}-${fromDay} ${fromHour}:${fromMinute}`,
                     `${toYear}-${toMonth}-${toDay} ${toHour}:${toMinute}`,
-                );
-            setVehicleData(res);
+                ));
         })();
     }, []);
 
 
     return (
         <div style={styles.container}>
-            <Map vehicleData={vehicleData}/>
+            <Map markersData={markersData} trajectoryData={trajectoryData}/>
         </div>
     );
 }

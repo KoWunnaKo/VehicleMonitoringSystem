@@ -4,12 +4,14 @@ import {Marker} from "./Marker";
 
 function Map(props) {
     const [markersData, setMarkersData] = useState();
+    const [trajectoryData, setTrajectoryData] = useState();
 
     useEffect(() => {
         (async function() {
-            setMarkersData(props.vehicleData);
+            setMarkersData(props.markersData);
+            setTrajectoryData(props.trajectoryData);
         })();
-    }, [props.vehicleData]);
+    }, [props.markersData, props.trajectoryData]);
 
     const defaultProps = {
         center: {
@@ -26,6 +28,8 @@ function Map(props) {
                 bootstrapURLKeys={{ key: 'AIzaSyAJ0rt86agF-rASxiSC-pyzxWceMMga-ss' }}
                 defaultCenter={defaultProps.center}
                 defaultZoom={defaultProps.zoom}
+
+                Dra
             >
                 {markersData && markersData.map((vehicleData) => (
                     <Marker
