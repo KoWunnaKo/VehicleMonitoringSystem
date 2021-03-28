@@ -7,6 +7,7 @@ import {useEffect, useState} from "react";
 import VehicleData from "../../models/VehicleData";
 import {padStart} from "../../utils/StringFunctions";
 import moment from "moment";
+import NewMap from "../../components/NewMap/NewMap";
 
 export const HomeComponent: React.FunctionComponent = (props) => {
     const [markersData, setMarkersData] = useState<VehicleData[]|null>();
@@ -39,7 +40,8 @@ export const HomeComponent: React.FunctionComponent = (props) => {
 
     return (
         <div style={styles.container}>
-            <Map markersData={markersData} trajectoryData={trajectoryData}/>
+            {/*<Map markersData={markersData} trajectoryData={trajectoryData}/>*/}
+            <NewMap/>
         </div>
     );
 }
