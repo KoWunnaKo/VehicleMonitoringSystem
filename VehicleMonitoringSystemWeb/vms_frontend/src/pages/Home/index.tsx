@@ -39,7 +39,7 @@ export const HomeComponent: React.FunctionComponent = (props) => {
 
     return (
         <div style={styles.container}>
-            <MapContainer markersData={markersData}/>
+            <MapContainer markersData={markersData} trajectoryData={trajectoryData}/>
         </div>
     );
 }

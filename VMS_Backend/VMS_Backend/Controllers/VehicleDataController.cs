@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using VMS_Backend.Data.Models;
 using VMS_Backend.DatabaseServices;
 
@@ -29,12 +30,14 @@ namespace VMS_Backend.Controllers
         // TODO add companyId
         [HttpGet]
         [Route("getVehiclesRangeData/{from}/{to}")]
-        public async Task<List<VehicleData>> GetVehiclesRangeData(string from, string to)
+        public async Task<string> GetVehiclesRangeData(string from, string to)
         {
             // TODO remove
             from = "2021-03-05 17:00";
             to = "2021-03-05 18:45";
-            return await _vehicleDataService.GetVehiclesRangeData(from, to);
+            var res = await _vehicleDataService.GetVehiclesRangeData(from, to);
+            var json = JsonConvert.SerializeObject(res);
+            return json;
         }
     }
 }
