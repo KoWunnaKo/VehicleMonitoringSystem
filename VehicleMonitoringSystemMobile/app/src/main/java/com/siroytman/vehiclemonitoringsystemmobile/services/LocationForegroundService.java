@@ -119,6 +119,7 @@ public class LocationForegroundService extends Service implements ILocationManag
     @Override
     public void onLocationChanged(Location location) {
         String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+        // TODO vehicleId
         VehicleData vehicleData =
                 new VehicleData(2, userId, new Date(), location.getLatitude(), location.getLongitude());
 

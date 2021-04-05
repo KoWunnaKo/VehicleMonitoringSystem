@@ -26,7 +26,7 @@ import java.util.TimerTask;
 
 public class VehicleDataSynchronizationService {
     public static final String TAG = "LocationDataSyncService";
-    private static final int TIME_INTERVAL = 10000;
+    private static final int TIME_INTERVAL = 120000;
     private static boolean isSynchronizationTaskScheduled = false;
 
     private static List<VehicleData> vehicleDataList;

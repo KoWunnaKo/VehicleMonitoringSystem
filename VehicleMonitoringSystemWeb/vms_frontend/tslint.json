@@ -20,6 +20,6 @@
     "no-console": false
   },
   "linterOptions": {
-    "exclude": ["config/**/*.js", "node_modules/**/*.ts"]
+    "exclude": ["config/**/*.js", "node_modules/**/*.ts", "node_modules/**/*.js"]
   }
 }

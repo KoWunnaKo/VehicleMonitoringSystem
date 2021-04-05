@@ -9,7 +9,7 @@ import Vehicle from "../../models/Vehicle";
 import {VehicleListItem} from "./VehicleListItem";
 import {CreateVehicleForm} from "./CreateVehicleForm";
 import "../Employee/SidebarDrivers.css";
-
+import 'react-minimal-datetime-range/lib/react-minimal-datetime-range.min.css';
 
 export const SidebarVehicles: React.FunctionComponent = () => {
     const [vehicles, setVehicles] = useState<Vehicle[]|null>(null);
@@ -20,6 +20,7 @@ export const SidebarVehicles: React.FunctionComponent = () => {
             setVehicles(await VehicleApi.getAllVehicles(1));
         })();
     }, []);
+
 
     return (
         <div style={styles.container}>
@@ -63,6 +64,10 @@ const styles: StylesDictionary  = {
         marginTop: 10,
         marginBottom: 10,
         backgroundColor: Colors.primaryBlue
+    },
+    timeRangePicker: {
+        width: '300px',
+        margin: '0 auto'
     }
 };
 

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Button, FormControl, InputLabel, MenuItem, Select} from '@material-ui/core';
+import {Button, FormControl, MenuItem, Select} from '@material-ui/core';
 import {StylesDictionary} from "../../../utils/StylesDictionary";
 import Vehicle from "../../../models/Vehicle";
 import {useEffect, useState} from "react";
@@ -9,13 +9,11 @@ import VehicleDriverLink from "../../../models/VehicleDriverLink";
 import * as VehicleDriverLinkApi from "../../../api/VehicleDriverLinkApi";
 import Colors from "../../../constants/Colors";
 
-
 interface InterfaceProps {
     vehicle: Vehicle;
 }
 
 export const PropertiesDriversVehicleFormName = 'Drivers';
-
 
 export const PropertiesDriversVehicleForm: React.FunctionComponent<InterfaceProps> = (props) => {
     const {vehicle} = props;
@@ -79,6 +77,5 @@ const styles: StylesDictionary  = {
         minWidth: 200,
         maxWidth: 300,
         alignSelf: 'center'
-    },
-
+    }
 };

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using VMS_Backend.Data.Models;
 using VMS_Backend.DatabaseServices;
 
@@ -20,9 +21,19 @@ namespace VMS_Backend.Controllers
         // TODO add companyId
         [HttpGet]
         [Route("getVehiclesLastData")]
-        public async Task<List<VehicleData>> GetVehiclesLastData()
+        public async Task<ActionResult<List<VehicleData>>> GetVehiclesLastData()
         {
-            return await _vehicleDataService.GetVehiclesLastData();
+            return Ok(await _vehicleDataService.GetVehiclesLastData());
+        }
+        
+        // TODO add companyId
+        [HttpGet]
+        [Route("getVehiclesRangeData/{startDateTime}/{endDateTime}")]
+        public async Task<ActionResult<string>> GetVehiclesRangeData(string startDateTime, string endDateTime)
+        {
+            var res = await _vehicleDataService.GetVehiclesRangeData(startDateTime, endDateTime);
+            var json = JsonConvert.SerializeObject(res);
+            return Ok(json);
         }
     }
 }

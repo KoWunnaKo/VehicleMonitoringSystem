@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Npgsql;
 using VMS_Backend.Data;
 using VMS_Backend.Data.Models;
@@ -34,5 +35,34 @@ namespace VMS_Backend.DatabaseServices
                 });
             return res.ToList();
         }
+
+        public async Task<Dictionary<int, List<VehicleData>>> GetVehiclesRangeData(string startDateTime, string endDateTime)
+        {
+            await using var con = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection"));
+            var vehicleData = await con.QueryAsync<VehicleData>(
+                @"SELECT vd.*
+                    FROM vehicle_data vd
+                    WHERE vd.datetime >= to_timestamp(@startDateTime, 'YYYY-MM-DD hh24:mi') 
+                      and vd.datetime <= to_timestamp(@endDateTime, 'YYYY-MM-DD hh24:mi')
+                    ORDER BY vd.datetime DESC",
+                new {startDateTime, endDateTime});
+
+
+            var res = new Dictionary<int, List<VehicleData>>();
+            foreach (var vd in vehicleData)
+            {
+                if (res.ContainsKey(vd.vehicle_id))
+                {
+                    res[vd.vehicle_id].Add(vd);
+                }
+                else
+                {
+                    res.Add(vd.vehicle_id, new List<VehicleData> {vd});
+                }
+            }
+            
+            return res;
+        }
+
     }
 }
