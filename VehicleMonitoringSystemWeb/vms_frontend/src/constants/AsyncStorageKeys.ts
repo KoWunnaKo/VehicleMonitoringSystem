@@ -1,2 +1,2 @@
-export const STORAGE_KEY_AUTH_USER = "authUser";
-export const STORAGE_KEY_DB_AUTH_USER = "dbAuthUser";
+export const STORAGE_KEY_FIREBASE_USER = "firebaseUser";
+export const STORAGE_KEY_DB_USER = "dbUser";

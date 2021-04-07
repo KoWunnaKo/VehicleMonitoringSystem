@@ -22,8 +22,7 @@ export const PropertiesDriversVehicleForm: React.FunctionComponent<InterfaceProp
 
     useEffect(() => {
         (async function() {
-            // TODO companyId number
-            const varDrivers = await EmployeeApi.getAllDrivers(1);
+            const varDrivers = await EmployeeApi.getAllDrivers();
             setDrivers(varDrivers);
             const varDriver = await VehicleDriverLinkApi.getCurrentDriver(vehicle.id);
             if (varDriver && varDrivers) {

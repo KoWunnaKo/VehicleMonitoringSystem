@@ -5,7 +5,7 @@ import {Button, TextField} from "@material-ui/core";
 import {StylesDictionary} from "../../utils/StylesDictionary";
 import Colors from "../../constants/Colors";
 import {PasswordForgetLink} from "../PasswordForget";
-import {STORAGE_KEY_AUTH_USER} from "../../constants/AsyncStorageKeys";
+import {STORAGE_KEY_FIREBASE_USER} from "../../constants/AsyncStorageKeys";
 import {HOME} from "../../constants/Routes";
 import * as AuthApi from "../../api/AuthApi";
 
@@ -39,7 +39,7 @@ export class SignInForm extends React.Component<InterfaceProps, InterfaceState> 
    public componentDidMount() {
     // console.log('SignIn.componentDidMount');
     // Redirect back to home if user is logged in
-    const dbUser = localStorage.getItem(STORAGE_KEY_AUTH_USER);
+    const dbUser = localStorage.getItem(STORAGE_KEY_FIREBASE_USER);
     if (!!dbUser) {
       // console.log(`SignIn.componentDidMount, dbUser: ${JSON.stringify(dbUser)}`);
       const { history } = this.props;

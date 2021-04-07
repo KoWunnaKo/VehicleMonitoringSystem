@@ -1,7 +1,13 @@
 import axios from 'axios';
 import Employee from "../models/Employee";
+import {getDbUserCompanyId} from "../utils/UserUtil";
 
-export async function getAllDrivers(companyId: number): Promise<Employee[] | null> {
+export async function getAllDrivers(): Promise<Employee[] | null> {
+  const companyId = getDbUserCompanyId();
+  if (!companyId) {
+    return null;
+  }
+
   try {
     const response = await axios.get<Employee[]>(`employee/getAllDrivers/${companyId}`);
     const drivers = response.data;

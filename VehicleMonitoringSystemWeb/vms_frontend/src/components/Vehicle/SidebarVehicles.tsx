@@ -16,8 +16,7 @@ export const SidebarVehicles: React.FunctionComponent = () => {
 
     useEffect(() => {
         (async function() {
-            // TODO companyId number
-            setVehicles(await VehicleApi.getAllVehicles(1));
+            setVehicles(await VehicleApi.getAllVehicles());
         })();
     }, []);
 

@@ -14,8 +14,7 @@ export default class Employee {
               telegramName: string|undefined, password: string|undefined) {
     this.id = id;
     this.roleId = roleId;
-    // TODO set companyId
-    this.companyId = 1;
+    this.companyId = companyId;
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;

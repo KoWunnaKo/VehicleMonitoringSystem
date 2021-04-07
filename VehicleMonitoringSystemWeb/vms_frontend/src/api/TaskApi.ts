@@ -1,8 +1,14 @@
 import axios from 'axios';
 import Task from "../models/Task";
 import Employee from "../models/Employee";
+import {getDbUserCompanyId} from "../utils/UserUtil";
 
-export async function getAllTasks(companyId: number): Promise<Task[] | null> {
+export async function getAllTasks(): Promise<Task[] | null> {
+  const companyId = getDbUserCompanyId();
+  if (!companyId) {
+    return null;
+  }
+
   try {
     const response = await axios.get<Task[]>(`task/getAll/${companyId}`);
     const tasks = response.data;

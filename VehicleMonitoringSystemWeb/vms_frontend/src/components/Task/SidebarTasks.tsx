@@ -12,8 +12,6 @@ import {TaskListItem} from "./TaskListItem";
 import {TaskStatusListItem} from "./TaskStatusListItem";
 import Collapsible from 'react-collapsible';
 
-
-
 export const SidebarTasks: React.FunctionComponent = () => {
     const [tasks, setTasks] = useState<Task[]|null>(null);
     const [statuses, setStatuses] = useState<string[]|null>(['Created', 'In progress', 'Resolved']);
@@ -25,10 +23,9 @@ export const SidebarTasks: React.FunctionComponent = () => {
     }, []);
 
     async function updateTasks() {
-        // TODO companyId number
-        const resTasks = await TaskApi.getAllTasks(1);
+        const resTasks = await TaskApi.getAllTasks();
         setTasks(resTasks);
-        console.log(`updateTask: ${JSON.stringify(resTasks)}`);
+        // console.log(`updateTask: ${JSON.stringify(resTasks)}`);
     }
 
     // function onStatusClick(status: string) {

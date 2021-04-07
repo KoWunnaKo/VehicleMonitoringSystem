@@ -1,7 +1,13 @@
 import axios from 'axios';
 import Vehicle from "../models/Vehicle";
+import {getDbUserCompanyId} from "../utils/UserUtil";
 
-export async function getAllVehicles(companyId: number): Promise<Vehicle[] | null> {
+export async function getAllVehicles(): Promise<Vehicle[] | null> {
+  const companyId = getDbUserCompanyId();
+  if (!companyId) {
+    return null;
+  }
+
   try {
     const response = await axios.get<Vehicle[]>(`vehicle/getAll/${companyId}`);
     const vehicles = response.data;

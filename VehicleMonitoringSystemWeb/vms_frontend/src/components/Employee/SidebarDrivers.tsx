@@ -10,14 +10,12 @@ import Popup from "reactjs-popup";
 import {CreateEmployeeForm} from "./CreateEmployeeForm";
 import "./SidebarDrivers.css";
 
-
 export const SidebarDrivers: React.FunctionComponent = () => {
     const [drivers, setDrivers] = useState<Employee[]|null>(null);
 
     useEffect(() => {
         (async function() {
-            // TODO companyId number
-            setDrivers(await EmployeeApi.getAllDrivers(1));
+            setDrivers(await EmployeeApi.getAllDrivers());
         })();
     }, []);
 
@@ -32,7 +30,7 @@ export const SidebarDrivers: React.FunctionComponent = () => {
                 {(close: any) => {
                     // Update drivers list
                     // TODO remove - constantly updating
-                    EmployeeApi.getAllDrivers(1).then(res => setDrivers(res));
+                    EmployeeApi.getAllDrivers().then(res => setDrivers(res));
 
                     return (
                         <div className="modal">

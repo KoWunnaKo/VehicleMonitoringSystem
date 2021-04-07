@@ -29,8 +29,7 @@ export const PropertiesGeneralTaskForm: React.FunctionComponent<InterfaceProps> 
 
     useEffect(() => {
         (async function() {
-            // TODO companyId number
-            setDrivers(await EmployeeApi.getAllDrivers(1));
+            setDrivers(await EmployeeApi.getAllDrivers());
         })();
     }, []);
 

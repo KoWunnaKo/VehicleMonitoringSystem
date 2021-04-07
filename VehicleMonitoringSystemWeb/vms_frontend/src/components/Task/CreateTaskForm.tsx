@@ -5,11 +5,11 @@ import {StylesDictionary} from "../../utils/StylesDictionary";
 import {useEffect, useState} from "react";
 import Task from "../../models/Task";
 import * as TaskApi from "../../api/TaskApi";
-import {STORAGE_KEY_AUTH_USER} from "../../constants/AsyncStorageKeys";
 import Employee from "../../models/Employee";
 import * as EmployeeApi from "../../api/EmployeeApi";
 import Select from "../../../node_modules/@material-ui/core/Select/Select";
 import moment from "moment";
+import {getDbUser} from "../../utils/UserUtil";
 
 interface InterfaceProps {
   closeModal: () => void;
@@ -27,22 +27,19 @@ export const CreateTaskForm: React.FunctionComponent<InterfaceProps> = (props) =
 
     useEffect(() => {
         (async function() {
-            // TODO companyId number
-            setDrivers(await EmployeeApi.getAllDrivers(1));
+            setDrivers(await EmployeeApi.getAllDrivers());
         })();
     }, []);
 
     async function onSubmit(event: any) {
         event.preventDefault();
-        const jsonDbUser = localStorage.getItem(STORAGE_KEY_AUTH_USER);
-        if (!!jsonDbUser) {
-            const dbUser = JSON.parse(jsonDbUser);
-            if (!!dbUser) {
-                // TODO duedate
-                const task = new Task(1, selectedDriver, dbUser.id, undefined,
-                    undefined, name, description, undefined, comment);
-                await TaskApi.createTask(task)
-            }
+
+        const dbUser = getDbUser();
+        if (!!dbUser) {
+            // TODO duedate
+            const task = new Task(dbUser.companyId, selectedDriver, dbUser.id, undefined,
+                undefined, name, description, undefined, comment);
+            await TaskApi.createTask(task)
         }
 
         await props.updateTasks();

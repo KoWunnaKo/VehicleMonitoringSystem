@@ -13,11 +13,11 @@ import { Navigation } from "./components/Navigation";
 import Employee from "./models/Employee";
 import {Sidebar} from "./components/Sidebar/Sidebar";
 import {StylesDictionary} from "./utils/StylesDictionary";
-import {STORAGE_KEY_AUTH_USER, STORAGE_KEY_DB_AUTH_USER} from "./constants/AsyncStorageKeys";
+import {clearUsers, setDbUser, setFirebaseUser} from "./utils/UserUtil";
 
 interface AppComponentState {
-  authUser: any;
-  dbAuthUser: Employee|null;
+  firebaseUser: any;
+  dbUser: Employee|null;
   sidebarDisplay: boolean;
   sidebarComponent: React.ReactNode;
 }
@@ -27,33 +27,31 @@ class AppComponent extends React.Component<{}, AppComponentState> {
     super(props);
 
     this.state = {
-      authUser: null,
-      dbAuthUser: null,
+      firebaseUser: null,
+      dbUser: null,
       sidebarDisplay: false,
       sidebarComponent: null
     };
   }
 
   public componentDidMount() {
-    // console.log(`App.componentDidMount`);
-    localStorage.clear();
-    firebase.auth.onAuthStateChanged(async authUser => {
-      if (!!authUser) {
-        localStorage.setItem(STORAGE_KEY_AUTH_USER, JSON.stringify(authUser));
+    clearUsers();
+    firebase.auth.onAuthStateChanged(async firebaseUser => {
+      if (!!firebaseUser) {
+        setFirebaseUser(firebaseUser);
         const dbUser = await AuthApi.getCurrentUser();
-        localStorage.setItem(STORAGE_KEY_DB_AUTH_USER, JSON.stringify(dbUser));
-        this.setState(() => ({ authUser, dbAuthUser: dbUser }))
+        setDbUser(dbUser);
+        this.setState(() => ({ firebaseUser, dbUser }))
       }
       else {
-        this.setState(() => ({ authUser: null, dbAuthUser: null }))
-        localStorage.clear();
+        this.setState(() => ({ firebaseUser: null, dbUser: null }))
+        clearUsers();
       }
     });
   }
 
   public componentWillUnmount() {
-    // console.log(`App.componentWillUnmount`);
-    localStorage.clear();
+    clearUsers();
   }
 
   public setSidebarDisplay = (display: boolean) => {
@@ -68,7 +66,7 @@ class AppComponent extends React.Component<{}, AppComponentState> {
     return (
       <BrowserRouter>
         <div>
-          <Navigation dbUser={this.state.dbAuthUser}
+          <Navigation dbUser={this.state.dbUser}
                       setSidebarDisplay={this.setSidebarDisplay}
                       setSidebarComponent={this.setSidebarComponent}/>
           <div style={styles.container}>
