@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using Npgsql;
 using VMS_Backend.Data;
 using VMS_Backend.Data.Models;
@@ -19,34 +18,35 @@ namespace VMS_Backend.DatabaseServices
             Configuration = configuration;
         }
 
-        public async Task<List<VehicleData>> GetVehiclesLastData()
+        public async Task<List<VehicleData>> GetVehiclesLastData(int companyId)
         {
             await using var con = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection"));
             var res = await con.QueryAsync<VehicleData, Vehicle, VehicleData>(
                 @"SELECT DISTINCT ON (vd.vehicle_id)
                     vd.*, v.*
                     FROM vehicle_data vd
-                    JOIN vehicle v on v.id = vd.vehicle_id
+                    JOIN vehicle v on v.id = vd.vehicle_id and v.company_id = @companyId
                     ORDER BY vd.vehicle_id, vd.datetime DESC",
                 (vehicleData, vehicle) =>
                 {
                     vehicleData.vehicle = vehicle;
                     return vehicleData;
-                });
+                },
+                new {companyId});
             return res.ToList();
         }
 
-        public async Task<Dictionary<int, List<VehicleData>>> GetVehiclesRangeData(string startDateTime, string endDateTime)
+        public async Task<Dictionary<int, List<VehicleData>>> GetVehiclesRangeData(int companyId, string startDateTime, string endDateTime)
         {
             await using var con = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection"));
             var vehicleData = await con.QueryAsync<VehicleData>(
                 @"SELECT vd.*
                     FROM vehicle_data vd
-                    WHERE vd.datetime >= to_timestamp(@startDateTime, 'YYYY-MM-DD hh24:mi') 
+                    JOIN vehicle v on vd.vehicle_id = v.id and v.company_id = @companyId
+                    WHERE  vd.datetime >= to_timestamp(@startDateTime, 'YYYY-MM-DD hh24:mi') 
                       and vd.datetime <= to_timestamp(@endDateTime, 'YYYY-MM-DD hh24:mi')
                     ORDER BY vd.datetime DESC",
-                new {startDateTime, endDateTime});
-
+                new {companyId, startDateTime, endDateTime});
 
             var res = new Dictionary<int, List<VehicleData>>();
             foreach (var vd in vehicleData)
@@ -63,6 +63,5 @@ namespace VMS_Backend.DatabaseServices
             
             return res;
         }
-
     }
 }

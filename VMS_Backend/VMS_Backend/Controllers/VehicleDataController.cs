@@ -18,20 +18,18 @@ namespace VMS_Backend.Controllers
             _vehicleDataService = vehicleDataService;
         }
 
-        // TODO add companyId
         [HttpGet]
-        [Route("getVehiclesLastData")]
-        public async Task<ActionResult<List<VehicleData>>> GetVehiclesLastData()
+        [Route("getVehiclesLastData/{companyId}")]
+        public async Task<ActionResult<List<VehicleData>>> GetVehiclesLastData(int companyId)
         {
-            return Ok(await _vehicleDataService.GetVehiclesLastData());
+            return Ok(await _vehicleDataService.GetVehiclesLastData(companyId));
         }
         
-        // TODO add companyId
         [HttpGet]
-        [Route("getVehiclesRangeData/{startDateTime}/{endDateTime}")]
-        public async Task<ActionResult<string>> GetVehiclesRangeData(string startDateTime, string endDateTime)
+        [Route("getVehiclesRangeData/{companyId}/{startDateTime}/{endDateTime}")]
+        public async Task<ActionResult<string>> GetVehiclesRangeData(int companyId, string startDateTime, string endDateTime)
         {
-            var res = await _vehicleDataService.GetVehiclesRangeData(startDateTime, endDateTime);
+            var res = await _vehicleDataService.GetVehiclesRangeData(companyId, startDateTime, endDateTime);
             var json = JsonConvert.SerializeObject(res);
             return Ok(json);
         }
