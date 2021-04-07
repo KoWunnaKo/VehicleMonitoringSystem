@@ -21,7 +21,7 @@ export const CreateTaskForm: React.FunctionComponent<InterfaceProps> = (props) =
     const [name, setName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [comment, setComment] = useState<string>('');
-    const [dueDatetime, setDueDatetime] = useState<Date|undefined >();
+    const [dueDatetime, setDueDatetime] = useState<string|undefined >();
     const [drivers, setDrivers] = useState<Employee[]|null>(null);
     const [selectedDriver, setSelectedDriver] = useState<string|undefined>('');
 
@@ -36,9 +36,9 @@ export const CreateTaskForm: React.FunctionComponent<InterfaceProps> = (props) =
 
         const dbUser = getDbUser();
         if (!!dbUser) {
-            // TODO duedate
+            const dueDate = moment(dueDatetime, 'YYYY-MM-DDTHH:mm').toDate();
             const task = new Task(dbUser.companyId, selectedDriver, dbUser.id, undefined,
-                undefined, name, description, undefined, comment);
+                dueDate, name, description, undefined, comment);
             await TaskApi.createTask(task)
         }
 
@@ -81,7 +81,7 @@ export const CreateTaskForm: React.FunctionComponent<InterfaceProps> = (props) =
             type="datetime-local"
             style={styles.textInput}
             value={dueDatetime}
-            onChange={event => setDueDatetime(moment(event.target.value, 'DD.MM.YY HH:mm').toDate())}
+            onChange={event => setDueDatetime(event.target.value)}
             InputLabelProps={{shrink: true}}
         />
 

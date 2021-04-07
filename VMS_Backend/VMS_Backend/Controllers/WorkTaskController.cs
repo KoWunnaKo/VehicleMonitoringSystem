@@ -23,6 +23,7 @@ namespace VMS_Backend.Controllers
         {
             task.CreateDate = DateTime.Now;
             task.StatusId = 1; // Created
+            task.DueDate = task.DueDate.ToLocalTime();
             var res = await _workTaskService.AddNewItem(task);
             return Ok(res);
         }

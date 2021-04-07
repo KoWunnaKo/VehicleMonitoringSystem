@@ -37,6 +37,7 @@ export async function deleteTask(taskId: number|undefined) {
 
 export async function createTask(task: Task) {
   try {
+    // console.log(`createTask: ${JSON.stringify(task)}`);
     const response = await axios.post(`task`, task);
     // console.log(`createVehicle: ${JSON.stringify(response.data)}`);
     return response.data;
