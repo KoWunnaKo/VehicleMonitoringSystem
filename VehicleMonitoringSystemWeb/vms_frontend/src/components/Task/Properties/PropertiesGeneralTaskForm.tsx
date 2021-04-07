@@ -90,13 +90,14 @@ export const PropertiesGeneralTaskForm: React.FunctionComponent<InterfaceProps> 
 
             <FormControl>
                 <Select
-                    color={"secondary"}
                     value={selectedDriver}
                     onChange={event => setSelectedDriver(event.target.value)}
                     style={styles.select}
                 >
                     {drivers && drivers.map((d: Employee) => (
-                        <MenuItem key={d.id} value={d.id} style={{color: Colors.white}}>{d.getFullName()}</MenuItem>
+                        <MenuItem key={d.id} value={d.id}>
+                            {d.getFullName()}
+                        </MenuItem>
                     ))}
                 </Select>
                 <FormHelperText style={styles.textInput}>Driver</FormHelperText>

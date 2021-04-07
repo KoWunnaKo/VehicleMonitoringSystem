@@ -8,7 +8,7 @@ import Colors from "../../constants/Colors";
 import {EmployeeListItem} from "./EmployeeListItem";
 import Popup from "reactjs-popup";
 import {CreateEmployeeForm} from "./CreateEmployeeForm";
-import "./SidebarDrivers.css";
+import "./SidebarDrivers.scss";
 
 export const SidebarDrivers: React.FunctionComponent = () => {
     const [drivers, setDrivers] = useState<Employee[]|null>(null);

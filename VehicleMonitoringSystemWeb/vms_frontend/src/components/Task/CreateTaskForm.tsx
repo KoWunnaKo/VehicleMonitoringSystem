@@ -87,12 +87,14 @@ export const CreateTaskForm: React.FunctionComponent<InterfaceProps> = (props) =
 
         <FormControl>
             <Select
-                color={"primary"}
+                color={"secondary"}
                 value={selectedDriver}
                 onChange={event => setSelectedDriver(event.target.value)}
             >
                 {drivers && drivers.map((d: Employee) => (
-                    <MenuItem key={d.id} value={d.id} style={{color: Colors.white}}>{d.getFullName()}</MenuItem>
+                    <MenuItem key={d.id} value={d.id}>
+                        {d.getFullName()}
+                    </MenuItem>
                 ))}
             </Select>
             <FormHelperText>Driver</FormHelperText>

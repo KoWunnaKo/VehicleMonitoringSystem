@@ -10,7 +10,6 @@ interface InterfaceProps {
 }
 
 export const PropertiesTaskForm: React.FunctionComponent<InterfaceProps> = (props) => {
-    const navigationStyles = require('../../Navigation.css')
     const [contentComponentName, setContentComponentName] = useState<string>(PropertiesGeneralTaskFormName);
 
     function renderContent() {
@@ -24,8 +23,8 @@ export const PropertiesTaskForm: React.FunctionComponent<InterfaceProps> = (prop
 
     return (
         <div style={styles.container}>
-            <div style={styles.topNavBar}>
-                <ul className={navigationStyles.ul}>
+            <div className="TopBarNavigation">
+                <ul>
                     <li>
                         <a onClick={() => setContentComponentName(PropertiesGeneralTaskFormName)}>{PropertiesGeneralTaskFormName}</a>
                     </li>
@@ -44,9 +43,6 @@ const styles: StylesDictionary  = {
         flexDirection: 'column',
         width: 400,
         height: 450
-    },
-    topNavBar: {
-        flexDirection: 'row',
     },
     content: {
         flexDirection: 'column'

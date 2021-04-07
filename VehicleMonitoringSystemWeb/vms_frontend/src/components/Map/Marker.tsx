@@ -1,6 +1,6 @@
 import React from 'react';
 import Colors from "../../constants/Colors";
-import './Marker.css';
+import './Marker.scss';
 
 export const Marker = (props: any) => {
     const { name } = props;

@@ -90,13 +90,12 @@ export const CreateEmployeeForm: React.FunctionComponent<InterfaceProps> = (prop
             <FormControl style={styles.formControl}>
                 <InputLabel id="role-name-label">Role</InputLabel>
                 <Select
-                    labelId="role-name-label"
-                    id="role-select"
+                    color={"secondary"}
                     value={roleId}
                     onChange={event => setRoleId(event.target.value)}>
                     {roles && roles.map((selectedRole) => (
-                    <MenuItem key={selectedRole.id} value={selectedRole.id} style={{backgroundColor: Colors.white}}>
-                    {selectedRole.name}
+                    <MenuItem key={selectedRole.id} value={selectedRole.id}>
+                        {selectedRole.name}
                     </MenuItem>
                     ))}
                 </Select>

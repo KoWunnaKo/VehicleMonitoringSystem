@@ -43,12 +43,14 @@ export const PropertiesDriversVehicleForm: React.FunctionComponent<InterfaceProp
         <div style={styles.container}>
             <FormControl style={styles.formControl}>
                 <Select
-                    color={"primary"}
+                    color={"secondary"}
                     value={selectedDriver}
                     onChange={event => setSelectedDriver(event.target.value)}
                 >
                     {drivers && drivers.map((d: Employee, index) => (
-                        <MenuItem key={index} value={index} style={{color: Colors.white}}>{d.getFullName()}</MenuItem>
+                        <MenuItem key={index} value={index}>
+                            {d.getFullName()}
+                        </MenuItem>
                     ))}
                 </Select>
             </FormControl>

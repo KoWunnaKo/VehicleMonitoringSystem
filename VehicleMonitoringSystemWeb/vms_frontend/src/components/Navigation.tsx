@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useHistory } from "react-router-dom";
-import "./Navigation.css";
+import "../styles/Navigation.scss";
 import {auth} from "../firebase";
 import Employee from "../models/Employee";
 import Role from "../models/Role";
@@ -8,7 +8,6 @@ import {ACCOUNT, HOME, LANDING, SIGN_IN} from "../constants/Routes";
 import {SidebarDrivers} from "./Employee/SidebarDrivers";
 import {SidebarVehicles} from "./Vehicle/SidebarVehicles";
 import {SidebarTasks} from "./Task/SidebarTasks";
-
 
 interface InterfaceProps {
     dbUser: Employee|null;
@@ -33,60 +32,66 @@ export const Navigation: React.FunctionComponent<InterfaceProps> = (props) => {
     }
 
     const NavigationAuthOperator = () => (
-        <ul>
-            <li>
-                <a onClick={homeClick}>Home</a>
-            </li>
-            <li>
-                <a onClick={driversClick}>Drivers</a>
-            </li>
-            <li>
-                <a onClick={vehiclesClick}>Vehicles</a>
-            </li>
-            <li>
-                <a onClick={tasksClick}>Tasks</a>
-            </li>
-            <li>
-                <a onClick={() => navigateWithoutSidebar(ACCOUNT)}>Account</a>
-            </li>
-            <li>
-                <a onClick={signOutClick}>Sign Out</a>
-            </li>
-        </ul>
+        <div className="TopBarNavigation">
+            <ul>
+                <li>
+                    <a onClick={homeClick}>Home</a>
+                </li>
+                <li>
+                    <a onClick={driversClick}>Drivers</a>
+                </li>
+                <li>
+                    <a onClick={vehiclesClick}>Vehicles</a>
+                </li>
+                <li>
+                    <a onClick={tasksClick}>Tasks</a>
+                </li>
+                <li>
+                    <a onClick={() => navigateWithoutSidebar(ACCOUNT)}>Account</a>
+                </li>
+                <li>
+                    <a onClick={signOutClick}>Sign Out</a>
+                </li>
+            </ul>
+        </div>
     );
 
     const NavigationAuthAdministrator = () => (
-        <ul>
-            <li>
-                <a onClick={homeClick}>Home</a>
-            </li>
-            <li>
-                <a onClick={driversClick}>Drivers</a>
-            </li>
-            <li>
-                <a onClick={vehiclesClick}>Vehicles</a>
-            </li>
-            <li>
-                <a onClick={tasksClick}>Tasks</a>
-            </li>
-            <li>
-                <a onClick={() => navigateWithoutSidebar(ACCOUNT)}>Account</a>
-            </li>
-            <li>
-                <a onClick={signOutClick}>Sign Out</a>
-            </li>
-        </ul>
+        <div className="TopBarNavigation">
+            <ul>
+                <li>
+                    <a onClick={homeClick}>Home</a>
+                </li>
+                <li>
+                    <a onClick={driversClick}>Drivers</a>
+                </li>
+                <li>
+                    <a onClick={vehiclesClick}>Vehicles</a>
+                </li>
+                <li>
+                    <a onClick={tasksClick}>Tasks</a>
+                </li>
+                <li>
+                    <a onClick={() => navigateWithoutSidebar(ACCOUNT)}>Account</a>
+                </li>
+                <li>
+                    <a onClick={signOutClick}>Sign Out</a>
+                </li>
+            </ul>
+        </div>
     );
 
     const NavigationNonAuth = () => (
-        <ul>
-            <li>
-                <a onClick={() => navigateWithoutSidebar(LANDING)}>Landing</a>
-            </li>
-            <li>
-                <a onClick={() => navigateWithoutSidebar(SIGN_IN)}>Sign In</a>
-            </li>
-        </ul>
+        <div className="TopBarNavigation">
+            <ul>
+                <li>
+                    <a onClick={() => navigateWithoutSidebar(LANDING)}>Landing</a>
+                </li>
+                <li>
+                    <a onClick={() => navigateWithoutSidebar(SIGN_IN)}>Sign In</a>
+                </li>
+            </ul>
+        </div>
     );
 
     function signOutClick() {
