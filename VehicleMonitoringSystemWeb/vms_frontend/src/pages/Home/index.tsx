@@ -8,6 +8,9 @@ import MapContainer from "../../components/Map/MapContainer";
 import 'react-minimal-datetime-range/lib/react-minimal-datetime-range.min.css';
 import { RangePicker } from 'react-minimal-datetime-range';
 import {formatDateTime, getDate, getDefaultDateTime, getTime} from "../../utils/DateFunctions";
+import {IconButton} from "@material-ui/core";
+import RefreshIcon from "@material-ui/icons/Refresh";
+import Colors from "../../constants/Colors";
 
 export const HomeComponent: React.FunctionComponent = (props) => {
     const [markersData, setMarkersData] = useState<VehicleData[]|null>();
@@ -15,15 +18,18 @@ export const HomeComponent: React.FunctionComponent = (props) => {
     const [startDateTime, setStartDateTime] = useState<string>(getDefaultDateTime());
     const [endDateTime, setEndDateTime] = useState<string>(getDefaultDateTime());
 
-
     useEffect(() => {
         (async function() {
-            setMarkersData(await VehicleDataApi.getVehiclesLastData());
-            setTrajectoryData(
-                await VehicleDataApi.getVehiclesRangeData(startDateTime, endDateTime)
-            );
+            await updateMapData();
         })();
     }, [startDateTime, endDateTime]);
+
+    const updateMapData = async () => {
+        setMarkersData(await VehicleDataApi.getVehiclesLastData());
+        setTrajectoryData(
+            await VehicleDataApi.getVehiclesRangeData(startDateTime, endDateTime)
+        );
+    }
 
     const setDateTimeRange = async (res: string[]) => {
         const fromDateTime = res[0].split(' ');
@@ -56,6 +62,9 @@ export const HomeComponent: React.FunctionComponent = (props) => {
                     initialDates={[getDate(startDateTime), getDate(endDateTime)]}
                     initialTimes={[getTime(startDateTime), getTime(endDateTime)]}
                 />
+                <IconButton  onClick={updateMapData} style={styles.refreshIcon}>
+                    <RefreshIcon/>
+                </IconButton>
             </div>
         </div>
     );
@@ -70,8 +79,16 @@ const styles: StylesDictionary  = {
     },
     rangePickerContainer: {
         marginTop: 10,
+        marginRight: 10,
         width: 400,
-        alignSelf: 'flex-end'
+        alignSelf: 'flex-end',
+        display: "flex",
+        flexDirection: 'column'
+    },
+    refreshIcon: {
+        alignSelf: 'flex-end',
+        backgroundColor: Colors.tint
+        // TODO opacity on hover
     }
 };
 
