@@ -5,7 +5,7 @@ import {StylesDictionary} from "../../utils/StylesDictionary";
 import * as TaskApi from "../../api/TaskApi";
 import Colors from "../../constants/Colors";
 import Popup from "reactjs-popup";
-import "../Employee/SidebarDrivers.scss";
+import "../../styles/SidebarDrivers.scss";
 import {CreateTaskForm} from "./CreateTaskForm";
 import Task from "../../models/Task";
 import {TaskListItem} from "./TaskListItem";

@@ -8,7 +8,7 @@ import Popup from "reactjs-popup";
 import Vehicle from "../../models/Vehicle";
 import {VehicleListItem} from "./VehicleListItem";
 import {CreateVehicleForm} from "./CreateVehicleForm";
-import "../Employee/SidebarDrivers.scss";
+import "../../styles/SidebarDrivers.scss";
 import 'react-minimal-datetime-range/lib/react-minimal-datetime-range.min.css';
 
 export const SidebarVehicles: React.FunctionComponent = () => {

@@ -10,7 +10,6 @@ import { RangePicker } from 'react-minimal-datetime-range';
 import {formatDateTime, getDate, getDefaultDateTime, getTime} from "../../utils/DateFunctions";
 import {IconButton} from "@material-ui/core";
 import RefreshIcon from "@material-ui/icons/Refresh";
-import Colors from "../../constants/Colors";
 
 export const HomeComponent: React.FunctionComponent = (props) => {
     const [markersData, setMarkersData] = useState<VehicleData[]|null>();
@@ -62,7 +61,7 @@ export const HomeComponent: React.FunctionComponent = (props) => {
                     initialDates={[getDate(startDateTime), getDate(endDateTime)]}
                     initialTimes={[getTime(startDateTime), getTime(endDateTime)]}
                 />
-                <IconButton  onClick={updateMapData} style={styles.refreshIcon}>
+                <IconButton onClick={updateMapData} color='primary' style={styles.refreshIcon}>
                     <RefreshIcon/>
                 </IconButton>
             </div>
@@ -87,8 +86,6 @@ const styles: StylesDictionary  = {
     },
     refreshIcon: {
         alignSelf: 'flex-end',
-        backgroundColor: Colors.tint
-        // TODO opacity on hover
     }
 };
 

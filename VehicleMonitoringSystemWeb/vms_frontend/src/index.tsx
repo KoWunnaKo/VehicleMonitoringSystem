@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import { App } from "./App";
 import registerServiceWorker from "./registerServiceWorker";
 import {configureAxios} from "./api";
-import "./index.scss";
+import "./styles/App.scss";
 
 registerServiceWorker();
 configureAxios();
