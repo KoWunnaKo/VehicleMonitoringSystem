@@ -9,12 +9,12 @@ import "../../styles/SidebarDrivers.scss";
 import {CreateTaskForm} from "./CreateTaskForm";
 import Task from "../../models/Task";
 import {TaskListItem} from "./TaskListItem";
-import {TaskStatusListItem} from "./TaskStatusListItem";
 import Collapsible from 'react-collapsible';
+import TaskStatus from "../../models/TaskStatus";
 
 export const SidebarTasks: React.FunctionComponent = () => {
+    const statuses = TaskStatus.getDefaultStatuses();
     const [tasks, setTasks] = useState<Task[]|null>(null);
-    const [statuses, setStatuses] = useState<string[]|null>(['Created', 'In progress', 'Resolved']);
 
     useEffect(() => {
         (async function() {
@@ -55,33 +55,17 @@ export const SidebarTasks: React.FunctionComponent = () => {
                 }}
             </Popup>
 
-            {/*TODO combine and get statuses as array*/}
-            <Collapsible trigger="Created" style={styles.taskStatus}>
-                <List style={{backgroundColor: Colors.white}}>
-                    {tasks && tasks
-                        .filter((task) => task.statusId === 1)
-                        .map((task) => (<TaskListItem key={task.id} task={task}/>))
-                    }
-                </List>
-            </Collapsible>
-
-            <Collapsible trigger="In progress" style={styles.taskStatus}>
-                <List style={{backgroundColor: Colors.white}}>
-                    {tasks && tasks
-                        .filter((task) => task.statusId === 2)
-                        .map((task) => (<TaskListItem key={task.id} task={task}/>))
-                    }
-                </List>
-            </Collapsible>
-
-            <Collapsible trigger="Resolved" style={styles.taskStatus}>
-                <List style={{backgroundColor: Colors.white}}>
-                    {tasks && tasks
-                        .filter((task) => task.statusId === 3)
-                        .map((task) => (<TaskListItem key={task.id} task={task}/>))
-                    }
-                </List>
-            </Collapsible>
+            {
+                statuses.map(s =>
+                    <Collapsible trigger={s.name} style={styles.taskStatus} key={s.id}>
+                        <List style={{backgroundColor: Colors.white}}>
+                            {tasks && tasks
+                                .filter((task) => task.statusId === s.id)
+                                .map((task) => (<TaskListItem key={task.id} task={task}/>))
+                            }
+                        </List>
+                    </Collapsible>)
+            }
         </div>
     );
 }
