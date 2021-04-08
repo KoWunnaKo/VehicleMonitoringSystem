@@ -3,11 +3,9 @@ import { IconButton, ListItem, ListItemSecondaryAction} from "@material-ui/core"
 import SettingsIcon from "@material-ui/icons/Settings";
 import {StylesDictionary} from "../../utils/StylesDictionary";
 import Popup from "reactjs-popup";
-import {useEffect, useState} from "react";
-import Employee from "../../models/Employee";
 import Task from "../../models/Task";
 import {PropertiesTaskForm} from "./Properties/PropertiesTaskForm";
-
+import Colors from "../../constants/Colors";
 
 interface InterfaceProps {
     task: Task;
@@ -62,10 +60,13 @@ export const TaskListItem: React.FunctionComponent<InterfaceProps> = (props) => 
 const styles: StylesDictionary  = {
     container: {
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        backgroundColor: Colors.white,
+        marginTop: 4,
+        marginBottom: 4
     },
     listItem: {
         height: 50,
-        flex: 1
+        flex: 1,
     }
 };

@@ -5,6 +5,7 @@ export default {
     white: '#fff',
     primaryBlue: '#1050B7',
     grey: '#454545',
+    red: '#ff0000',
     tint: tintColorLight,
     tabIconDefault: '#ccc',
     tabIconSelected: tintColorLight,

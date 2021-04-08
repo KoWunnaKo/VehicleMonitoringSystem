@@ -6,6 +6,7 @@ import * as TaskApi from "../../api/TaskApi";
 import Colors from "../../constants/Colors";
 import Popup from "reactjs-popup";
 import "../../styles/SidebarDrivers.scss";
+import "../../styles/Collapsible.scss";
 import {CreateTaskForm} from "./CreateTaskForm";
 import Task from "../../models/Task";
 import {TaskListItem} from "./TaskListItem";
@@ -32,11 +33,25 @@ export const SidebarTasks: React.FunctionComponent = () => {
     //
     // }
 
+    function compareTasksForSort(a: Task, b: Task): number {
+        if (!a.id || !b.id) {
+            return 0;
+        }
+
+        if (a.id < b.id) {
+            return -1;
+        }
+        if (a.id > b.id) {
+            return 1;
+        }
+        return 0;
+    }
+
     return (
         <div style={styles.container}>
             <h2>Tasks</h2>
             <Popup
-                trigger={<Button variant="contained" style={styles.addButton}>Create task</Button>}
+                trigger={<Button variant="contained" color='primary' style={styles.addButton}>Create task</Button>}
                 modal={true}
                 nested={true}
             >
@@ -57,10 +72,13 @@ export const SidebarTasks: React.FunctionComponent = () => {
 
             {
                 statuses.map(s =>
-                    <Collapsible trigger={s.name} style={styles.taskStatus} key={s.id}>
-                        <List style={{backgroundColor: Colors.white}}>
+                    <Collapsible
+                        trigger={`${s.name}: ${tasks && tasks.filter((task) => task.statusId === s.id).length}`}
+                        key={s.id}>
+                        <List>
                             {tasks && tasks
                                 .filter((task) => task.statusId === s.id)
+                                .sort((a, b) => compareTasksForSort(a, b))
                                 .map((task) => (<TaskListItem key={task.id} task={task}/>))
                             }
                         </List>
@@ -79,11 +97,7 @@ const styles: StylesDictionary  = {
         flex: 1,
         marginTop: 10,
         marginBottom: 10,
-        backgroundColor: Colors.primaryBlue
-    },
-    taskStatus: {
-        alignSelf: 'center',
-        backgroundColor: Colors.grey
+        backgroundColor: Colors.primaryBlue,
     }
 };
 
