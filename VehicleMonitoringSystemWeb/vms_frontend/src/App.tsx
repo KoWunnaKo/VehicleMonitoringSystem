@@ -14,6 +14,7 @@ import Employee from "./models/Employee";
 import {Sidebar} from "./components/Sidebar/Sidebar";
 import {StylesDictionary} from "./utils/StylesDictionary";
 import {clearUsers, setDbUser, setFirebaseUser} from "./utils/UserUtil";
+import {Chat} from "./pages/Chat";
 
 interface AppComponentState {
   firebaseUser: any;
@@ -80,6 +81,7 @@ class AppComponent extends React.Component<{}, AppComponentState> {
               {/*Auth*/}
               <Route exact={true} path={routes.HOME} component={HomeScreen} />
               <Route exact={true} path={routes.ACCOUNT} component={Account} />
+              <Route exact={true} path={routes.CHAT} component={Chat} />
 
               {/*Administrator*/}
             </Switch>

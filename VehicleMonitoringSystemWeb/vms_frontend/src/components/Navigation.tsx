@@ -4,7 +4,7 @@ import "../styles/Navigation.scss";
 import {auth} from "../firebase";
 import Employee from "../models/Employee";
 import Role from "../models/Role";
-import {ACCOUNT, HOME, LANDING, SIGN_IN} from "../constants/Routes";
+import {ACCOUNT, CHAT, HOME, LANDING, SIGN_IN} from "../constants/Routes";
 import {SidebarDrivers} from "./Employee/SidebarDrivers";
 import {SidebarVehicles} from "./Vehicle/SidebarVehicles";
 import {SidebarTasks} from "./Task/SidebarTasks";
@@ -47,6 +47,9 @@ export const Navigation: React.FunctionComponent<InterfaceProps> = (props) => {
                     <a onClick={tasksClick}>Tasks</a>
                 </li>
                 <li>
+                    <a onClick={() => navigateWithoutSidebar(CHAT)}>Chat</a>
+                </li>
+                <li>
                     <a onClick={() => navigateWithoutSidebar(ACCOUNT)}>Account</a>
                 </li>
                 <li>
@@ -70,6 +73,9 @@ export const Navigation: React.FunctionComponent<InterfaceProps> = (props) => {
                 </li>
                 <li>
                     <a onClick={tasksClick}>Tasks</a>
+                </li>
+                <li>
+                    <a onClick={() => navigateWithoutSidebar(CHAT)}>Chat</a>
                 </li>
                 <li>
                     <a onClick={() => navigateWithoutSidebar(ACCOUNT)}>Account</a>
