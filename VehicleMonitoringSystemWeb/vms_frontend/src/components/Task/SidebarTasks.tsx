@@ -73,7 +73,7 @@ export const SidebarTasks: React.FunctionComponent = () => {
             {
                 statuses.map(s =>
                     <Collapsible
-                        trigger={`${s.name}: ${tasks && tasks.filter((task) => task.statusId === s.id).length}`}
+                        trigger={`${s.name}: ${tasks && tasks.filter((task) => task.statusId === s.id).length || 0}`}
                         key={s.id}>
                         <List>
                             {tasks && tasks
