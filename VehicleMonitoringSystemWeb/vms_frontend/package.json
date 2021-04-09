@@ -39,6 +39,7 @@
     "raf": "3.4.0",
     "react": "^16.4.1",
     "react-addons-css-transition-group": "^15.6.2",
+    "react-chat-elements": "^10.14.0",
     "react-collapsible": "^2.8.3",
     "react-dev-utils": "^5.0.1",
     "react-dom": "^16.4.1",
