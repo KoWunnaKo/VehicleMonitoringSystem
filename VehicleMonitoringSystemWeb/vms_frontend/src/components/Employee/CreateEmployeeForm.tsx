@@ -8,6 +8,7 @@ import Employee from "../../models/Employee";
 import Colors from "../../constants/Colors";
 import {StylesDictionary} from "../../utils/StylesDictionary";
 import {useEffect, useState} from "react";
+import {getDbUserCompanyId} from "../../utils/UserUtil";
 
 interface InterfaceProps {
   closeModal: () => void;
@@ -18,7 +19,7 @@ export const CreateEmployeeForm: React.FunctionComponent<InterfaceProps> = (prop
     const [email, setEmail] = useState<string>('');
     const [firstName, setFirstName] = useState<string>('');
     const [lastName, setLastName] = useState<string>('');
-    const [roleId, setRoleId] = useState<number|undefined>();
+    const [roleId, setRoleId] = useState<number>(0);
     const [passwordOne, setPasswordOne] = useState<string>('');
     const [passwordTwo, setPasswordTwo] = useState<string>('');
     const [roles, setRoles] = useState<Role[]|null>(null);
@@ -36,13 +37,15 @@ export const CreateEmployeeForm: React.FunctionComponent<InterfaceProps> = (prop
       auth
           .doCreateUserWithEmailAndPassword(email, passwordOne)
           .then(async (authUser: any) => {
-              const employee: Employee = new Employee(authUser.user.uid,
-                  roleId, undefined, firstName, lastName,
-                  email, undefined, passwordOne);
-              await AuthApi.signUp(employee);
-              // TODO avoid login out
-
-              props.closeModal();
+              const companyId = getDbUserCompanyId();
+              if (!!companyId) {
+                  const employee: Employee = new Employee(authUser.user.uid,
+                      roleId, companyId, firstName, lastName,
+                      email, undefined, passwordOne);
+                  await AuthApi.signUp(employee);
+                  props.closeModal();
+                  // TODO avoid login out
+              }
           })
           .catch(er => {
               setError(er);

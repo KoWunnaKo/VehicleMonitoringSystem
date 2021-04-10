@@ -4,54 +4,69 @@ import 'react-chat-elements/dist/main.css';
 import { MessageList, ChatList, Input, Button,  } from 'react-chat-elements'
 import {StylesDictionary} from "../../utils/StylesDictionary";
 import Colors from "../../constants/Colors";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import * as ChatApi from "../../api/ChatApi";
+import ChatContact from "../../models/ChatContact";
+import {getContactsList} from "../../utils/ChatUtil";
+import ChatMessage from "../../models/ChatMessage";
+import {getDbUser} from "../../utils/UserUtil";
 
 export const ChatComponent = () => {
-    const standardAvatarUrl = 'https://img.icons8.com/pastel-glyph/2x/person-male--v3.png'
+    const [chatContacts, setChatContacts] = useState<ChatContact[]>();
+    const [chatMessages, setChatMessages] = useState<ChatMessage[]>();
+    const [receiver, setReceiver] = useState<ChatContact|null>();
+    const [inputMessage, setInputMessage] = useState<string>('');
 
-    const chatListSampleData = [
-        {
-            avatar: standardAvatarUrl,
-            alt: 'Avatar',
-            title: 'Facebook',
-            subtitle: 'What are you doing?',
-            date: new Date(),
-            unread: 0,
-        },
-        {
-            avatar: standardAvatarUrl,
-            alt: 'Avatar',
-            title: 'Facebook',
-            subtitle: 'What are you doing?',
-            date: new Date(),
-            unread: 0,
-        }
-    ];
-    const [chatListData, setChatListData] = useState(chatListSampleData);
+    useEffect(() => {
+        (async function() {
+            await updateChat();
+        })();
+    }, []);
 
-    const chatMessagesSampleData = [
-        {
-            position: 'right',
-            type: 'text',
-            text: 'Hi! Whats up?',
-            date: new Date(),
-        },
-        {
-            position: 'left',
-            type: 'text',
-            text: 'Hi! Im good!',
-            date: new Date(),
+    const updateChat = async () => {
+        const messages = await ChatApi.getAllEmployeeMessages();
+        const contactList: ChatContact[] = getContactsList(messages);
+        setChatContacts(contactList);
+
+        if (!!receiver) {
+            const chatContact = contactList.find(c => c.employee.id === receiver.employee.id);
+            if (!!chatContact) {
+                setReceiver(chatContact);
+                setChatMessages(chatContact.chatMessages);
+            }
+        } else {
+            if (contactList.length > 0) {
+                const chatContact = contactList[0];
+                setReceiver(chatContact);
+                setChatMessages(chatContact.chatMessages);
+            }
         }
-    ];
-    const [chatMessagesData, setChatMessagesData] = useState(chatMessagesSampleData);
+    }
+
+    const contactListClick = (chatContact: any) => {
+        setReceiver(chatContact);
+        setChatMessages(chatContact.chatMessages);
+    }
+
+    const sendMessage = async () => {
+        const dbUser = getDbUser();
+        if (!!dbUser && !!receiver) {
+            const msg = new ChatMessage(undefined, dbUser.companyId, inputMessage,
+                undefined, true, dbUser, receiver.employee);
+            await ChatApi.createMessage(msg);
+            setInputMessage('');
+            await updateChat();
+        }
+    }
 
     return (
       <div style={styles.container}>
         <div style={styles.contactList}>
-          <ChatList
-              className='chat-list'
-              dataSource={chatListData}
-          />
+            <ChatList
+                className='chat-list'
+                dataSource={chatContacts}
+                onClick={e => contactListClick(e)}
+            />
         </div>
         <div style={styles.conversationContainer}>
           <div style={styles.messageList}>
@@ -59,18 +74,29 @@ export const ChatComponent = () => {
                 className='message-list'
                 lockable={true}
                 toBottomHeight={'100%'}
-                dataSource={chatMessagesData}
+                dataSource={chatMessages}
             />
           </div>
           <div style={styles.input}>
             <Input
                 placeholder="Type here..."
+                onChange={event => setInputMessage(event.target.value)}
                 multiline={true}
                 rightButtons={
-                  <Button
-                      color='white'
-                      backgroundColor='black'
-                      text='Send'/>
+                    <div>
+                        <Button
+                            color='white'
+                            backgroundColor='black'
+                            text='Update'
+                            onClick={updateChat}
+                        />
+                        <Button
+                            color='white'
+                            backgroundColor='black'
+                            text='Send'
+                            onClick={sendMessage}
+                        />
+                    </div>
                 }
             />
           </div>
@@ -83,19 +109,18 @@ const styles: StylesDictionary  = {
   container: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: Colors.tint,
+    // backgroundColor: Colors.tint,
   },
   conversationContainer: {
     flexDirection: 'column',
-    width: 600,
-    backgroundColor: Colors.primaryBlue
+    width: '70vw',
   },
   contactList: {
-    width: 500
+    width: '30vw'
   },
   messageList: {
     height: '95vh',
-    backgroundColor: Colors.grey
+    backgroundColor: 'lightgrey'
   },
   input: {
     // width: 300,

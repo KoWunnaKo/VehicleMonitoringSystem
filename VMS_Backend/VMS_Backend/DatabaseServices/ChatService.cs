@@ -17,6 +17,7 @@ namespace VMS_Backend.DatabaseServices
                 .Include((m => m.Sender))
                 .Include((m => m.Receiver))
                 .Where(m => m.CompanyId.Equals(companyId) && (m.ReceiverId == employeeId || m.SenderId == employeeId))
+                .OrderBy(m => m.Date)
                 .ToListAsync();
             return messages;
         }

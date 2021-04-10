@@ -19,7 +19,15 @@ export function getDbUser(): Employee|null {
     return null;
 }
 
-export function getDbUserCompanyId(): number|null|undefined {
+export function getDbUserId(): string|null {
+    const dbUser = getDbUser();
+    if (!!dbUser) {
+        return dbUser.id;
+    }
+    return null;
+}
+
+export function getDbUserCompanyId(): number|null {
     const dbUser = getDbUser();
     if (!!dbUser) {
         return dbUser.companyId;

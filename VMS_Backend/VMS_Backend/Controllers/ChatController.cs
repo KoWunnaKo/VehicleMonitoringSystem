@@ -24,6 +24,10 @@ namespace VMS_Backend.Controllers
         {
             message.Date = DateTime.Now;
             message.Unread = true;
+            message.SenderId = message.Sender.Id;
+            message.ReceiverId = message.Receiver.Id;
+            message.Sender = null;
+            message.Receiver = null;
             var res = await _chatService.AddNewItem(message);
             return Ok(res);
         }

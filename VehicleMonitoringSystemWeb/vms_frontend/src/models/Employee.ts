@@ -1,16 +1,16 @@
 export default class Employee {
-  public id: string | undefined;
-  public roleId: number | undefined;
-  public companyId: number | undefined;
-  public firstName: string | undefined;
-  public lastName: string | undefined;
+  public id: string;
+  public roleId: number;
+  public companyId: number;
+  public firstName: string;
+  public lastName: string;
   public email: string | undefined;
   public telegramNickname: string | undefined;
   public password: string | undefined;
 
-  constructor(id: string|undefined, roleId: number|undefined,
-              companyId: number|undefined, firstName: string|undefined,
-              lastName: string|undefined, email: string|undefined,
+  constructor(id: string, roleId: number,
+              companyId: number, firstName: string,
+              lastName: string, email: string|undefined,
               telegramName: string|undefined, password: string|undefined) {
     this.id = id;
     this.roleId = roleId;
@@ -22,7 +22,7 @@ export default class Employee {
     this.password = password;
   }
 
-  public getFullName () : string|undefined {
+  public getFullName () : string {
     return this.firstName + ' ' + this.lastName;
   }
 }
