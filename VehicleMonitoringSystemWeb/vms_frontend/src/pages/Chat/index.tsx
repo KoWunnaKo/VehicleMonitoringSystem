@@ -9,7 +9,7 @@ import * as ChatApi from "../../api/ChatApi";
 import ChatContact from "../../models/ChatContact";
 import {getContactsList} from "../../utils/ChatUtil";
 import ChatMessage from "../../models/ChatMessage";
-import {getDbUser} from "../../utils/UserUtil";
+import {getDbUser, getDbUserId} from "../../utils/UserUtil";
 import * as signalR from "@microsoft/signalr";
 
 
@@ -19,6 +19,8 @@ export const ChatComponent = () => {
     const [receiver, setReceiver] = useState<ChatContact|null>();
     const [inputMessage, setInputMessage] = useState<string>('');
 
+    // TODO hide in service
+    // TODO disconnect
     // Builds the SignalR connection, mapping it to /chatHub
     const hubConnection = new signalR.HubConnectionBuilder()
         .withAutomaticReconnect()
@@ -26,27 +28,19 @@ export const ChatComponent = () => {
         .configureLogging(signalR.LogLevel.Information)
         .build();
 
-    // Starts the SignalR connection
-    hubConnection.start().then(a => {
-        // Once started, invokes the sendConnectionId in our ChatHub inside our ASP.NET Core application.
-        if (hubConnection.connectionId) {
-            console.log(`hubConnection started`);
-            hubConnection.invoke("sendConnectionId", hubConnection.connectionId);
-        }
-    });
-
-    const SignalRTime: React.FC = () => {
-        // Sets the time from the server
-        const [time, setTime] = useState<string | null>(null);
-
-        useEffect(() => {
-            hubConnection.on("setTime", message => {
-                setTime(message);
+    useEffect(() => {
+        (async function() {
+            // Starts the SignalR connection
+            hubConnection.start().then(a => {
+                const dbUserId = getDbUserId();
+                // Once started, invokes the sendConnectionId in our ChatHub inside our ASP.NET Core application.
+                if (!!hubConnection.connectionId && !!dbUserId) {
+                    console.log(`hubConnection started`);
+                    hubConnection.invoke("establishConnection", dbUserId, hubConnection.connectionId);
+                }
             });
-        });
-
-        return <p>The time is {time}</p>;
-    };
+        })();
+    }, []);
 
     const SignalRClient: React.FC = () => {
         // Sets a client message, sent from the server
@@ -61,7 +55,21 @@ export const ChatComponent = () => {
         return <p>{clientMessage}</p>
     };
 
-    return <><SignalRTime /><SignalRClient /></>;
+    const ChatRClient: React.FC = () => {
+        // Sets a client message, sent from the server
+        const [chatMessage, setChatMessage] = useState<ChatMessage|null>(null);
+
+        useEffect(() => {
+            hubConnection.on("setChatMessage", message => {
+                console.log(`Message from server received: ${JSON.stringify(message)}`);
+                setChatMessage(message);
+            });
+        });
+
+        return <p>{'New message: \n' + JSON.stringify(chatMessage)}</p>
+    };
+
+    return <><SignalRClient/><br/><ChatRClient/></>;
 
 
     // useEffect(() => {

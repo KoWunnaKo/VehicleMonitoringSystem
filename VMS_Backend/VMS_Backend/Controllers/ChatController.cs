@@ -13,13 +13,12 @@ namespace VMS_Backend.Controllers
     public class ChatController : ControllerBase
     {
         private readonly ChatService _chatService;
-        private readonly IHubContext<ChatHub> _chatHub;
+        private readonly IHubContext<ChatHub> _hubContext;
 
-
-        public ChatController(ChatService chatService, IHubContext<ChatHub> chatHub)
+        public ChatController(ChatService chatService, IHubContext<ChatHub> hubContext)
         {
             _chatService = chatService;
-            _chatHub = chatHub;
+            _hubContext = hubContext;
         }
         
         // TODO images upload
@@ -28,11 +27,19 @@ namespace VMS_Backend.Controllers
         {
             message.Date = DateTime.Now;
             message.Unread = true;
-            message.SenderId = message.Sender.Id;
-            message.ReceiverId = message.Receiver.Id;
+            if (string.IsNullOrEmpty(message.SenderId) && string.IsNullOrEmpty(message.ReceiverId))
+            {
+                message.SenderId = message.Sender.Id;
+                message.ReceiverId = message.Receiver.Id;
+            }
             message.Sender = null;
             message.Receiver = null;
             var res = await _chatService.AddNewItem(message);
+            
+            // SignalR part
+            // TODO get Receiver and Sender
+            await ChatHub.SendMessage(_hubContext, message.ReceiverId, message);
+
             return Ok(res);
         }
         

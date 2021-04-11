@@ -25,15 +25,6 @@ namespace VMS_Backend
         {
             // CORS
             services.AddCors();
-            // services.AddCors(options =>
-            // {
-            //     options.AddDefaultPolicy(builder => builder
-            //             //.WithOrigins("http://localhost:3000")
-            //             .AllowAnyOrigin()
-            //             .AllowAnyMethod()
-            //             .AllowAnyHeader()
-            //     );
-            // });
             
             // Database services
             services.AddScoped<CompanyService>();
@@ -44,6 +35,9 @@ namespace VMS_Backend
             services.AddScoped<VehicleService>();
             services.AddScoped<WorkTaskService>();
             services.AddScoped<ChatService>();
+
+            // SignalR services
+            // services.AddScoped<ChatHub>();
             
             // SignalR - for chat
             services.AddSignalR();
@@ -67,8 +61,7 @@ namespace VMS_Backend
             }
             
             // CORS
-            // app.UseCors();
-            // Make sure the CORS middleware is ahead of SignalR.
+            // CORS middleware
             app.UseCors(builder =>
             {
                 builder
@@ -84,18 +77,18 @@ namespace VMS_Backend
 
             // app.UseAuthorization();
             
-            hostApplicationLifetime.ApplicationStarted.Register(() =>
-            {
-                var serviceProvider = app.ApplicationServices;
-                var chatHub = (IHubContext<ChatHub>)serviceProvider.GetService(typeof(IHubContext<ChatHub>));
- 
-                var timer = new System.Timers.Timer(1000);
-                timer.Enabled = true;
-                timer.Elapsed += delegate (object sender, System.Timers.ElapsedEventArgs e) {
-                    chatHub.Clients.All.SendAsync("setTime", DateTime.Now.ToString("dddd d MMMM yyyy HH:mm:ss"));
-                };
-                timer.Start();                
-            });
+            // hostApplicationLifetime.ApplicationStarted.Register(() =>
+            // {
+            //     var serviceProvider = app.ApplicationServices;
+            //     var chatHub = (IHubContext<ChatHub>)serviceProvider.GetService(typeof(IHubContext<ChatHub>));
+            //
+            //     var timer = new System.Timers.Timer(1000);
+            //     timer.Enabled = true;
+            //     timer.Elapsed += delegate (object sender, System.Timers.ElapsedEventArgs e) {
+            //         chatHub.Clients.All.SendAsync("setTime", DateTime.Now.ToString("dddd d MMMM yyyy HH:mm:ss"));
+            //     };
+            //     timer.Start();                
+            // });
 
             app.UseEndpoints(endpoints =>
             {
