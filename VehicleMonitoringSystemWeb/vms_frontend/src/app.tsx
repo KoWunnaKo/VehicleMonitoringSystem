@@ -25,8 +25,6 @@ interface AppComponentState {
 }
 
 class AppComponent extends React.Component<{}, AppComponentState> {
-  private signalRService: SignalRService;
-
   constructor(props: any) {
     super(props);
 
@@ -36,7 +34,6 @@ class AppComponent extends React.Component<{}, AppComponentState> {
       sidebarDisplay: false,
       sidebarComponent: null
     };
-    this.signalRService = new SignalRService();
   }
 
   public componentDidMount() {
@@ -49,21 +46,21 @@ class AppComponent extends React.Component<{}, AppComponentState> {
           setDbUser(dbUser);
           this.setState(() => ({firebaseUser, dbUser}))
           // signalR connection establish
-          this.signalRService.startConnection(dbUser.id);
+          SignalRService.startConnection(dbUser.id);
         }
       }
       else {
         this.setState(() => ({ firebaseUser: null, dbUser: null }))
         clearUsers();
         // signalR connection stop
-        await this.signalRService.stopConnection();
+        await SignalRService.stopConnection();
       }
     });
   }
 
   public async componentWillUnmount() {
     // signalR connection stop
-    await this.signalRService.stopConnection();
+    await SignalRService.stopConnection();
     clearUsers();
   }
 

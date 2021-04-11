@@ -10,12 +10,16 @@ import {getContactsList} from "../../utils/chatUtil";
 import ChatMessage from "../../models/chatMessage";
 import {getDbUser} from "../../utils/userUtil";
 
-
 export const ChatComponent = () => {
     const [chatContacts, setChatContacts] = useState<ChatContact[]>();
     const [chatMessages, setChatMessages] = useState<ChatMessage[]>();
     const [receiver, setReceiver] = useState<ChatContact|null>();
     const [inputMessage, setInputMessage] = useState<string>('');
+
+    // // Receive chat message endpoint
+    //  SignalRService.addEndpoint("receiveChatMessage", message => {
+    //     console.log(`Message from server received: ${JSON.stringify(message)}`);
+    // });
 
     useEffect(() => {
         (async function() {
