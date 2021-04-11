@@ -33,13 +33,18 @@ namespace VMS_Backend.Controllers
                 message.SenderId = message.Sender.Id;
                 message.ReceiverId = message.Receiver.Id;
             }
+
+            var sender = message.Sender;
+            var receiver = message.Receiver;
+            
             message.Sender = null;
             message.Receiver = null;
             var res = await _chatService.AddNewItem(message);
-            
-            // SignalR part
-            // TODO get Receiver and Sender
-            await ChatHub.SendMessage(_hubContext, message.ReceiverId, message);
+
+            res.Sender = sender;
+            res.Receiver = receiver;
+            // SignalR message to client
+            await ChatHub.SendMessage(_hubContext, res.ReceiverId, res);
 
             return Ok(res);
         }
