@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using VMS_Backend.Data;
 using VMS_Backend.Data.Models;
 
-namespace VMS_Backend.DatabaseServices
+namespace VMS_Backend.Services.Database
 {
     public class ChatService : BaseDatabaseService<ChatMessage>
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using VMS_Backend.Data.Models;
-using VMS_Backend.DatabaseServices;
+using VMS_Backend.Services.Database;
 
 namespace VMS_Backend.Controllers
 {

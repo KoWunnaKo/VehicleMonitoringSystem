@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using VMS_Backend.Data.Models;
-using VMS_Backend.DatabaseServices;
+using VMS_Backend.Services.Database;
+using VMS_Backend.Services.SignalR;
 
 namespace VMS_Backend.Controllers
 {

@@ -1,13 +1,12 @@
-using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using VMS_Backend.Data;
-using VMS_Backend.DatabaseServices;
+using VMS_Backend.Services.Database;
+using VMS_Backend.Services.SignalR;
 
 namespace VMS_Backend
 {

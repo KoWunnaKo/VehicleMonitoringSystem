@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace VMS_Backend.DatabaseServices
+namespace VMS_Backend.Services.SignalR
 {
     /// <summary>
     /// 

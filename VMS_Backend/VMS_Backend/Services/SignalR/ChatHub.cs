@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using VMS_Backend.Data.Models;
 
-namespace VMS_Backend.DatabaseServices
+namespace VMS_Backend.Services.SignalR
 {
     /// <summary>
     /// SignalR hub for real-time chatting
