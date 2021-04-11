@@ -15,6 +15,7 @@ import {Sidebar} from "./components/Sidebar/Sidebar";
 import {StylesDictionary} from "./utils/StylesDictionary";
 import {clearUsers, setDbUser, setFirebaseUser} from "./utils/UserUtil";
 import {Chat} from "./pages/Chat";
+import {SignalRService} from "./services/SignalR/signalRService";
 
 interface AppComponentState {
   firebaseUser: any;
@@ -24,6 +25,8 @@ interface AppComponentState {
 }
 
 class AppComponent extends React.Component<{}, AppComponentState> {
+  private chatHub: SignalRService;
+
   constructor(props: any) {
     super(props);
 
@@ -33,6 +36,7 @@ class AppComponent extends React.Component<{}, AppComponentState> {
       sidebarDisplay: false,
       sidebarComponent: null
     };
+    this.chatHub = new SignalRService();
   }
 
   public componentDidMount() {
@@ -41,17 +45,25 @@ class AppComponent extends React.Component<{}, AppComponentState> {
       if (!!firebaseUser) {
         setFirebaseUser(firebaseUser);
         const dbUser = await AuthApi.getCurrentUser();
-        setDbUser(dbUser);
-        this.setState(() => ({ firebaseUser, dbUser }))
+        if (!!dbUser) {
+          setDbUser(dbUser);
+          this.setState(() => ({firebaseUser, dbUser}))
+          // Chat hub connection establish
+          this.chatHub.startConnection(dbUser.id);
+        }
       }
       else {
         this.setState(() => ({ firebaseUser: null, dbUser: null }))
         clearUsers();
+        // Chat hub connection stop
+        await this.chatHub.stopConnection();
       }
     });
   }
 
-  public componentWillUnmount() {
+  public async componentWillUnmount() {
+    // Chat hub connection stop
+    await this.chatHub.stopConnection();
     clearUsers();
   }
 
