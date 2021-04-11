@@ -1,5 +1,7 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,15 +24,16 @@ namespace VMS_Backend
         public void ConfigureServices(IServiceCollection services)
         {
             // CORS
-            services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(builder => builder
-                        //.WithOrigins("http://localhost:3000")
-                        .AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                );
-            });
+            services.AddCors();
+            // services.AddCors(options =>
+            // {
+            //     options.AddDefaultPolicy(builder => builder
+            //             //.WithOrigins("http://localhost:3000")
+            //             .AllowAnyOrigin()
+            //             .AllowAnyMethod()
+            //             .AllowAnyHeader()
+            //     );
+            // });
             
             // Database services
             services.AddScoped<CompanyService>();
@@ -41,6 +44,9 @@ namespace VMS_Backend
             services.AddScoped<VehicleService>();
             services.AddScoped<WorkTaskService>();
             services.AddScoped<ChatService>();
+            
+            // SignalR - for chat
+            services.AddSignalR();
 
             services.AddControllers();
             
@@ -53,7 +59,7 @@ namespace VMS_Backend
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IHostApplicationLifetime hostApplicationLifetime)
         {
             if (env.IsDevelopment())
             {
@@ -61,15 +67,41 @@ namespace VMS_Backend
             }
             
             // CORS
-            app.UseCors();
+            // app.UseCors();
+            // Make sure the CORS middleware is ahead of SignalR.
+            app.UseCors(builder =>
+            {
+                builder
+                    .WithOrigins("http://localhost:3000") //Source
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            });
 
             // app.UseHttpsRedirection();
 
             app.UseRouting();
 
             // app.UseAuthorization();
+            
+            hostApplicationLifetime.ApplicationStarted.Register(() =>
+            {
+                var serviceProvider = app.ApplicationServices;
+                var chatHub = (IHubContext<ChatHub>)serviceProvider.GetService(typeof(IHubContext<ChatHub>));
+ 
+                var timer = new System.Timers.Timer(1000);
+                timer.Enabled = true;
+                timer.Elapsed += delegate (object sender, System.Timers.ElapsedEventArgs e) {
+                    chatHub.Clients.All.SendAsync("setTime", DateTime.Now.ToString("dddd d MMMM yyyy HH:mm:ss"));
+                };
+                timer.Start();                
+            });
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<ChatHub>("/chatHub");
+                endpoints.MapControllers();
+            });
         }
     }
 }

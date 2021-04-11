@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using VMS_Backend.Data.Models;
 using VMS_Backend.DatabaseServices;
 
@@ -12,10 +13,13 @@ namespace VMS_Backend.Controllers
     public class ChatController : ControllerBase
     {
         private readonly ChatService _chatService;
+        private readonly IHubContext<ChatHub> _chatHub;
 
-        public ChatController(ChatService chatService)
+
+        public ChatController(ChatService chatService, IHubContext<ChatHub> chatHub)
         {
             _chatService = chatService;
+            _chatHub = chatHub;
         }
         
         // TODO images upload

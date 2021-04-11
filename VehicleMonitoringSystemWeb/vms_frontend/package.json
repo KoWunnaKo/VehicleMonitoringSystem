@@ -12,6 +12,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
+    "@microsoft/signalr": "^5.0.5",
     "autoprefixer": "7.1.6",
     "axios": "^0.21.1",
     "babel-jest": "^22.1.0",

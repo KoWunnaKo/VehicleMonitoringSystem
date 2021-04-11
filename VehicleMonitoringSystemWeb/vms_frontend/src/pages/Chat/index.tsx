@@ -10,6 +10,8 @@ import ChatContact from "../../models/ChatContact";
 import {getContactsList} from "../../utils/ChatUtil";
 import ChatMessage from "../../models/ChatMessage";
 import {getDbUser} from "../../utils/UserUtil";
+import * as signalR from "@microsoft/signalr";
+
 
 export const ChatComponent = () => {
     const [chatContacts, setChatContacts] = useState<ChatContact[]>();
@@ -17,92 +19,137 @@ export const ChatComponent = () => {
     const [receiver, setReceiver] = useState<ChatContact|null>();
     const [inputMessage, setInputMessage] = useState<string>('');
 
-    useEffect(() => {
-        (async function() {
-            await updateChat();
-        })();
-    }, []);
+    // Builds the SignalR connection, mapping it to /chatHub
+    const hubConnection = new signalR.HubConnectionBuilder()
+        .withAutomaticReconnect()
+        .withUrl(process.env.REACT_APP_BACKEND_SERVER_URL + "chatHub")
+        .configureLogging(signalR.LogLevel.Information)
+        .build();
 
-    const updateChat = async () => {
-        const messages = await ChatApi.getAllEmployeeMessages();
-        const contactList: ChatContact[] = getContactsList(messages);
-        setChatContacts(contactList);
-
-        if (!!receiver) {
-            const chatContact = contactList.find(c => c.employee.id === receiver.employee.id);
-            if (!!chatContact) {
-                setReceiver(chatContact);
-                setChatMessages(chatContact.chatMessages);
-            }
-        } else {
-            if (contactList.length > 0) {
-                const chatContact = contactList[0];
-                setReceiver(chatContact);
-                setChatMessages(chatContact.chatMessages);
-            }
+    // Starts the SignalR connection
+    hubConnection.start().then(a => {
+        // Once started, invokes the sendConnectionId in our ChatHub inside our ASP.NET Core application.
+        if (hubConnection.connectionId) {
+            console.log(`hubConnection started`);
+            hubConnection.invoke("sendConnectionId", hubConnection.connectionId);
         }
-    }
+    });
 
-    const contactListClick = (chatContact: any) => {
-        setReceiver(chatContact);
-        setChatMessages(chatContact.chatMessages);
-    }
+    const SignalRTime: React.FC = () => {
+        // Sets the time from the server
+        const [time, setTime] = useState<string | null>(null);
 
-    const sendMessage = async () => {
-        const dbUser = getDbUser();
-        if (!!dbUser && !!receiver) {
-            const msg = new ChatMessage(undefined, dbUser.companyId, inputMessage,
-                undefined, true, dbUser, receiver.employee);
-            await ChatApi.createMessage(msg);
-            setInputMessage('');
-            await updateChat();
-        }
-    }
+        useEffect(() => {
+            hubConnection.on("setTime", message => {
+                setTime(message);
+            });
+        });
 
-    return (
-      <div style={styles.container}>
-        <div style={styles.contactList}>
-            <ChatList
-                className='chat-list'
-                dataSource={chatContacts}
-                onClick={e => contactListClick(e)}
-            />
-        </div>
-        <div style={styles.conversationContainer}>
-          <div style={styles.messageList}>
-            <MessageList
-                className='message-list'
-                lockable={true}
-                toBottomHeight={'100%'}
-                dataSource={chatMessages}
-            />
-          </div>
-          <div style={styles.input}>
-            <Input
-                placeholder="Type here..."
-                onChange={event => setInputMessage(event.target.value)}
-                multiline={true}
-                rightButtons={
-                    <div>
-                        <Button
-                            color='white'
-                            backgroundColor='black'
-                            text='Update'
-                            onClick={updateChat}
-                        />
-                        <Button
-                            color='white'
-                            backgroundColor='black'
-                            text='Send'
-                            onClick={sendMessage}
-                        />
-                    </div>
-                }
-            />
-          </div>
-        </div>
-      </div>
-    );
+        return <p>The time is {time}</p>;
+    };
+
+    const SignalRClient: React.FC = () => {
+        // Sets a client message, sent from the server
+        const [clientMessage, setClientMessage] = useState<string | null>(null);
+
+        useEffect(() => {
+            hubConnection.on("setClientMessage", message => {
+                setClientMessage(message);
+            });
+        });
+
+        return <p>{clientMessage}</p>
+    };
+
+    return <><SignalRTime /><SignalRClient /></>;
+
+
+    // useEffect(() => {
+    //     (async function() {
+    //         await updateChat();
+    //     })();
+    // }, []);
+    //
+    // const updateChat = async () => {
+    //     const messages = await ChatApi.getAllEmployeeMessages();
+    //     const contactList: ChatContact[] = getContactsList(messages);
+    //     setChatContacts(contactList);
+    //
+    //     if (!!receiver) {
+    //         const chatContact = contactList.find(c => c.employee.id === receiver.employee.id);
+    //         if (!!chatContact) {
+    //             setReceiver(chatContact);
+    //             setChatMessages(chatContact.chatMessages);
+    //         }
+    //     } else {
+    //         if (contactList.length > 0) {
+    //             const chatContact = contactList[0];
+    //             setReceiver(chatContact);
+    //             setChatMessages(chatContact.chatMessages);
+    //         }
+    //     }
+    // }
+    //
+    // const contactListClick = (chatContact: any) => {
+    //     setReceiver(chatContact);
+    //     setChatMessages(chatContact.chatMessages);
+    // }
+    //
+    // const sendMessage = async () => {
+    //     const dbUser = getDbUser();
+    //     if (!!dbUser && !!receiver) {
+    //         const msg = new ChatMessage(undefined, dbUser.companyId, inputMessage,
+    //             undefined, true, dbUser, receiver.employee);
+    //         await ChatApi.createMessage(msg);
+    //         setInputMessage('');
+    //         await updateChat();
+    //     }
+    // }
+    //
+    // return (
+    //   <div style={styles.container}>
+    //     <div style={styles.contactList}>
+    //         <ChatList
+    //             className='chat-list'
+    //             dataSource={chatContacts}
+    //             onClick={e => contactListClick(e)}
+    //         />
+    //     </div>
+    //     <div style={styles.conversationContainer}>
+    //       <div style={styles.messageList}>
+    //         <MessageList
+    //             className='message-list'
+    //             lockable={true}
+    //             toBottomHeight={'100%'}
+    //             dataSource={chatMessages}
+    //         />
+    //       </div>
+    //       <div style={styles.input}>
+    //         <Input
+    //             placeholder="Type here..."
+    //             onChange={event => setInputMessage(event.target.value)}
+    //             multiline={true}
+    //             rightButtons={
+    //                 <div>
+    //                     <Button
+    //                         color='white'
+    //                         backgroundColor='black'
+    //                         text='Update'
+    //                         onClick={updateChat}
+    //                     />
+    //                     <Button
+    //                         color='white'
+    //                         backgroundColor='black'
+    //                         text='Send'
+    //                         onClick={sendMessage}
+    //                     />
+    //                 </div>
+    //             }
+    //         />
+    //       </div>
+    //     </div>
+    //   </div>
+    // );
 }
 
 const styles: StylesDictionary  = {
