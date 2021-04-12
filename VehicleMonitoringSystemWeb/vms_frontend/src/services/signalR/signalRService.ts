@@ -1,4 +1,8 @@
 import * as signalR from "@microsoft/signalr";
+import addNotification from "react-push-notification";
+import ChatMessage from "../../models/chatMessage";
+import Vehicle from "../../models/vehicle";
+import Employee from "../../models/employee";
 
 type EndpointMethod = (message: any) => void;
 
@@ -56,7 +60,23 @@ export abstract class SignalRService {
 
         // Receive chat message endpoint
         this.addEndpoint("receiveChatMessage", message => {
-            console.log(`Message from server received: ${JSON.stringify(message)}`);
+            const msg: ChatMessage = message;
+            Object.setPrototypeOf(msg, ChatMessage.prototype)
+            Object.setPrototypeOf(msg.receiver, Employee.prototype)
+            Object.setPrototypeOf(msg.sender, Employee.prototype)
+
+            console.log(`Message from server received: ${JSON.stringify(msg)}`);
+            const maxMsgLength = 150;
+            const notificationMsg =
+                msg.text.length >= maxMsgLength
+                    ? msg.text.substr(0, maxMsgLength) + '...'
+                    : msg.text;
+            addNotification({
+                title: 'Chat',
+                subtitle: msg.sender.getFullName(),
+                message: notificationMsg,
+                theme: 'light',
+            });
         });
     }
 }

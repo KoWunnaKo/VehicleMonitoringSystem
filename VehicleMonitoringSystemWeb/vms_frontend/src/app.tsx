@@ -16,6 +16,7 @@ import {StylesDictionary} from "./utils/stylesDictionary";
 import {clearUsers, setDbUser, setFirebaseUser} from "./utils/userUtil";
 import {Chat} from "./pages/chat";
 import {SignalRService} from "./services/signalR/signalRService";
+import { Notifications } from 'react-push-notification';
 
 interface AppComponentState {
   firebaseUser: any;
@@ -80,6 +81,7 @@ class AppComponent extends React.Component<{}, AppComponentState> {
                       setSidebarDisplay={this.setSidebarDisplay}
                       setSidebarComponent={this.setSidebarComponent}/>
           <div style={styles.container}>
+            <Notifications/>
             <Sidebar childComp={this.state.sidebarComponent} display={this.state.sidebarDisplay}/>
             <Switch>
               {/*No auth*/}
