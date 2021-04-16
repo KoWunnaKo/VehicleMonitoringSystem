@@ -28,6 +28,10 @@
             android:name=".ui.activity.NavigationActivity"
             android:label="@string/navigation__title_navigation" />
 
+        <activity
+            android:name=".ui.activity.ChatMessagesActivity"
+            android:label="ChatMessageActivity" />
+
         <service
             android:name=".services.LocationForegroundService"
             android:enabled="true"
