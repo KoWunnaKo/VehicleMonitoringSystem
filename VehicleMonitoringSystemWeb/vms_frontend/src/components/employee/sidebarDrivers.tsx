@@ -23,7 +23,7 @@ export const SidebarDrivers: React.FunctionComponent = () => {
         <div style={styles.container}>
             <h2>Drivers</h2>
             <Popup
-                trigger={<Button variant="contained" style={styles.addButton}>Create driver</Button>}
+                trigger={<Button variant="contained" color='primary' style={styles.addButton}>Create driver</Button>}
                 modal={true}
                 nested={true}
             >

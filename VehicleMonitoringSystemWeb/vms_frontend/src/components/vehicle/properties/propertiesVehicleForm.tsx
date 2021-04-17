@@ -4,6 +4,7 @@ import {useState} from "react";
 import {PropertiesGeneralVehicleForm, PropertiesGeneralVehicleFormName} from "./propertiesGeneralVehicleForm";
 import {PropertiesDriversVehicleForm, PropertiesDriversVehicleFormName} from "./propertiesDriversVehicleForm";
 import Vehicle from "../../../models/vehicle";
+import "../../../styles/navigation.scss";
 
 interface InterfaceProps {
   closeModal: () => void;
@@ -36,16 +37,15 @@ export const PropertiesVehicleForm: React.FunctionComponent<InterfaceProps> = (p
                     </li>
                 </ul>
             </div>
-            <div style={styles.content}>
-                {renderContent()}
-            </div>
+                <div style={styles.content}>
+                    {renderContent()}
+                </div>
         </div>
     );
 }
 
 const styles: StylesDictionary  = {
     container: {
-        display: 'flex',
         flexDirection: 'column',
         width: 400,
         height: 350

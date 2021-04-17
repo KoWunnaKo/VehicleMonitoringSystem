@@ -3,6 +3,7 @@ import {StylesDictionary} from "../../../utils/stylesDictionary";
 import {useState} from "react";
 import {PropertiesGeneralTaskForm, PropertiesGeneralTaskFormName} from "./propertiesGeneralTaskForm";
 import Task from "../../../models/task";
+import "../../../styles/navigation.scss";
 
 interface InterfaceProps {
   closeModal: () => void;
@@ -39,7 +40,6 @@ export const PropertiesTaskForm: React.FunctionComponent<InterfaceProps> = (prop
 
 const styles: StylesDictionary  = {
     container: {
-        display: 'flex',
         flexDirection: 'column',
         width: 400,
         height: 450
