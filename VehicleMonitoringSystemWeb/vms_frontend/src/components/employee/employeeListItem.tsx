@@ -4,6 +4,10 @@ import {IconButton, ListItem, ListItemSecondaryAction} from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
 import {StylesDictionary} from "../../utils/stylesDictionary";
 import * as EmployeeApi from "../../api/employeeApi";
+import SettingsIcon from "@material-ui/icons/Settings";
+import {PropertiesTaskForm} from "../task/properties/propertiesTaskForm";
+import Popup from "reactjs-popup";
+import {PropertiesEmployeeForm} from "./properties/propertiesEmployeeForm";
 
 
 interface InterfaceProps {
@@ -11,27 +15,49 @@ interface InterfaceProps {
 }
 
 export const EmployeeListItem: React.FunctionComponent<InterfaceProps> = (props) => {
-    async function onDeleteClick() {
-        if(props.employee.id) {
-            await EmployeeApi.deleteEmployee(props.employee.id);
-        }
-    }
+    const {employee} = props;
+
+    // async function onDeleteClick() {
+    //     if(props.employee.id) {
+    //         await EmployeeApi.deleteEmployee(props.employee.id);
+    //     }
+    // }
 
     return (
         <div style={styles.container}>
             <ListItem
-                key={props.employee.id}
+                key={employee.id}
                 button={true}
                 // onPress={() => this.onLearnMore(driver)}
                 style={styles.listItem}
             >
-                {`${props.employee.firstName} ${props.employee.lastName}`}
+                {employee.getFullName()}
 
-                <ListItemSecondaryAction>
-                    <IconButton edge="end" onClick={onDeleteClick}>
-                        <DeleteIcon />
-                    </IconButton>
-                </ListItemSecondaryAction>
+                <Popup
+                    trigger={
+                        <ListItemSecondaryAction>
+                            <IconButton edge="end">
+                                <SettingsIcon />
+                            </IconButton>
+                        </ListItemSecondaryAction>
+                    }
+                    modal={true}
+                    nested={true}
+                >
+                    {(close: any) => {
+
+                        return (
+                            <div className="modal">
+                                <button className="close" onClick={close}>
+                                    &times;
+                                </button>
+                                <div>
+                                    <PropertiesEmployeeForm closeModal={close} employee={employee}/>
+                                </div>
+                            </div>
+                        )
+                    }}
+                </Popup>
             </ListItem>
         </div>
     );
