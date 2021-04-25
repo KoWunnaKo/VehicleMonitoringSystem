@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using VMS_Backend.Data;
 
 namespace VMS_Backend.Services.Database
 {
-    public class BaseDatabaseService<T> where T : class
+    public abstract class BaseDatabaseService<T> where T : class
     {
         protected readonly ApplicationDbContext _dbContext;
-
+        
         protected BaseDatabaseService(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;

@@ -64,7 +64,8 @@ namespace VMS_Backend
             app.UseCors(builder =>
             {
                 builder
-                    .WithOrigins("http://localhost:3000") //Source
+                    .WithOrigins("http://localhost:3000") //Web-frontend Source
+                    .WithOrigins("http://192.168.1.111")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();

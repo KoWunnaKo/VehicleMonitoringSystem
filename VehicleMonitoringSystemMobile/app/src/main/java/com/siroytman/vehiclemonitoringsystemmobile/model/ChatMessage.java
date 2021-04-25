@@ -1,34 +1,79 @@
 package com.siroytman.vehiclemonitoringsystemmobile.model;
 
+import android.util.Log;
+
 import com.siroytman.vehiclemonitoringsystemmobile.interfaces.IChatMessage;
 import com.stfalcon.chatkit.commons.models.IMessage;
 import com.stfalcon.chatkit.commons.models.IUser;
 import com.stfalcon.chatkit.commons.models.MessageContentType;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class ChatMessage implements IChatMessage,
         MessageContentType.Image, /*this is for default image messages implementation*/
         MessageContentType /*and this one is for custom content type (in this case - voice message)*/ {
+    public static final String TAG = "ChatMessage";
+
+    public static ChatMessage parseChatMessage(JSONObject json) {
+        ChatMessage chatMessage = new ChatMessage();
+
+        try {
+            chatMessage.text = json.getString("text");
+            chatMessage.date = Timestamp.valueOf(json.getString("date").replace("T", " "));
+            chatMessage.sender = Employee.parseEmployee(json.getJSONObject("sender"));
+            chatMessage.receiver = Employee.parseEmployee(json.getJSONObject("receiver"));
+        } catch (JSONException e) {
+            Log.d(TAG, "Parse error: " + e.getMessage());
+            return null;
+        }
+
+        return chatMessage;
+    }
+
+    public static ArrayList<ChatMessage> parseChatMessageArray(JSONArray jsonArray)
+    {
+        ArrayList<ChatMessage> result = new ArrayList<>(jsonArray.length());
+        for(int i = 0; i < jsonArray.length(); ++i)
+        {
+            try {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                ChatMessage message = parseChatMessage(jsonObject);
+                result.add(message);
+            }
+            catch (JSONException e)
+            {
+                Log.d(TAG, "Array parse error: " + e.getMessage());
+            }
+        }
+        return result;
+    }
 
     private String id;
+    private int companyId;
     private String text;
-    private Date createdAt;
-    private ChatUser user;
+    private Date date;
+    private Employee sender;
+    private Employee receiver;
+    private boolean isRead;
+
     private Image image;
-    private Voice voice;
 
-    public ChatMessage(String id, ChatUser user, String text) {
-        this(id, user, text, new Date());
+    public ChatMessage() {
     }
 
-    public ChatMessage(String id, ChatUser user, String text, Date createdAt) {
-        this.id = id;
-        this.text = text;
-        this.user = user;
-        this.createdAt = createdAt;
-    }
+//    public ChatMessage(String id, Employee sender, String text, Date date) {
+//        this.id = id;
+//        this.text = text;
+//        this.sender = sender;
+//        this.date = date;
+//    }
 
     @Override
     public String getId() {
@@ -57,7 +102,6 @@ public class ChatMessage implements IChatMessage,
 
     @Override
     public void setLastMessage(IMessage message) {
-
     }
 
     @Override
@@ -72,12 +116,20 @@ public class ChatMessage implements IChatMessage,
 
     @Override
     public Date getCreatedAt() {
-        return createdAt;
+        return date;
     }
 
     @Override
-    public ChatUser getUser() {
-        return this.user;
+    public Employee getUser() {
+        return this.sender;
+    }
+
+    public Employee getSender() {
+        return this.sender;
+    }
+
+    public Employee getReceiver() {
+        return this.receiver;
     }
 
     @Override
@@ -85,8 +137,8 @@ public class ChatMessage implements IChatMessage,
         return image == null ? null : image.url;
     }
 
-    public Voice getVoice() {
-        return voice;
+    public boolean getIsRead() {
+        return isRead;
     }
 
     public String getStatus() {
@@ -97,43 +149,19 @@ public class ChatMessage implements IChatMessage,
         this.text = text;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public void setImage(Image image) {
         this.image = image;
     }
 
-    public void setVoice(Voice voice) {
-        this.voice = voice;
-    }
-
     public static class Image {
-
         private String url;
 
         public Image(String url) {
             this.url = url;
-        }
-    }
-
-    public static class Voice {
-
-        private String url;
-        private int duration;
-
-        public Voice(String url, int duration) {
-            this.url = url;
-            this.duration = duration;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public int getDuration() {
-            return duration;
         }
     }
 }

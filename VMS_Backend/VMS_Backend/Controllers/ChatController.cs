@@ -55,5 +55,12 @@ namespace VMS_Backend.Controllers
         {
             return Ok(await _chatService.GetAllEmployeeMessages(companyId, employeeId));
         }
+        
+        // [HttpGet]
+        // [Route("getAllEmployeeDialogs/{companyId}/{employeeId}")]
+        // public async Task<ActionResult<List<WorkTask>>> GetAllEmployeeDialogs(int companyId, string employeeId)
+        // {
+        //     return Ok(await _chatService.GetAllEmployeeMessages(companyId, employeeId));
+        // }
     }
 }

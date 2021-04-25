@@ -67,15 +67,15 @@ public class ChatMessagesActivity extends AppCompatActivity implements MessageIn
 
     @Override
     public boolean onSubmit(CharSequence input) {
-        messagesAdapter.addToStart(
-                MessagesFixtures.getTextMessage(input.toString()), true);
+//        messagesAdapter.addToStart(
+//                MessagesFixtures.getTextMessage(input.toString()), true);
         return true;
     }
 
     @Override
     public void onAddAttachments() {
-        messagesAdapter.addToStart(
-                MessagesFixtures.getImageMessage(), true);
+//        messagesAdapter.addToStart(
+//                MessagesFixtures.getImageMessage(), true);
     }
 
     private void initAdapter() {
@@ -111,11 +111,11 @@ public class ChatMessagesActivity extends AppCompatActivity implements MessageIn
 
     protected void loadMessages() {
         //imitation of internet connection
-        new Handler().postDelayed(() -> {
-            ArrayList<ChatMessage> messages = MessagesFixtures.getMessages(lastLoadedDate);
-            lastLoadedDate = messages.get(messages.size() - 1).getCreatedAt();
-            messagesAdapter.addToEnd(messages, false);
-        }, 1000);
+//        new Handler().postDelayed(() -> {
+//            ArrayList<ChatMessage> messages = MessagesFixtures.getMessages(lastLoadedDate);
+//            lastLoadedDate = messages.get(messages.size() - 1).getCreatedAt();
+//            messagesAdapter.addToEnd(messages, false);
+//        }, 1000);
     }
 
     private MessagesListAdapter.Formatter<ChatMessage> getMessageStringFormatter() {

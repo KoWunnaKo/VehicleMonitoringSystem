@@ -11,16 +11,16 @@ namespace VMS_Backend.Services.Database
 {
     public class VehicleDataService : BaseDatabaseService<VehicleData>
     {
-        private IConfiguration Configuration { get; }
+        private string DefaultConnectionString { get; }
 
         public VehicleDataService(ApplicationDbContext dbContext, IConfiguration configuration) : base(dbContext)
         {
-            Configuration = configuration;
+            DefaultConnectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
         public async Task<List<VehicleData>> GetVehiclesLastData(int companyId)
         {
-            await using var con = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection"));
+            await using var con = new NpgsqlConnection(DefaultConnectionString);
             var res = await con.QueryAsync<VehicleData, Vehicle, VehicleData>(
                 @"SELECT DISTINCT ON (vd.vehicle_id)
                     vd.*, v.*
@@ -38,7 +38,7 @@ namespace VMS_Backend.Services.Database
 
         public async Task<Dictionary<int, List<VehicleData>>> GetVehiclesRangeData(int companyId, string startDateTime, string endDateTime)
         {
-            await using var con = new NpgsqlConnection(Configuration.GetConnectionString("DefaultConnection"));
+            await using var con = new NpgsqlConnection(DefaultConnectionString);
             var vehicleData = await con.QueryAsync<VehicleData>(
                 @"SELECT vd.*
                     FROM vehicle_data vd

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using VMS_Backend.Data;
 using VMS_Backend.Data.Models;
 
@@ -9,7 +10,12 @@ namespace VMS_Backend.Services.Database
 {
     public class ChatService : BaseDatabaseService<ChatMessage>
     {
-        public ChatService(ApplicationDbContext dbContext) : base(dbContext) { }
+        private string DefaultConnectionString { get; }
+
+        public ChatService(ApplicationDbContext dbContext, IConfiguration configuration) : base(dbContext)
+        {
+            DefaultConnectionString = configuration.GetConnectionString("DefaultConnection");
+        }
 
         public async Task<List<ChatMessage>> GetAllEmployeeMessages(int companyId, string employeeId)
         {

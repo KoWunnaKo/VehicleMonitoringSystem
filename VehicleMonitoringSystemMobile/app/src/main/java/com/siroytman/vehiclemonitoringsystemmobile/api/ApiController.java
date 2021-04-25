@@ -14,14 +14,14 @@ import com.siroytman.vehiclemonitoringsystemmobile.controller.AppController;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ApiController {
     public static final String TAG = "ApiController";
-    public static final String geodataProcessingServiceUrl;
+    public static final String GEODATA_PROCESSING_SERVICE_URL;
+    public static final String BACKEND_URL;
     private static final int RESPONSE_TIMEOUT = 100000;
 
     // Volley queue for executing requests to server
@@ -31,8 +31,8 @@ public class ApiController {
     private static ApiController instance;
 
     static {
-        int geodataProcessingServiceUrlId = R.string.geodata_processing_service_url;
-        geodataProcessingServiceUrl = AppController.getInstance().getAppContext().getString(geodataProcessingServiceUrlId);
+        GEODATA_PROCESSING_SERVICE_URL = AppController.getInstance().getAppContext().getString(R.string.geodata_processing_service_url);
+        BACKEND_URL = AppController.getInstance().getAppContext().getString(R.string.backend_url);
     }
 
     private ApiController() {
