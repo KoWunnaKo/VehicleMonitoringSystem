@@ -17,6 +17,7 @@ import {clearUsers, setDbUser, setFirebaseUser} from "./utils/userUtil";
 import {Chat} from "./pages/chat";
 import {SignalRService} from "./services/signalR/signalRService";
 import { Notifications } from 'react-push-notification';
+import {CompanySettings} from "./pages/companySettings";
 
 interface AppComponentState {
   firebaseUser: any;
@@ -93,6 +94,7 @@ class AppComponent extends React.Component<{}, AppComponentState> {
               <Route exact={true} path={routes.HOME} component={HomeScreen} />
               <Route exact={true} path={routes.ACCOUNT} component={Account} />
               <Route exact={true} path={routes.CHAT} component={Chat} />
+              <Route exact={true} path={routes.COMPANY_SETTINGS} component={CompanySettings} />
 
               {/*Administrator*/}
             </Switch>
