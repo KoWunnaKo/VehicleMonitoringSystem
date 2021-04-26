@@ -51,7 +51,7 @@ public class VehicleDataSynchronizationService {
                         }
 
                         ApiController.getInstance()
-                                .getJSONArrayResponse(Request.Method.POST, ApiController.geodataProcessingServiceUrl,
+                                .getJSONArrayResponse(Request.Method.POST, ApiController.GEODATA_PROCESSING_SERVICE_URL,
                                         "vehicleData", vehicleDataArray, new VolleyCallbackJSONArray() {
                                     @Override
                                     public void onSuccessResponse(JSONArray result)

@@ -18,9 +18,9 @@
 
     <fragment
         android:id="@+id/navigation_chat"
-        android:name="com.siroytman.vehiclemonitoringsystemmobile.ui.fragments.ChatFragment"
+        android:name="com.siroytman.vehiclemonitoringsystemmobile.ui.fragments.ChatDialogFragment"
         android:label="@string/navigation__title_chat"
-        tools:layout="@layout/fragment_chat" />
+        tools:layout="@layout/fragment_chat_dialog" />
 
     <fragment
         android:id="@+id/navigation_settings"

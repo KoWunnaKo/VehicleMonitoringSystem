@@ -5,12 +5,12 @@ import android.content.Context;
 
 import androidx.room.Room;
 
-import com.siroytman.vehiclemonitoringsystemmobile.model.AppUser;
+import com.siroytman.vehiclemonitoringsystemmobile.model.Employee;
 import com.siroytman.vehiclemonitoringsystemmobile.room.AppRoomDatabase;
 
 public class AppController extends Application {
     private static final String TAG = "AppController";
-    public AppUser user;
+    public Employee user;
     private static AppController mInstance;
     private AppRoomDatabase roomDatabase;
 

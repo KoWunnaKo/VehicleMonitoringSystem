@@ -13,6 +13,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.VehicleMonitoringSystemMobile"
         android:name=".controller.AppController">
@@ -27,6 +28,10 @@
         <activity
             android:name=".ui.activity.NavigationActivity"
             android:label="@string/navigation__title_navigation" />
+
+        <activity
+            android:name=".ui.activity.ChatMessagesActivity"
+            android:label="ChatMessageActivity" />
 
         <service
             android:name=".services.LocationForegroundService"
