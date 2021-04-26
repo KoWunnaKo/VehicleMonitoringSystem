@@ -11,9 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.siroytman.vehiclemonitoringsystemmobile.R;
+import com.siroytman.vehiclemonitoringsystemmobile.controller.ChatController;
 import com.siroytman.vehiclemonitoringsystemmobile.model.ChatDialog;
 import com.siroytman.vehiclemonitoringsystemmobile.model.ChatMessage;
 import com.siroytman.vehiclemonitoringsystemmobile.sampleData.MessagesFixtures;
+import com.siroytman.vehiclemonitoringsystemmobile.ui.fragments.ChatDialogFragment;
 import com.squareup.picasso.Picasso;
 import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.messages.MessageInput;
@@ -46,6 +48,17 @@ public class ChatMessagesActivity extends AppCompatActivity implements MessageIn
 
     private ChatDialog dialog;
 
+    private ChatController chatController;
+
+    private static ChatMessagesActivity instance;
+
+    public static synchronized ChatMessagesActivity getInstance() {
+        if (instance == null) {
+            instance = new ChatMessagesActivity();
+        }
+        return instance;
+    }
+
     public static void open(Context context, ChatDialog dialog) {
         Intent intent = new Intent(context, ChatMessagesActivity.class);
         intent.putExtra("dialog", dialog);
@@ -56,6 +69,10 @@ public class ChatMessagesActivity extends AppCompatActivity implements MessageIn
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_messages);
+
+        instance = this;
+
+        chatController = ChatController.getInstance();
 
         // Get dialog from bundle
         Bundle arguments = getIntent().getExtras();
@@ -70,7 +87,6 @@ public class ChatMessagesActivity extends AppCompatActivity implements MessageIn
 
         this.messagesList = findViewById(R.id.chat_messages__messagesList);
         initAdapter();
-//        loadMessages();
 
         MessageInput input = findViewById(R.id.chat_messages__input);
         input.setInputListener(this);
@@ -81,9 +97,19 @@ public class ChatMessagesActivity extends AppCompatActivity implements MessageIn
 
     @Override
     public boolean onSubmit(CharSequence input) {
+        // TODO userId, companyId
+        String userId = "6rCZ9FrOAMd4SdEDNaNENoY1Gku2";
+        int companyId = 1;
+        ChatMessage message = new ChatMessage(companyId, userId, dialog.getId(), input.toString());
+        chatController.sendMessage(message);
+
 //        messagesAdapter.addToStart(
 //                MessagesFixtures.getTextMessage(input.toString()), true);
         return true;
+    }
+
+    public void onNewMessageUpdateView(ChatMessage message) {
+        messagesAdapter.addToStart(message, true);
     }
 
     @Override

@@ -99,8 +99,8 @@ public class ApiController {
         volleyQueue.addToRequestQueue(request);
     }
 
-    public void getJSONObjectResponse(String serverUrl, String apiUrl, JSONObject json, final VolleyCallbackJSONObject callback) {
-        JsonObjectRequest request = new JsonObjectRequest(serverUrl + "/" + apiUrl,
+    public void getJSONObjectResponse(int method, String serverUrl, String apiUrl, JSONObject json, final VolleyCallbackJSONObject callback) {
+        JsonObjectRequest request = new JsonObjectRequest(method, serverUrl + "/" + apiUrl,
                 json,
                 new Response.Listener<JSONObject>() {
                     @Override

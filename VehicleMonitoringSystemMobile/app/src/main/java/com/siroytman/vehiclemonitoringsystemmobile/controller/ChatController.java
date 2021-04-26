@@ -6,13 +6,17 @@ import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.siroytman.vehiclemonitoringsystemmobile.api.ApiController;
 import com.siroytman.vehiclemonitoringsystemmobile.api.VolleyCallbackJSONArray;
+import com.siroytman.vehiclemonitoringsystemmobile.api.VolleyCallbackJSONObject;
 import com.siroytman.vehiclemonitoringsystemmobile.model.ChatDialog;
 import com.siroytman.vehiclemonitoringsystemmobile.model.ChatMessage;
+import com.siroytman.vehiclemonitoringsystemmobile.ui.activity.ChatMessagesActivity;
 import com.siroytman.vehiclemonitoringsystemmobile.ui.fragments.ChatDialogFragment;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class ChatController {
@@ -55,5 +59,24 @@ public class ChatController {
                                 Log.d(TAG, "Volley error = " + error.toString());
                             }
                         });
+    }
+
+    public void sendMessage(ChatMessage message) {
+        apiController.getJSONObjectResponse(Request.Method.POST,
+                ApiController.BACKEND_URL,
+                "chat",
+                message.toJSONObject(),
+                new VolleyCallbackJSONObject() {
+                    @Override
+                    public void onSuccessResponse(JSONObject result) {
+                        ChatMessage message = ChatMessage.parseChatMessage(result);
+                        ChatMessagesActivity.getInstance().onNewMessageUpdateView(message);
+                    }
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, "Volley error = " + error.toString());
+                    }
+                });
     }
 }

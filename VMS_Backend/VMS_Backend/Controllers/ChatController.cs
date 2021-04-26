@@ -14,11 +14,13 @@ namespace VMS_Backend.Controllers
     public class ChatController : ControllerBase
     {
         private readonly ChatService _chatService;
+        private readonly EmployeeService _employeeService;
         private readonly IHubContext<ChatHub> _hubContext;
 
-        public ChatController(ChatService chatService, IHubContext<ChatHub> hubContext)
+        public ChatController(ChatService chatService, EmployeeService employeeService, IHubContext<ChatHub> hubContext)
         {
             _chatService = chatService;
+            _employeeService = employeeService;
             _hubContext = hubContext;
         }
         
@@ -34,6 +36,7 @@ namespace VMS_Backend.Controllers
                 message.ReceiverId = message.Receiver.Id;
             }
 
+            // TODO unify and refactor
             var sender = message.Sender;
             var receiver = message.Receiver;
             
@@ -43,6 +46,12 @@ namespace VMS_Backend.Controllers
 
             res.Sender = sender;
             res.Receiver = receiver;
+
+            if (res.Sender == null || res.Receiver == null)
+            {
+                res.Sender = await _employeeService.FindItemByIdAsync(res.SenderId);
+                res.Receiver = await _employeeService.FindItemByIdAsync(res.ReceiverId);
+            }
             // SignalR message to client
             await ChatHub.SendMessage(_hubContext, res.ReceiverId, res);
 
@@ -55,12 +64,5 @@ namespace VMS_Backend.Controllers
         {
             return Ok(await _chatService.GetAllEmployeeMessages(companyId, employeeId));
         }
-        
-        // [HttpGet]
-        // [Route("getAllEmployeeDialogs/{companyId}/{employeeId}")]
-        // public async Task<ActionResult<List<WorkTask>>> GetAllEmployeeDialogs(int companyId, string employeeId)
-        // {
-        //     return Ok(await _chatService.GetAllEmployeeMessages(companyId, employeeId));
-        // }
     }
 }

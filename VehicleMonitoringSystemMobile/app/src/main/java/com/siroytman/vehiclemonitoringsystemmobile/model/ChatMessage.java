@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class ChatMessage implements Parcelable,
@@ -53,7 +54,7 @@ public class ChatMessage implements Parcelable,
         try {
             chatMessage.id = json.getString("id");
             chatMessage.text = json.getString("text");
-            chatMessage.date = Timestamp.valueOf(json.getString("date").replace("T", " "));
+            chatMessage.date = Timestamp.valueOf(json.getString("date").replace("T", " ").split("\\+")[0]);
             chatMessage.sender = Employee.parseEmployee(json.getJSONObject("sender"));
             chatMessage.receiver = Employee.parseEmployee(json.getJSONObject("receiver"));
         } catch (JSONException e) {
@@ -87,12 +88,23 @@ public class ChatMessage implements Parcelable,
         return result;
     }
 
+    public JSONObject toJSONObject() {
+        HashMap<String, Object> param = new HashMap<>();
+        param.put("companyId", companyId);
+        param.put("senderId", senderId);
+        param.put("receiverId", receiverId);
+        param.put("text", getText());
+        return new JSONObject(param);
+    }
+
     private String id;
     private int companyId;
     private String text;
     private Date date;
     private Employee sender;
+    private String senderId;
     private Employee receiver;
+    private String receiverId;
     private boolean isRead;
 
     private Image image;
@@ -100,12 +112,12 @@ public class ChatMessage implements Parcelable,
     public ChatMessage() {
     }
 
-//    public ChatMessage(String id, Employee sender, String text, Date date) {
-//        this.id = id;
-//        this.text = text;
-//        this.sender = sender;
-//        this.date = date;
-//    }
+    public ChatMessage(int companyId, String senderId, String receiverId, String text) {
+        this.companyId = companyId;
+        this.senderId = senderId;
+        this.receiverId = receiverId;
+        this.text = text;
+    }
 
     @Override
     public String getId() {

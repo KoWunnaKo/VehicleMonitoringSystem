@@ -77,7 +77,7 @@ public class ChatDialogFragment extends Fragment implements DialogsListAdapter.O
     }
 
     //for example
-    private void onNewMessage(String dialogId, ChatMessage message) {
+    public void onNewMessage(String dialogId, ChatMessage message) {
         boolean isUpdated = dialogsAdapter.updateDialogWithMessage(dialogId, message);
         if (!isUpdated) {
             //Dialog with this ID doesn't exist, so you can create new Dialog or update all dialogs list
