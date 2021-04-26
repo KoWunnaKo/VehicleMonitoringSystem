@@ -27,6 +27,7 @@ namespace VMS_Backend
             
             // Database services
             services.AddScoped<CompanyService>();
+            services.AddScoped<CompanySettingsService>();
             services.AddScoped<EmployeeService>();
             services.AddScoped<RoleService>();
             services.AddScoped<VehicleDataService>();
