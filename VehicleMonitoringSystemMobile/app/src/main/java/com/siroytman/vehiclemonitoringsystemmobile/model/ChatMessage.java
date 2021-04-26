@@ -45,6 +45,9 @@ public class ChatMessage implements Parcelable,
     };
 
     public static ChatMessage parseChatMessage(JSONObject json) {
+        // TODO userId
+        String userId = "6rCZ9FrOAMd4SdEDNaNENoY1Gku2";
+
         ChatMessage chatMessage = new ChatMessage();
 
         try {
@@ -56,6 +59,11 @@ public class ChatMessage implements Parcelable,
         } catch (JSONException e) {
             Log.d(TAG, "Parse error: " + e.getMessage());
             return null;
+        }
+
+        // For 'left'-'right' message align
+        if (userId.equals(chatMessage.sender.getId())) {
+            chatMessage.sender.setId("0");
         }
 
         return chatMessage;
@@ -163,10 +171,6 @@ public class ChatMessage implements Parcelable,
 
     public boolean getIsRead() {
         return isRead;
-    }
-
-    public String getStatus() {
-        return "Sent";
     }
 
     public void setText(String text) {

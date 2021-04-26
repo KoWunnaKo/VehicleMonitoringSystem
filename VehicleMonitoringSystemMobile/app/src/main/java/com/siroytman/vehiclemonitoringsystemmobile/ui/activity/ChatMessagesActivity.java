@@ -102,7 +102,7 @@ public class ChatMessagesActivity extends AppCompatActivity implements MessageIn
 //                        false));
         this.messagesList.setAdapter(messagesAdapter);
 
-        messagesAdapter.addToEnd(dialog.getMessages(), false);
+        messagesAdapter.addToEnd(dialog.getMessages(), true);
     }
 
     @Override
