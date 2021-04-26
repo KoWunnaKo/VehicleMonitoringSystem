@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.siroytman.vehiclemonitoringsystemmobile.R;
+import com.siroytman.vehiclemonitoringsystemmobile.controller.CompanySettingsController;
 import com.siroytman.vehiclemonitoringsystemmobile.services.LocationForegroundService;
 
 import androidx.annotation.Nullable;
@@ -18,7 +19,7 @@ public class LocationFragment extends Fragment {
     private Context context;
     private View rootView;
     private Button btnStartTrack;
-    private boolean isLocating;
+    private boolean isLocating = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -26,11 +27,9 @@ public class LocationFragment extends Fragment {
         context = getActivity();
 
         btnStartTrack = rootView.findViewById(R.id.location__btn_start_track);
-        isLocating = false;
 
         btnStartTrack.setOnClickListener(v -> {
-            isLocating = !isLocating;
-            if (isLocating) {
+            if (!isLocating) {
                 btnStartTrack.setText(R.string.location__track_button__stop);
                 LocationForegroundService.startService(context);
             } else
@@ -41,13 +40,19 @@ public class LocationFragment extends Fragment {
                 btnStartTrack.setText(R.string.location__track_button__start);
                 LocationForegroundService.stopService(context);
             }
+            isLocating = !isLocating;
         });
 
         return rootView;
     }
 
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Configure companySettings params
+        CompanySettingsController.getInstance().configureCompanySettings();
     }
 }

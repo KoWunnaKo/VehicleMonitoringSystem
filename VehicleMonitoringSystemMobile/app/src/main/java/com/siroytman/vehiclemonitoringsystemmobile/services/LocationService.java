@@ -25,9 +25,8 @@ public class LocationService {
     // Singleton
     public static LocationService instance;
 
-    // Release = 120000; Debug = 10000
-    private static final int UPDATE_INTERVAL_MS = 60000;
-    private static final int FASTEST_UPDATE_INTERVAL_MS = 60000;
+    // Default value, that will be reset by companySettings if they exist
+    public static int RECORDING_INTERVAL_MS = 60000;
 
     private FusedLocationProviderClient fusedLocationClient;
 
@@ -75,8 +74,7 @@ public class LocationService {
 
     private void createLocationRequest() {
         locationRequest = new LocationRequest();
-        locationRequest.setInterval(UPDATE_INTERVAL_MS);
-        locationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_MS);
+        locationRequest.setInterval(RECORDING_INTERVAL_MS);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 

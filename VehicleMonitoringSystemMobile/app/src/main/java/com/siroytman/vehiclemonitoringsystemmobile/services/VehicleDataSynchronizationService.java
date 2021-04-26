@@ -26,7 +26,9 @@ import java.util.TimerTask;
 
 public class VehicleDataSynchronizationService {
     public static final String TAG = "LocationDataSyncService";
-    private static final int TIME_INTERVAL = 120000;
+
+    // Default value, that will be reset by companySettings if they exist
+    public static int SYNCHRONIZATION_INTERVAL = 120000;
     private static boolean isSynchronizationTaskScheduled = false;
 
     private static List<VehicleData> vehicleDataList;
@@ -75,7 +77,7 @@ public class VehicleDataSynchronizationService {
                         Log.d(TAG, "Network is NOT connected");
                     }
                 }
-            }, TIME_INTERVAL, TIME_INTERVAL);
+            }, SYNCHRONIZATION_INTERVAL, SYNCHRONIZATION_INTERVAL);
         }
     }
 

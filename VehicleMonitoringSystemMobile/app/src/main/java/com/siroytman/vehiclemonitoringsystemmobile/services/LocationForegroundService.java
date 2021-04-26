@@ -20,9 +20,9 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.siroytman.vehiclemonitoringsystemmobile.R;
 import com.siroytman.vehiclemonitoringsystemmobile.controller.AppController;
+import com.siroytman.vehiclemonitoringsystemmobile.controller.CompanySettingsController;
 import com.siroytman.vehiclemonitoringsystemmobile.interfaces.ILocationManager;
 import com.siroytman.vehiclemonitoringsystemmobile.model.VehicleData;
 import com.siroytman.vehiclemonitoringsystemmobile.room.AppRoomDatabase;
