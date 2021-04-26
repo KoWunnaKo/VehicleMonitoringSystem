@@ -60,8 +60,7 @@ public class ChatDialogFragment extends Fragment implements DialogsListAdapter.O
 
     @Override
     public void onDialogClick(ChatDialog dialog) {
-        // TODO pass dialog
-        ChatMessagesActivity.open(getActivity());
+        ChatMessagesActivity.open(getActivity(), dialog);
         Log.d(TAG, "onDialogClick, dialogName: " + dialog.getDialogName());
     }
 

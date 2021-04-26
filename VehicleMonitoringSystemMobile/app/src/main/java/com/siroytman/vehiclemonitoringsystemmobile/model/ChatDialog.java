@@ -1,5 +1,8 @@
 package com.siroytman.vehiclemonitoringsystemmobile.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.stfalcon.chatkit.commons.models.IDialog;
 import com.stfalcon.chatkit.commons.models.IUser;
 
@@ -7,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ChatDialog implements IDialog<ChatMessage> {
+public class ChatDialog implements IDialog<ChatMessage>, Parcelable {
 
     public static ArrayList<ChatDialog> getDialogsList(ArrayList<ChatMessage> messages) {
         ArrayList<ChatDialog> dialogs = new ArrayList<>();
@@ -85,6 +88,10 @@ public class ChatDialog implements IDialog<ChatMessage> {
         return lastMessage;
     }
 
+    public ArrayList<ChatMessage> getMessages() {
+        return messages;
+    }
+
     @Override
     public void setLastMessage(ChatMessage lastMessage) {
         this.lastMessage = lastMessage;
@@ -104,4 +111,40 @@ public class ChatDialog implements IDialog<ChatMessage> {
         }
     }
 
+    protected ChatDialog(Parcel in) {
+        id = in.readString();
+        dialogPhoto = in.readString();
+        dialogName = in.readString();
+        user = in.readParcelable(Employee.class.getClassLoader());
+//        lastMessage = in.readParcelable(ChatMessage.class.getClassLoader());
+        messages = new ArrayList<>();
+        in.readTypedList(messages, ChatMessage.CREATOR);
+//        unreadCount = in.readInt();
+    }
+
+    public static final Creator<ChatDialog> CREATOR = new Creator<ChatDialog>() {
+        @Override
+        public ChatDialog createFromParcel(Parcel in) {
+            return new ChatDialog(in);
+        }
+
+        @Override
+        public ChatDialog[] newArray(int size) {
+            return new ChatDialog[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(dialogPhoto);
+        dest.writeString(dialogName);
+        dest.writeParcelable(user, flags);
+        dest.writeTypedList(messages);
+    }
 }

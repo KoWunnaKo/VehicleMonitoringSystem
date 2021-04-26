@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.siroytman.vehiclemonitoringsystemmobile.R;
+import com.siroytman.vehiclemonitoringsystemmobile.model.ChatDialog;
 import com.siroytman.vehiclemonitoringsystemmobile.model.ChatMessage;
 import com.siroytman.vehiclemonitoringsystemmobile.sampleData.MessagesFixtures;
 import com.squareup.picasso.Picasso;
@@ -43,8 +44,12 @@ public class ChatMessagesActivity extends AppCompatActivity implements MessageIn
     private int selectionCount;
     private Date lastLoadedDate;
 
-    public static void open(Context context) {
-        context.startActivity(new Intent(context, ChatMessagesActivity.class));
+    private ChatDialog dialog;
+
+    public static void open(Context context, ChatDialog dialog) {
+        Intent intent = new Intent(context, ChatMessagesActivity.class);
+        intent.putExtra("dialog", dialog);
+        context.startActivity(intent);
     }
 
     @Override
@@ -52,11 +57,20 @@ public class ChatMessagesActivity extends AppCompatActivity implements MessageIn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_messages);
 
+        // Get dialog from bundle
+        Bundle arguments = getIntent().getExtras();
+        if(arguments != null) {
+            dialog = arguments.getParcelable("dialog");
+        }
+        else {
+            Log.e(TAG, "Error: Arguments are null!");
+        }
+
         imageLoader = (imageView, url, payload) -> Picasso.get().load(url).into(imageView);
 
         this.messagesList = findViewById(R.id.chat_messages__messagesList);
         initAdapter();
-        loadMessages();
+//        loadMessages();
 
         MessageInput input = findViewById(R.id.chat_messages__input);
         input.setInputListener(this);
@@ -87,6 +101,8 @@ public class ChatMessagesActivity extends AppCompatActivity implements MessageIn
 //                        message.getUser().getName() + " avatar click",
 //                        false));
         this.messagesList.setAdapter(messagesAdapter);
+
+        messagesAdapter.addToEnd(dialog.getMessages(), false);
     }
 
     @Override

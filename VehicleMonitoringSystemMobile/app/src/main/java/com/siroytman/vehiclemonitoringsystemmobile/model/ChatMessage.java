@@ -1,5 +1,7 @@
 package com.siroytman.vehiclemonitoringsystemmobile.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.siroytman.vehiclemonitoringsystemmobile.interfaces.IChatMessage;
@@ -16,15 +18,37 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ChatMessage implements IChatMessage,
+public class ChatMessage implements Parcelable,
+        IChatMessage,
         MessageContentType.Image, /*this is for default image messages implementation*/
         MessageContentType /*and this one is for custom content type (in this case - voice message)*/ {
     public static final String TAG = "ChatMessage";
+
+    protected ChatMessage(Parcel in) {
+        id = in.readString();
+        text = in.readString();
+        date = new Date(in.readLong());
+        sender = in.readParcelable(Employee.class.getClassLoader());
+        receiver = in.readParcelable(Employee.class.getClassLoader());
+    }
+
+    public static final Creator<ChatMessage> CREATOR = new Creator<ChatMessage>() {
+        @Override
+        public ChatMessage createFromParcel(Parcel in) {
+            return new ChatMessage(in);
+        }
+
+        @Override
+        public ChatMessage[] newArray(int size) {
+            return new ChatMessage[size];
+        }
+    };
 
     public static ChatMessage parseChatMessage(JSONObject json) {
         ChatMessage chatMessage = new ChatMessage();
 
         try {
+            chatMessage.id = json.getString("id");
             chatMessage.text = json.getString("text");
             chatMessage.date = Timestamp.valueOf(json.getString("date").replace("T", " "));
             chatMessage.sender = Employee.parseEmployee(json.getJSONObject("sender"));
@@ -155,6 +179,20 @@ public class ChatMessage implements IChatMessage,
 
     public void setImage(Image image) {
         this.image = image;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(text);
+        dest.writeLong(date.getTime());
+        dest.writeParcelable(sender, flags);
+        dest.writeParcelable(receiver, flags);
     }
 
     public static class Image {
