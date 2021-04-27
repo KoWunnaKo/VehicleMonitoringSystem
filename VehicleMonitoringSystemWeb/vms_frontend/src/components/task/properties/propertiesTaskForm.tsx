@@ -7,6 +7,7 @@ import "../../../styles/navigation.scss";
 
 interface InterfaceProps {
   closeModal: () => void;
+  updateTasks: () => void;
   task: Task;
 }
 
@@ -16,7 +17,7 @@ export const PropertiesTaskForm: React.FunctionComponent<InterfaceProps> = (prop
     function renderContent() {
         switch (contentComponentName) {
             case PropertiesGeneralTaskFormName:
-                return <PropertiesGeneralTaskForm closeModal={props.closeModal} task={props.task}/>
+                return <PropertiesGeneralTaskForm closeModal={props.closeModal} updateTasks={props.updateTasks} task={props.task}/>
             default:
                 return null;
         }

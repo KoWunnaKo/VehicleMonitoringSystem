@@ -9,10 +9,10 @@ import Employee from "../../../models/employee";
 import moment from "moment";
 import Select from "@material-ui/core/Select/Select";
 import * as EmployeeApi from "../../../api/employeeApi";
-import Colors from "../../../constants/colors";
 
 interface InterfaceProps {
     closeModal: () => void;
+    updateTasks: () => void;
     task: Task;
 }
 
@@ -42,13 +42,22 @@ export const PropertiesGeneralTaskForm: React.FunctionComponent<InterfaceProps> 
     }
 
     async function editTask() {
-        // const newVehicle =
-        //     await VehicleApi.editVehicle(new vehicle(vehicle.companyId, name, number, model, productionYear, vehicle));
+        const newTask = task;
+        newTask.name = name;
+        newTask.description = description;
+        newTask.comment = comment;
+        newTask.dueDate = dueDatetime;
+        newTask.driverId = selectedDriver;
+
+        await TaskApi.editTask(newTask);
+        props.closeModal();
+        props.updateTasks();
     }
 
     async function deleteTask() {
         await TaskApi.deleteTask(task.id);
         props.closeModal();
+        props.updateTasks();
     }
 
     return (

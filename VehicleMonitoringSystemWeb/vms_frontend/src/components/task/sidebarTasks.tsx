@@ -79,7 +79,7 @@ export const SidebarTasks: React.FunctionComponent = () => {
                             {tasks && tasks
                                 .filter((task) => task.statusId === s.id)
                                 .sort((a, b) => compareTasksForSort(a, b))
-                                .map((task) => (<TaskListItem key={task.id} task={task}/>))
+                                .map((task) => (<TaskListItem key={task.id} updateTasks={updateTasks} task={task}/>))
                             }
                         </List>
                     </Collapsible>)

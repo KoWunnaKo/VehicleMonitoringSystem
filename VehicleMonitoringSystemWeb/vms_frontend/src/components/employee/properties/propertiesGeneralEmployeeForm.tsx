@@ -10,6 +10,7 @@ import moment from "moment";
 import Select from "@material-ui/core/Select/Select";
 import * as EmployeeApi from "../../../api/employeeApi";
 import Colors from "../../../constants/colors";
+import {deleteTask} from "../../../api/taskApi";
 
 interface InterfaceProps {
     closeModal: () => void;
@@ -41,15 +42,15 @@ export const PropertiesGeneralEmployeeForm: React.FunctionComponent<InterfacePro
         //     await EmployeeApi
     }
 
-    // async function deleteEmployee() {
-    //     await TaskApi.deleteTask(employee.id);
-    //     props.closeModal();
-    // }
+    async function deleteEmployee() {
+        await EmployeeApi.deleteEmployee(employee.id);
+        props.closeModal();
+    }
 
     return (
         <div style={styles.container}>
             <IconButton style={styles.deleteIcon}>
-                <DeleteIcon />
+                <DeleteIcon onClick={deleteEmployee}/>
             </IconButton>
 
             <TextField

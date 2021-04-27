@@ -34,6 +34,7 @@ namespace VMS_Backend.Services.Database
             dbTask.StatusId = task.StatusId;
             dbTask.Comment = task.Comment;
             dbTask.Description = task.Description;
+            dbTask.Name = task.Name;
             await _dbContext.SaveChangesAsync();
             return dbTask;
         }

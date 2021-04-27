@@ -8,6 +8,7 @@ import {PropertiesTaskForm} from "./properties/propertiesTaskForm";
 import Colors from "../../constants/colors";
 
 interface InterfaceProps {
+    updateTasks: () => void;
     task: Task;
 }
 
@@ -45,7 +46,7 @@ export const TaskListItem: React.FunctionComponent<InterfaceProps> = (props) => 
                                     &times;
                                 </button>
                                 <div>
-                                    <PropertiesTaskForm closeModal={close} task={task}/>
+                                    <PropertiesTaskForm closeModal={close} updateTasks={props.updateTasks} task={task}/>
                                 </div>
                             </div>
                         )

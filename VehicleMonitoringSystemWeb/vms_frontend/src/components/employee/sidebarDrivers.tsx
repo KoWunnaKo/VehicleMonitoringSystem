@@ -30,7 +30,7 @@ export const SidebarDrivers: React.FunctionComponent = () => {
                 {(close: any) => {
                     // Update drivers list
                     // TODO remove - constantly updating
-                    EmployeeApi.getAllDrivers().then(res => setDrivers(res));
+                    // EmployeeApi.getAllDrivers().then(res => setDrivers(res));
 
                     return (
                         <div className="modal">
