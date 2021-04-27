@@ -21,7 +21,9 @@ export default class ChatMessage {
     this.id = id;
     this.companyId = companyId;
     this.text = text;
-    this.date = date;
+    if (date) {
+      this.date = new Date(date);
+    }
     this.unread = unread;
 
     sender = Object.setPrototypeOf(sender, Employee.prototype);
