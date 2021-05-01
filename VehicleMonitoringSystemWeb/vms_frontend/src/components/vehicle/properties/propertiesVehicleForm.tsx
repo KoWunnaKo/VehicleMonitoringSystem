@@ -7,8 +7,9 @@ import Vehicle from "../../../models/vehicle";
 import "../../../styles/navigation.scss";
 
 interface InterfaceProps {
-  closeModal: () => void;
   vehicle: Vehicle;
+  closeModal: () => void;
+  updateVehicles: () => void;
 }
 
 export const PropertiesVehicleForm: React.FunctionComponent<InterfaceProps> = (props) => {
@@ -17,9 +18,9 @@ export const PropertiesVehicleForm: React.FunctionComponent<InterfaceProps> = (p
     function renderContent() {
         switch (contentComponentName) {
             case PropertiesGeneralVehicleFormName:
-                return <PropertiesGeneralVehicleForm closeModal={props.closeModal} vehicle={props.vehicle}/>
+                return <PropertiesGeneralVehicleForm vehicle={props.vehicle} closeModal={props.closeModal} updateVehicles={props.updateVehicles}/>
             case PropertiesDriversVehicleFormName:
-                return <PropertiesDriversVehicleForm vehicle={props.vehicle}/>
+                return <PropertiesDriversVehicleForm vehicle={props.vehicle} closeModal={props.closeModal} updateVehicles={props.updateVehicles}/>
             default:
                 return null;
         }

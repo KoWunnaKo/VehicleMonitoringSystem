@@ -7,8 +7,9 @@ import "../../../styles/navigation.scss";
 import Employee from "../../../models/employee";
 
 interface InterfaceProps {
-  closeModal: () => void;
   employee: Employee;
+  closeModal: () => void;
+  updateDrivers: () => void;
 }
 
 export const PropertiesEmployeeForm: React.FunctionComponent<InterfaceProps> = (props) => {
@@ -17,7 +18,7 @@ export const PropertiesEmployeeForm: React.FunctionComponent<InterfaceProps> = (
     function renderContent() {
         switch (contentComponentName) {
             case PropertiesGeneralEmployeeFormName:
-                return <PropertiesGeneralEmployeeForm closeModal={props.closeModal} employee={props.employee}/>
+                return <PropertiesGeneralEmployeeForm employee={props.employee} closeModal={props.closeModal} updateDrivers={props.updateDrivers}/>
             default:
                 return null;
         }

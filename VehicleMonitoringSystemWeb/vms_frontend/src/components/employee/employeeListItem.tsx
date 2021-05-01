@@ -1,27 +1,18 @@
 import * as React from "react";
 import Employee from "../../models/employee";
 import {IconButton, ListItem, ListItemSecondaryAction} from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
 import {StylesDictionary} from "../../utils/stylesDictionary";
-import * as EmployeeApi from "../../api/employeeApi";
 import SettingsIcon from "@material-ui/icons/Settings";
-import {PropertiesTaskForm} from "../task/properties/propertiesTaskForm";
 import Popup from "reactjs-popup";
 import {PropertiesEmployeeForm} from "./properties/propertiesEmployeeForm";
 
-
 interface InterfaceProps {
     employee: Employee;
+    updateDrivers: () => void;
 }
 
 export const EmployeeListItem: React.FunctionComponent<InterfaceProps> = (props) => {
     const {employee} = props;
-
-    // async function onDeleteClick() {
-    //     if(props.employee.id) {
-    //         await EmployeeApi.deleteEmployee(props.employee.id);
-    //     }
-    // }
 
     return (
         <div style={styles.container}>
@@ -52,7 +43,7 @@ export const EmployeeListItem: React.FunctionComponent<InterfaceProps> = (props)
                                     &times;
                                 </button>
                                 <div>
-                                    <PropertiesEmployeeForm closeModal={close} employee={employee}/>
+                                    <PropertiesEmployeeForm employee={employee} closeModal={close} updateDrivers={props.updateDrivers}/>
                                 </div>
                             </div>
                         )

@@ -5,9 +5,11 @@ import Colors from "../../constants/colors";
 import {StylesDictionary} from "../../utils/stylesDictionary";
 import Vehicle from "../../models/vehicle";
 import {useState} from "react";
+import {getDbUserCompanyId} from "../../utils/userUtil";
 
 interface InterfaceProps {
   closeModal: () => void;
+  updateVehicles: () => void;
 }
 
 export const CreateVehicleForm: React.FunctionComponent<InterfaceProps> = (props) => {
@@ -19,9 +21,11 @@ export const CreateVehicleForm: React.FunctionComponent<InterfaceProps> = (props
 
     async function onSubmit(event: any) {
         event.preventDefault();
-        await VehicleApi.createVehicle(new Vehicle(1, name, number, model, +productionYear))
+        const vehicle = new Vehicle(name, number, model, +productionYear);
+        await VehicleApi.createVehicle(vehicle)
 
         props.closeModal();
+        props.updateVehicles();
     }
 
     function isCreateButtonDisabled() {
@@ -87,10 +91,6 @@ const styles: StylesDictionary  = {
     button: {
         width: 200,
         marginTop: 20
-    },
-    buttonText: {
-        color: Colors.white,
-        alignContent: 'center'
     },
     formControl: {
         minWidth: 120,

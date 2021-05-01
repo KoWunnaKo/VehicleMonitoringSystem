@@ -4,13 +4,13 @@ export default class Employee {
   public companyId: number;
   public firstName: string;
   public lastName: string;
-  public email: string | undefined;
+  public email: string;
   public telegramNickname: string | undefined;
   public password: string | undefined;
 
   constructor(id: string, roleId: number,
               companyId: number, firstName: string,
-              lastName: string, email: string|undefined,
+              lastName: string, email: string,
               telegramName: string|undefined, password: string|undefined) {
     this.id = id;
     this.roleId = roleId;

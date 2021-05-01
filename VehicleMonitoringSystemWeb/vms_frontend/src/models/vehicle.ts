@@ -1,3 +1,5 @@
+import {getDbUserCompanyId} from "../utils/userUtil";
+
 export default class Vehicle {
   public id: number | undefined;
   public companyId: number | undefined;
@@ -6,8 +8,7 @@ export default class Vehicle {
   public model: string | undefined;
   public productionYear: number | undefined;
 
-  constructor(companyId: number | undefined,
-              name: string | undefined,
+  constructor(name: string | undefined,
               number: string | undefined,
               model: string | undefined,
               productionYear: number | undefined,
@@ -15,7 +16,10 @@ export default class Vehicle {
     if (!!vehicle) {
       this.id = vehicle.id;
     }
-    this.companyId = companyId;
+    const companyId = getDbUserCompanyId();
+    if (!!companyId) {
+      this.companyId = companyId;
+    }
     this.name = name;
     this.number = number;
     this.model = model;

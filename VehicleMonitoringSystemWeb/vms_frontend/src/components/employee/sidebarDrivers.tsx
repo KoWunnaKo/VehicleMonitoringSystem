@@ -15,9 +15,13 @@ export const SidebarDrivers: React.FunctionComponent = () => {
 
     useEffect(() => {
         (async function() {
-            setDrivers(await EmployeeApi.getAllDrivers());
+            await updateDrivers();
         })();
     }, []);
+
+    const updateDrivers = async () => {
+        setDrivers(await EmployeeApi.getAllDrivers());
+    }
 
     return (
         <div style={styles.container}>
@@ -28,10 +32,6 @@ export const SidebarDrivers: React.FunctionComponent = () => {
                 nested={true}
             >
                 {(close: any) => {
-                    // Update drivers list
-                    // TODO remove - constantly updating
-                    // EmployeeApi.getAllDrivers().then(res => setDrivers(res));
-
                     return (
                         <div className="modal">
                             <button className="close" onClick={close}>
@@ -46,9 +46,9 @@ export const SidebarDrivers: React.FunctionComponent = () => {
                 }}
             </Popup>
 
-            <List style={{backgroundColor: Colors.white}}>
+            <List>
                 {drivers && drivers.map((driver) => (
-                    <EmployeeListItem key={driver.id} employee={driver}/>
+                    <EmployeeListItem key={driver.id} employee={driver} updateDrivers={updateDrivers}/>
                 ))}
             </List>
         </div>

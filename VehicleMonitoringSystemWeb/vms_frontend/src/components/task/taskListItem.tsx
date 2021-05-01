@@ -62,7 +62,6 @@ const styles: StylesDictionary  = {
     container: {
         display: 'flex',
         flexDirection: 'column',
-        backgroundColor: Colors.white,
         marginTop: 4,
         marginBottom: 4
     },

@@ -35,14 +35,14 @@ export const CompanySettingsForm: React.FunctionComponent = (props) => {
 
   return (
       <form onSubmit={(event) => onSubmit(event)} style={styles.container}>
-        <div>AndroidIntervalRecording, ms</div>
+        <div>Android: frequency of data recording to local DB, мс</div>
         <TextField
             value={androidIntervalRecording}
             onChange={event => setAndroidIntervalRecording(+event.target.value)}
             type="number"
             style={styles.textInput}
         />
-        <div>AndroidIntervalSynchronization, ms</div>
+        <div>Android: frequency of data synchronization with Data processing service, мс</div>
         <TextField
             value={androidIntervalSynchronization}
             onChange={event => setAndroidIntervalSynchronization(+event.target.value)}
@@ -73,9 +73,5 @@ const styles: StylesDictionary  = {
     width: 200,
     marginTop: 20,
     alignSelf: 'center'
-  },
-  buttonText: {
-    color: Colors.white,
-    alignContent: 'center'
   }
 };

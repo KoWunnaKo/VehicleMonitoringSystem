@@ -7,10 +7,11 @@ import * as EmployeeApi from "../../../api/employeeApi";
 import Employee from "../../../models/employee";
 import VehicleDriverLink from "../../../models/vehicleDriverLink";
 import * as VehicleDriverLinkApi from "../../../api/vehicleDriverLinkApi";
-import Colors from "../../../constants/colors";
 
 interface InterfaceProps {
     vehicle: Vehicle;
+    closeModal: () => void;
+    updateVehicles: () => void;
 }
 
 export const PropertiesDriversVehicleFormName = 'Drivers';
@@ -36,6 +37,9 @@ export const PropertiesDriversVehicleForm: React.FunctionComponent<InterfaceProp
         if (!!drivers && !!selectedDriver) {
             const vehicleDriverLink = new VehicleDriverLink(drivers[selectedDriver].id, vehicle.id);
             await VehicleDriverLinkApi.createVehicleDriverLink(vehicleDriverLink);
+
+            props.closeModal();
+            props.updateVehicles();
         }
     }
 

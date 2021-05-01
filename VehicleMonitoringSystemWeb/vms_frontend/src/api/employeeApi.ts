@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Employee from "../models/employee";
 import {getDbUserCompanyId} from "../utils/userUtil";
+import Vehicle from "../models/vehicle";
 
 export async function getAllDrivers(): Promise<Employee[] | null> {
   const companyId = getDbUserCompanyId();
@@ -14,18 +15,30 @@ export async function getAllDrivers(): Promise<Employee[] | null> {
     drivers.map(driver => Object.setPrototypeOf(driver, Employee.prototype))
     return drivers;
   } catch (e) {
-    // console.log("Error:getAllDrivers ", e.response);
+    console.log("Error:getAllDrivers ", e.response);
     return null;
   }
 }
 
 export async function deleteEmployee(employeeId: string): Promise<boolean | null> {
   try {
-    const response = await axios.delete(`employee/delete/${employeeId}`);
+    // TODO delete user from firebase?
+    const response = await axios.delete(`employee/${employeeId}`);
     // console.log(`drivers: ${JSON.stringify(response.data)}`);
     return response.data;
   } catch (e) {
-    // console.log("Error:getAllDrivers ", e.response);
+    console.log("Error:deleteEmployee ", e.response);
+    return null;
+  }
+}
+
+export async function editEmployee(employee: Employee) {
+  try {
+    const response = await axios.put(`employee`, employee);
+    // console.log(`editEmployee: ${JSON.stringify(response.data)}`);
+    return response.data;
+  } catch (e) {
+    console.log("Error:editEmployee ", e.response);
     return null;
   }
 }

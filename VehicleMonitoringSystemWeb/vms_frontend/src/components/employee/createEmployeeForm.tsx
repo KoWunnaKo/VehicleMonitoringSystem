@@ -43,15 +43,14 @@ export const CreateEmployeeForm: React.FunctionComponent<InterfaceProps> = (prop
                       roleId, companyId, firstName, lastName,
                       email, undefined, passwordOne);
                   await AuthApi.signUp(employee);
-                  props.closeModal();
                   // TODO avoid login out
+                  props.closeModal();
               }
           })
           .catch(er => {
               setError(er);
           });
   }
-
 
     return (
         <form onSubmit={(event) => onSubmit(event)} style={styles.container}>

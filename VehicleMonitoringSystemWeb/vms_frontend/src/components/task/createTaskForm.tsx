@@ -48,8 +48,7 @@ export const CreateTaskForm: React.FunctionComponent<InterfaceProps> = (props) =
 
     function isCreateButtonDisabled() {
         return description === "" ||
-            name === "" ||
-            comment === "";
+            name === "";
     }
 
     return (
@@ -124,10 +123,6 @@ const styles: StylesDictionary  = {
     button: {
         width: 200,
         marginTop: 20
-    },
-    buttonText: {
-        color: Colors.white,
-        alignContent: 'center'
     },
     formControl: {
         minWidth: 120,

@@ -19,16 +19,37 @@ namespace VMS_Backend.Controllers
         
         [HttpGet]
         [Route("getAllDrivers/{companyId}")]
-        public async Task<List<Employee>> GetAll(int companyId)
+        public async Task<ActionResult<List<Employee>>> GetAll(int companyId)
         {
-            return await _employeeService.GetAllDrivers(companyId);
+            return Ok(await _employeeService.GetAllDrivers(companyId));
         }
 
         [HttpDelete]
-        [Route("delete/{userId}")]
-        public async Task<bool> Delete(string userId)
+        [Route("{userId}")]
+        public async Task<ActionResult> Delete(string userId)
         {
-            return await _employeeService.DeleteItemById(userId);
+            // TODO delete from DriverVehicleLink
+            // TODO delete chatMessages
+            // TODO or soft delete?
+            var res = await _employeeService.DeleteItemById(userId);
+            if (!res)
+            {
+                return NotFound();
+            }
+
+            return Ok();
+        }
+        
+        [HttpPut]
+        public async Task<ActionResult<Employee>> Edit([FromBody] Employee employee)
+        {
+            var res = await _employeeService.Edit(employee);
+            if (res != null)
+            {
+                return Ok(res);
+            }
+
+            return NotFound();
         }
     }
 }

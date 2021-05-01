@@ -16,10 +16,14 @@ export const SidebarVehicles: React.FunctionComponent = () => {
 
     useEffect(() => {
         (async function() {
-            setVehicles(await VehicleApi.getAllVehicles());
+            await updateVehicles();
         })();
     }, []);
 
+    const updateVehicles = async () => {
+        // TODO driver links not updates, cause drivers are fetching separetly - need to think it through
+        setVehicles(await VehicleApi.getAllVehicles());
+    }
 
     return (
         <div style={styles.container}>
@@ -37,16 +41,16 @@ export const SidebarVehicles: React.FunctionComponent = () => {
                             </button>
                             <div className="header">Create vehicle</div>
                             <div className="content">
-                                <CreateVehicleForm closeModal={close}/>
+                                <CreateVehicleForm closeModal={close} updateVehicles={updateVehicles}/>
                             </div>
                         </div>
                     )
                 }}
             </Popup>
 
-            <List style={{backgroundColor: Colors.white}}>
+            <List>
                 {vehicles && vehicles.map((vehicle) => (
-                    <VehicleListItem key={vehicle.id} vehicle={vehicle}/>
+                    <VehicleListItem key={vehicle.id} vehicle={vehicle} updateVehicles={updateVehicles}/>
                 ))}
             </List>
         </div>

@@ -7,8 +7,9 @@ import {useState} from "react";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 interface InterfaceProps {
-    closeModal: () => void;
     vehicle: Vehicle;
+    closeModal: () => void;
+    updateVehicles: () => void;
 }
 
 export const PropertiesGeneralVehicleFormName = 'General';
@@ -28,13 +29,18 @@ export const PropertiesGeneralVehicleForm: React.FunctionComponent<InterfaceProp
     }
 
     async function editVehicle() {
-        const newVehicle =
-            await VehicleApi.editVehicle(new Vehicle(vehicle.companyId, name, number, model, productionYear, vehicle));
+        const newVehicle = new Vehicle(name, number, model, productionYear, vehicle);
+        await VehicleApi.editVehicle(newVehicle);
+
+        props.closeModal();
+        props.updateVehicles();
     }
 
     async function deleteVehicle() {
         await VehicleApi.deleteVehicle(vehicle.id);
+
         props.closeModal();
+        props.updateVehicles();
     }
 
     return (

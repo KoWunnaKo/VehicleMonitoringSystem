@@ -11,19 +11,21 @@ import Select from "@material-ui/core/Select/Select";
 import * as EmployeeApi from "../../../api/employeeApi";
 import Colors from "../../../constants/colors";
 import {deleteTask} from "../../../api/taskApi";
+import {getDbUserCompanyId} from "../../../utils/userUtil";
 
 interface InterfaceProps {
-    closeModal: () => void;
     employee: Employee;
+    closeModal: () => void;
+    updateDrivers: () => void;
 }
 
 export const PropertiesGeneralEmployeeFormName = 'General';
 
 export const PropertiesGeneralEmployeeForm: React.FunctionComponent<InterfaceProps> = (props) => {
     const {employee} = props;
-    const [firstName, setFirstName] = useState<string|undefined>(employee.firstName);
-    const [lastName, setLastName] = useState<string|undefined>(employee.lastName);
-    const [email, setEmail] = useState<string|undefined>(employee.email);
+    const [firstName, setFirstName] = useState<string>(employee.firstName);
+    const [lastName, setLastName] = useState<string>(employee.lastName);
+    const [email, setEmail] = useState<string>(employee.email);
 
     useEffect(() => {
         (async function() {
@@ -38,13 +40,22 @@ export const PropertiesGeneralEmployeeForm: React.FunctionComponent<InterfacePro
     }
 
     async function editEmployee() {
-        // const newVehicle =
-        //     await EmployeeApi
+        const companyId = getDbUserCompanyId();
+        if (companyId) {
+            const newEmployee = new Employee(employee.id,
+                employee.roleId, companyId, firstName, lastName,
+                email, undefined, employee.password);
+            await EmployeeApi.editEmployee(newEmployee);
+
+            props.closeModal();
+            props.updateDrivers();
+        }
     }
 
     async function deleteEmployee() {
         await EmployeeApi.deleteEmployee(employee.id);
         props.closeModal();
+        props.updateDrivers();
     }
 
     return (

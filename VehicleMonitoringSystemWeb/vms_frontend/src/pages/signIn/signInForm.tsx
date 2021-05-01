@@ -121,11 +121,5 @@ const styles: StylesDictionary  = {
     width: 200,
     marginTop: 5,
     marginBottom: 5,
-  },
-  button: {
-    width: 200,
-    backgroundColor: Colors.primaryBlue,
-    marginTop: 20,
-    textDecorationColor: Colors.white
   }
 };

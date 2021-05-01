@@ -28,5 +28,21 @@ namespace VMS_Backend.Services.Database
                 .ToListAsync();
             return employees;
         }
+        
+        public async Task<Employee> Edit(Employee employee)
+        {
+            var dbEmployee = await _dbContext.FindAsync<Employee>(employee.Id);
+            if (dbEmployee == null)
+            {
+                return null;
+            }
+            
+            dbEmployee.Email = employee.Email;
+            dbEmployee.FirstName = employee.FirstName;
+            dbEmployee.LastName = employee.LastName;
+            
+            await _dbContext.SaveChangesAsync();
+            return dbEmployee;
+        }
     }
 }

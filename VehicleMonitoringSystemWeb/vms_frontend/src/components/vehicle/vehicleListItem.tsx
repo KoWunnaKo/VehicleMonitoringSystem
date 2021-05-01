@@ -13,6 +13,7 @@ import Employee from "../../models/employee";
 
 interface InterfaceProps {
     vehicle: Vehicle;
+    updateVehicles: () => void;
 }
 
 export const VehicleListItem: React.FunctionComponent<InterfaceProps> = (props) => {
@@ -57,7 +58,7 @@ export const VehicleListItem: React.FunctionComponent<InterfaceProps> = (props) 
                                     &times;
                                 </button>
                                 <div>
-                                    <PropertiesVehicleForm closeModal={close} vehicle={vehicle}/>
+                                    <PropertiesVehicleForm vehicle={vehicle} closeModal={close} updateVehicles={props.updateVehicles}/>
                                 </div>
                             </div>
                         )

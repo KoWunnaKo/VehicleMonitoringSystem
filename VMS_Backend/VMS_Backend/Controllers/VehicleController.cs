@@ -35,6 +35,8 @@ namespace VMS_Backend.Controllers
         [Route("{vehicleId}")]
         public async Task<ActionResult> Delete(string vehicleId)
         {
+            // TODO delete from DriverVehicleLink
+            // TODO or soft delete?
             var res = await _vehicleService.DeleteItemById(vehicleId);
             if (!res)
             {
@@ -52,10 +54,8 @@ namespace VMS_Backend.Controllers
             {
                 return Ok(res);
             }
-            else
-            {
-                return NotFound();
-            }
+
+            return NotFound();
         }
     }
 }
