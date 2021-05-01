@@ -75,7 +75,7 @@ export const SidebarTasks: React.FunctionComponent = () => {
                     <Collapsible
                         trigger={`${s.name}: ${tasks && tasks.filter((task) => task.statusId === s.id).length || 0}`}
                         key={s.id}>
-                        <List>
+                        <List style={{backgroundColor: Colors.white}}>
                             {tasks && tasks
                                 .filter((task) => task.statusId === s.id)
                                 .sort((a, b) => compareTasksForSort(a, b))
@@ -97,7 +97,6 @@ const styles: StylesDictionary  = {
         flex: 1,
         marginTop: 10,
         marginBottom: 10,
-        backgroundColor: Colors.primaryBlue,
     }
 };
 
