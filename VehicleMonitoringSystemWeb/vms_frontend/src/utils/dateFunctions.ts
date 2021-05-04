@@ -1,8 +1,12 @@
 import {padStart} from "./stringFunctions";
-import moment from "moment";
+import moment, {unitOfTime} from "moment";
 
 export function dateTimeToString(datetime: Date) {
     return moment(datetime).format('DD.MM.YY HH:mm')
+}
+
+export function diffFromNowIsLessOrEqual(datetime: Date, diffUnitOfTime: unitOfTime.Diff, diffValue: number) {
+    return moment().diff(datetime, diffUnitOfTime) <= diffValue;
 }
 
 export function formatDateTime(year: string, month: string, day: string, hour: string, minute: string): string {

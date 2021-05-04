@@ -1,6 +1,6 @@
 import {Map, Marker, GoogleApiWrapper, Polyline} from 'google-maps-react';
 import React, {useEffect, useState} from 'react';
-import {dateTimeToString} from "../../utils/dateFunctions";
+import {dateTimeToString, diffFromNowIsLessOrEqual} from "../../utils/dateFunctions";
 
 function MapContainer(props) {
     const [markersData, setMarkersData] = useState();
@@ -27,6 +27,10 @@ function MapContainer(props) {
             ? `${vehicleData.vehicle.name} (${vehicleData.vehicle.number})\n${dateTimeToString(vehicleData.datetime)}`
             : '';
 
+        const iconUrl = diffFromNowIsLessOrEqual(vehicleData.datetime, 'minutes', 30)
+            ? '/vehicleOnlineIcon.webp'
+            : '/vehicleOfflineIcon.webp';
+
         return (
             <Marker
                 key={vehicleData.id}
@@ -40,7 +44,7 @@ function MapContainer(props) {
                 icon={{
                     anchor: new google.maps.Point(24,24),
                     scaledSize: new google.maps.Size(30,30),
-                    url: '/vehicleIcon.webp'
+                    url: iconUrl
                 }}
             />
         );
