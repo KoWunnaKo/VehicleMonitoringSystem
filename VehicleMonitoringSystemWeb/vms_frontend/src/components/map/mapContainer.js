@@ -1,5 +1,6 @@
 import {Map, Marker, GoogleApiWrapper, Polyline} from 'google-maps-react';
 import React, {useEffect, useState} from 'react';
+import {dateTimeToString} from "../../utils/dateFunctions";
 
 function MapContainer(props) {
     const [markersData, setMarkersData] = useState();
@@ -12,6 +13,7 @@ function MapContainer(props) {
         })();
     }, [props.markersData]);
 
+    // TODO defaultMapCenter props
     const defaultProps = {
         center: {
             lat: 56.0,
@@ -19,6 +21,30 @@ function MapContainer(props) {
         },
         zoom: 10
     };
+
+    const createVehicleMarker = (vehicleData) => {
+        const title = vehicleData.vehicle
+            ? `${vehicleData.vehicle.name} (${vehicleData.vehicle.number})\n${dateTimeToString(vehicleData.datetime)}`
+            : '';
+
+        return (
+            <Marker
+                key={vehicleData.id}
+                id={vehicleData.id}
+                position={{
+                    lat: vehicleData.latitude && +vehicleData.latitude,
+                    lng: vehicleData.longitude && +vehicleData.longitude
+                }}
+                name={vehicleData.vehicle && vehicleData.vehicle.name}
+                title={title}
+                icon={{
+                    anchor: new google.maps.Point(24,24),
+                    scaledSize: new google.maps.Size(30,30),
+                    url: '/vehicleIcon.webp'
+                }}
+            />
+        );
+    }
 
     return (
         <Map
@@ -28,13 +54,7 @@ function MapContainer(props) {
         >
 
             {markersData && markersData.map((vehicleData) => (
-                <Marker
-                    key={vehicleData.id}
-                    id={vehicleData.id}
-                    position={{lat: +vehicleData.latitude, lng: +vehicleData.longitude}}
-                    name={vehicleData.vehicle.name}
-                    title={vehicleData.vehicle.name}
-                />
+                createVehicleMarker(vehicleData)
             ))}
 
             {trajectoryData && Object.entries(trajectoryData)

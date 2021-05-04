@@ -1,6 +1,10 @@
 import {padStart} from "./stringFunctions";
 import moment from "moment";
 
+export function dateTimeToString(datetime: Date) {
+    return moment(datetime).format('DD.MM.YY HH:mm')
+}
+
 export function formatDateTime(year: string, month: string, day: string, hour: string, minute: string): string {
     return `${year}-${month}-${day} ${hour}:${minute}`;
 }
