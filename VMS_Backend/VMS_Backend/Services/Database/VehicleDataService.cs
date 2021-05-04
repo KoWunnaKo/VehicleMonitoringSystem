@@ -29,7 +29,7 @@ namespace VMS_Backend.Services.Database
                     ORDER BY vd.vehicle_id, vd.datetime DESC",
                 (vehicleData, vehicle) =>
                 {
-                    vehicleData.vehicle = vehicle;
+                    vehicleData.Vehicle = vehicle;
                     return vehicleData;
                 },
                 new {companyId});
@@ -39,27 +39,35 @@ namespace VMS_Backend.Services.Database
         public async Task<Dictionary<int, List<VehicleData>>> GetVehiclesRangeData(int companyId, string startDateTime, string endDateTime)
         {
             await using var con = new NpgsqlConnection(DefaultConnectionString);
-            var vehicleData = await con.QueryAsync<VehicleData>(
-                @"SELECT vd.*
+            var vehicleData = (await con.QueryAsync<VehicleData, Vehicle, VehicleData>(
+                @"SELECT vd.*, v.*
                     FROM vehicle_data vd
                     JOIN vehicle v on vd.vehicle_id = v.id and v.company_id = @companyId
                     WHERE  vd.datetime >= to_timestamp(@startDateTime, 'YYYY-MM-DD hh24:mi') 
                       and vd.datetime <= to_timestamp(@endDateTime, 'YYYY-MM-DD hh24:mi')
                     ORDER BY vd.datetime DESC",
-                new {companyId, startDateTime, endDateTime});
+                (vd, v) =>
+                {
+                    vd.Vehicle = v;
+                    return vd;
+                },
+                new {companyId, startDateTime, endDateTime}))
+                .ToList();
 
-            var res = new Dictionary<int, List<VehicleData>>();
-            foreach (var vd in vehicleData)
-            {
-                if (res.ContainsKey(vd.vehicle_id))
-                {
-                    res[vd.vehicle_id].Add(vd);
-                }
-                else
-                {
-                    res.Add(vd.vehicle_id, new List<VehicleData> {vd});
-                }
-            }
+            var res = vehicleData
+                .GroupBy(x => x.Vehicle.Id)
+                // .OrderBy(g => g.Key)
+                // .ThenByDescending(g => g.Select(g => g.Datetime))
+                .Select(x => x)
+                .ToDictionary(g => g.Key, 
+                    g => g.Select((vd, i) =>
+                    {
+                        if (i != g.Count() - 1)
+                        {
+                            vd.Vehicle = null;
+                        }
+                        return vd;
+                    }).ToList());
             
             return res;
         }

@@ -29,9 +29,7 @@ namespace VMS_Backend.Controllers
         [Route("getVehiclesRangeData/{companyId}/{startDateTime}/{endDateTime}")]
         public async Task<ActionResult<string>> GetVehiclesRangeData(int companyId, string startDateTime, string endDateTime)
         {
-            var res = await _vehicleDataService.GetVehiclesRangeData(companyId, startDateTime, endDateTime);
-            var json = JsonConvert.SerializeObject(res);
-            return Ok(json);
+            return Ok(await _vehicleDataService.GetVehiclesRangeData(companyId, startDateTime, endDateTime));
         }
     }
 }
