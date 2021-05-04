@@ -8,10 +8,8 @@
     "no-console": false,
     "only-arrow-functions": false,
     "prefer-for-of": false,
-    // TODO remove snake case
     "variable-name": {
       "options": [
-        "allow-snake-case",
         "allow-pascal-case"
       ]
     }
