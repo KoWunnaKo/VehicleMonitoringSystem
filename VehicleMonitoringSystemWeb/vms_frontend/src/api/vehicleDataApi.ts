@@ -2,8 +2,9 @@ import axios from 'axios';
 import VehicleData from "../models/vehicleData";
 import {getDbUserCompanyId} from "../utils/userUtil";
 
+// TODO lastData within timeInterval also
 export async function getVehiclesLastData(): Promise<VehicleData[] | null> {
-  const companyId = getDbUserCompanyId();
+  const companyId = await getDbUserCompanyId();
   if (!companyId) {
     return null;
   }
@@ -19,7 +20,7 @@ export async function getVehiclesLastData(): Promise<VehicleData[] | null> {
 }
 
 export async function getVehiclesRangeData(startDateTime: string, endDateTime: string): Promise<VehicleData[] | null> {
-  const companyId = getDbUserCompanyId();
+  const companyId = await getDbUserCompanyId();
   if (!companyId) {
     return null;
   }

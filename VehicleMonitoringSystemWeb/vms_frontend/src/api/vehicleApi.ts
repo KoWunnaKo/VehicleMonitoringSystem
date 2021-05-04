@@ -3,7 +3,7 @@ import Vehicle from "../models/vehicle";
 import {getDbUserCompanyId} from "../utils/userUtil";
 
 export async function getAllVehicles(): Promise<Vehicle[] | null> {
-  const companyId = getDbUserCompanyId();
+  const companyId = await getDbUserCompanyId();
   if (!companyId) {
     return null;
   }

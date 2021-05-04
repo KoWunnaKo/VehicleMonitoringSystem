@@ -16,10 +16,14 @@ export default class Vehicle {
     if (!!vehicle) {
       this.id = vehicle.id;
     }
-    const companyId = getDbUserCompanyId();
-    if (!!companyId) {
-      this.companyId = companyId;
-    }
+
+    getDbUserCompanyId()
+        .then(companyId => {
+          if (companyId) {
+            this.companyId = companyId;
+          }
+        });
+
     this.name = name;
     this.number = number;
     this.model = model;

@@ -25,7 +25,7 @@ export const CompanySettingsForm: React.FunctionComponent = (props) => {
   async function onSubmit(event: any) {
     event.preventDefault();
 
-    const companyId = getDbUserCompanyId();
+    const companyId = await getDbUserCompanyId();
 
     if(companyId && androidIntervalRecording && androidIntervalSynchronization) {
       const companySettings = new CompanySettings(companyId, androidIntervalRecording, androidIntervalSynchronization);

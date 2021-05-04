@@ -5,7 +5,7 @@ import ChatMessage from "../models/chatMessage";
 const basicUrl = 'chat';
 
 export async function getAllEmployeeMessages(): Promise<ChatMessage[] | null> {
-  const dbUser = getDbUser();
+  const dbUser = await getDbUser();
   if (!dbUser) {
     return null;
   }

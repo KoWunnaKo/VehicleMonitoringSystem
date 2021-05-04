@@ -3,39 +3,39 @@ import {STORAGE_KEY_FIREBASE_USER, STORAGE_KEY_DB_USER} from "../constants/async
 import firebase from "firebase";
 import User = firebase.User;
 
-export function setFirebaseUser(dbUser: User) {
-    localStorage.setItem(STORAGE_KEY_FIREBASE_USER, JSON.stringify(dbUser));
+export async function setFirebaseUser(dbUser: User) {
+    await localStorage.setItem(STORAGE_KEY_FIREBASE_USER, JSON.stringify(dbUser));
 }
 
-export function setDbUser(dbUser: Employee|null) {
-    localStorage.setItem(STORAGE_KEY_DB_USER, JSON.stringify(dbUser));
+export async function setDbUser(dbUser: Employee | null) {
+    await localStorage.setItem(STORAGE_KEY_DB_USER, JSON.stringify(dbUser));
 }
 
-export function getDbUser(): Employee|null {
-    const jsonDbUser = localStorage.getItem(STORAGE_KEY_DB_USER);
+export async function getDbUser(): Promise<Employee | null> {
+    const jsonDbUser = await localStorage.getItem(STORAGE_KEY_DB_USER);
     if (!!jsonDbUser) {
         return JSON.parse(jsonDbUser);
     }
     return null;
 }
 
-export function getDbUserId(): string|null {
-    const dbUser = getDbUser();
+export async function getDbUserId(): Promise<string | null> {
+    const dbUser = await getDbUser();
     if (!!dbUser) {
         return dbUser.id;
     }
     return null;
 }
 
-export function getDbUserCompanyId(): number|null {
-    const dbUser = getDbUser();
+export async function getDbUserCompanyId(): Promise<number | null> {
+    const dbUser = await getDbUser();
     if (!!dbUser) {
         return dbUser.companyId;
     }
     return null;
 }
 
-export function clearUsers() {
-    localStorage.removeItem(STORAGE_KEY_FIREBASE_USER);
-    localStorage.removeItem(STORAGE_KEY_DB_USER);
+export async function clearUsers() {
+    await localStorage.removeItem(STORAGE_KEY_FIREBASE_USER);
+    await localStorage.removeItem(STORAGE_KEY_DB_USER);
 }

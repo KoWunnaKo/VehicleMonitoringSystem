@@ -37,7 +37,7 @@ export const CreateEmployeeForm: React.FunctionComponent<InterfaceProps> = (prop
       auth
           .doCreateUserWithEmailAndPassword(email, passwordOne)
           .then(async (authUser: any) => {
-              const companyId = getDbUserCompanyId();
+              const companyId = await getDbUserCompanyId();
               if (!!companyId) {
                   const employee: Employee = new Employee(authUser.user.uid,
                       roleId, companyId, firstName, lastName,

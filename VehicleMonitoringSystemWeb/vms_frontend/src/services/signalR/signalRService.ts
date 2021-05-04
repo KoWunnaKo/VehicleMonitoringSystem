@@ -1,7 +1,6 @@
 import * as signalR from "@microsoft/signalr";
 import addNotification from "react-push-notification";
 import ChatMessage from "../../models/chatMessage";
-import Vehicle from "../../models/vehicle";
 import Employee from "../../models/employee";
 
 type EndpointMethod = (message: any) => void;
@@ -22,7 +21,7 @@ export abstract class SignalRService {
 
     public static async stopConnection() {
         if (!!this.hubConnection.connectionId) {
-            console.log(`signalR, closeConnection`);
+            // console.log(`signalR, closeConnection`);
             await this.hubConnection.invoke("closeConnection", this.connectionDbUserId, this.hubConnection.connectionId);
             await this.hubConnection.stop();
         }
@@ -30,11 +29,11 @@ export abstract class SignalRService {
 
     public static addEndpoint(methodName: string, method: EndpointMethod) {
         if (!this.endpointsSet.has(methodName)) {
-            console.log(`addEndpoint, name: ${methodName}`);
+            // console.log(`addEndpoint, name: ${methodName}`);
             this.hubConnection.on(methodName, method);
             this.endpointsSet.add(methodName);
         } else {
-            console.log(`addEndpoint, endpoint already exists, name: ${methodName}`);
+            // console.log(`addEndpoint, endpoint already exists, name: ${methodName}`);
         }
     }
 
@@ -54,7 +53,7 @@ export abstract class SignalRService {
     private static configureEndpoints(dbUserId: string) {
         // Connection established endpoint
         this.addEndpoint("connectionEstablished", message => {
-            console.log(`signalR, connectionEstablished: ${message}`);
+            // console.log(`signalR, connectionEstablished: ${message}`);
             this.connectionDbUserId = dbUserId;
         });
 
@@ -65,7 +64,7 @@ export abstract class SignalRService {
             Object.setPrototypeOf(msg.receiver, Employee.prototype)
             Object.setPrototypeOf(msg.sender, Employee.prototype)
 
-            console.log(`Message from server received: ${JSON.stringify(msg)}`);
+            // console.log(`Message from server received: ${JSON.stringify(msg)}`);
             const maxMsgLength = 150;
             const notificationMsg =
                 msg.text.length >= maxMsgLength

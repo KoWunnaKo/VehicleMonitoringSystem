@@ -40,7 +40,7 @@ export const PropertiesGeneralEmployeeForm: React.FunctionComponent<InterfacePro
     }
 
     async function editEmployee() {
-        const companyId = getDbUserCompanyId();
+        const companyId = await getDbUserCompanyId();
         if (companyId) {
             const newEmployee = new Employee(employee.id,
                 employee.roleId, companyId, firstName, lastName,

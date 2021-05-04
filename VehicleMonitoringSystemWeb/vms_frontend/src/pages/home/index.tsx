@@ -24,8 +24,8 @@ export const HomeComponent: React.FunctionComponent = (props) => {
     }, [startDateTime, endDateTime]);
 
     const updateMapData = async () => {
-        setMarkersData(await VehicleDataApi.getVehiclesLastData());
-        setTrajectoryData(
+        await setMarkersData(await VehicleDataApi.getVehiclesLastData());
+        await setTrajectoryData(
             await VehicleDataApi.getVehiclesRangeData(startDateTime, endDateTime)
         );
     }

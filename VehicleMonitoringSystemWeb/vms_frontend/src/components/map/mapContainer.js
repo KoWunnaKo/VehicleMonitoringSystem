@@ -7,10 +7,10 @@ function MapContainer(props) {
 
     useEffect(() => {
         (async function() {
-            setMarkersData(props.markersData);
-            setTrajectoryData(props.trajectoryData);
+            await setMarkersData(props.markersData);
+            await setTrajectoryData(props.trajectoryData);
         })();
-    }, [props.markersData, props.trajectoryData]);
+    }, [props.markersData]);
 
     const defaultProps = {
         center: {

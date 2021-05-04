@@ -3,8 +3,8 @@ import {getDbUserId} from "./userUtil";
 import ChatContact from "../models/chatContact";
 import Employee from "../models/employee";
 
-export function countUnreadMessages(chatMessages: ChatMessage[]): number {
-    const userId = getDbUserId();
+export async function countUnreadMessages(chatMessages: ChatMessage[]): Promise<number> {
+    const userId = await getDbUserId();
     let res = 0;
     for (const msg of chatMessages) {
         if (msg.receiver.id === userId && msg.unread) {
@@ -14,11 +14,11 @@ export function countUnreadMessages(chatMessages: ChatMessage[]): number {
     return res;
 }
 
-export function getContactsList(chatMessages: ChatMessage[]|null): ChatContact[] {
+export async function getContactsList(chatMessages: ChatMessage[] | null): Promise<ChatContact[]> {
     const contactList: ChatContact[] = [];
 
     if (!!chatMessages) {
-        const userId = getDbUserId();
+        const userId = await getDbUserId();
         const contacts = new Map<string, Employee>();
         const contactMessages = new Map<string, ChatMessage[]>();
         for (const msg of chatMessages) {

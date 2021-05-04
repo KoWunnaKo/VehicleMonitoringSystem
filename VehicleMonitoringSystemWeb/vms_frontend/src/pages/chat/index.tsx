@@ -29,7 +29,7 @@ export const ChatComponent = () => {
 
     const updateChat = async () => {
         const messages = await ChatApi.getAllEmployeeMessages();
-        const contactList: ChatContact[] = getContactsList(messages);
+        const contactList: ChatContact[] = await getContactsList(messages);
         setChatContacts(contactList);
 
         if (!!receiver) {
@@ -53,7 +53,7 @@ export const ChatComponent = () => {
     }
 
     const sendMessage = async () => {
-        const dbUser = getDbUser();
+        const dbUser = await getDbUser();
         if (!!dbUser && !!receiver) {
             const msg = new ChatMessage(undefined, dbUser.companyId, inputMessage,
                 undefined, true, dbUser, receiver.employee);

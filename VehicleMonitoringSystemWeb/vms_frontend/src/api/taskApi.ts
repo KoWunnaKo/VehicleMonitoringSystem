@@ -4,7 +4,7 @@ import Employee from "../models/employee";
 import {getDbUserCompanyId} from "../utils/userUtil";
 
 export async function getAllTasks(): Promise<Task[] | null> {
-  const companyId = getDbUserCompanyId();
+  const companyId = await getDbUserCompanyId();
   if (!companyId) {
     return null;
   }

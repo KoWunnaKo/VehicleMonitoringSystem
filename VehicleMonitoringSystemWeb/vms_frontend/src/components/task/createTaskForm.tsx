@@ -34,7 +34,7 @@ export const CreateTaskForm: React.FunctionComponent<InterfaceProps> = (props) =
     async function onSubmit(event: any) {
         event.preventDefault();
 
-        const dbUser = getDbUser();
+        const dbUser = await getDbUser();
         if (!!dbUser) {
             const dueDate = moment(dueDatetime, 'YYYY-MM-DDTHH:mm').toDate();
             const task = new Task(dbUser.companyId, selectedDriver, dbUser.id, undefined,

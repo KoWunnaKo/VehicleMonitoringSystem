@@ -30,6 +30,7 @@ export default class ChatContact {
     this.alt = standardAvatarAlt;
     this.date = chatMessages[chatMessages.length - 1].date;
     this.subtitle = chatMessages[chatMessages.length - 1].text;
-    this.unread = countUnreadMessages(chatMessages);
+    countUnreadMessages(chatMessages)
+        .then(unreadCount => this.unread = unreadCount);
   }
 }

@@ -4,7 +4,7 @@ import {getDbUserCompanyId} from "../utils/userUtil";
 import Vehicle from "../models/vehicle";
 
 export async function getAllDrivers(): Promise<Employee[] | null> {
-  const companyId = getDbUserCompanyId();
+  const companyId = await getDbUserCompanyId();
   if (!companyId) {
     return null;
   }

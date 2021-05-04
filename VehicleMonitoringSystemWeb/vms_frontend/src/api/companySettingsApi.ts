@@ -3,7 +3,7 @@ import {getDbUserCompanyId} from "../utils/userUtil";
 import CompanySettings from "../models/companySettings";
 
 export async function getCompanySettings(): Promise<CompanySettings | null> {
-  const companyId = getDbUserCompanyId();
+  const companyId = await getDbUserCompanyId();
   if (!companyId) {
     return null;
   }
@@ -18,7 +18,7 @@ export async function getCompanySettings(): Promise<CompanySettings | null> {
 }
 
 export async function deleteCompanySettings() {
-  const companyId = getDbUserCompanyId();
+  const companyId = await getDbUserCompanyId();
   if (!companyId) {
     return null;
   }

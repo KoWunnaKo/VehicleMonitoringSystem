@@ -38,22 +38,22 @@ class AppComponent extends React.Component<{}, AppComponentState> {
     };
   }
 
-  public componentDidMount() {
-    clearUsers();
+  public async componentDidMount() {
+    await clearUsers();
+
     firebase.auth.onAuthStateChanged(async firebaseUser => {
       if (!!firebaseUser) {
-        setFirebaseUser(firebaseUser);
+        await setFirebaseUser(firebaseUser);
         const dbUser = await AuthApi.getCurrentUser();
         if (!!dbUser) {
-          setDbUser(dbUser);
-          this.setState(() => ({firebaseUser, dbUser}))
+          await setDbUser(dbUser);
+          await this.setState(() => ({firebaseUser, dbUser}))
           // signalR connection establish
           SignalRService.startConnection(dbUser.id);
         }
-      }
-      else {
-        this.setState(() => ({ firebaseUser: null, dbUser: null }))
-        clearUsers();
+      } else {
+        await this.setState(() => ({firebaseUser: null, dbUser: null}))
+        await clearUsers();
         // signalR connection stop
         await SignalRService.stopConnection();
       }
@@ -63,15 +63,15 @@ class AppComponent extends React.Component<{}, AppComponentState> {
   public async componentWillUnmount() {
     // signalR connection stop
     await SignalRService.stopConnection();
-    clearUsers();
+    await clearUsers();
   }
 
-  public setSidebarDisplay = (display: boolean) => {
-    this.setState({ sidebarDisplay: display });
+  public setSidebarDisplay = async (display: boolean) => {
+    await this.setState({sidebarDisplay: display});
   }
 
-  public setSidebarComponent = (comp: React.ReactNode) => {
-    this.setState({ sidebarComponent: comp });
+  public setSidebarComponent = async (comp: React.ReactNode) => {
+    await this.setState({sidebarComponent: comp});
   }
 
   public render() {
@@ -91,10 +91,10 @@ class AppComponent extends React.Component<{}, AppComponentState> {
               <Route exact={true} path={routes.PASSWORD_FORGET} component={PasswordForget}/>
 
               {/*Auth*/}
-              <Route exact={true} path={routes.HOME} component={HomeScreen} />
-              <Route exact={true} path={routes.ACCOUNT} component={Account} />
-              <Route exact={true} path={routes.CHAT} component={Chat} />
-              <Route exact={true} path={routes.COMPANY_SETTINGS} component={CompanySettings} />
+              <Route exact={true} path={routes.HOME} render={(props => <HomeScreen key={this.state.dbUser && this.state.dbUser.id}/>)} />
+              <Route exact={true} path={routes.ACCOUNT} render={props => <Account key={this.state.dbUser && this.state.dbUser.id}/>} />
+              <Route exact={true} path={routes.CHAT} render={props => <Chat key={this.state.dbUser && this.state.dbUser.id}/>} />
+              <Route exact={true} path={routes.COMPANY_SETTINGS} render={props => <CompanySettings key={this.state.dbUser && this.state.dbUser.id}/>} />
 
               {/*Administrator*/}
             </Switch>

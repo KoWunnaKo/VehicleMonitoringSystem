@@ -31,11 +31,12 @@ export default class ChatMessage {
     receiver = Object.setPrototypeOf(receiver, Employee.prototype);
     this.receiver = receiver;
 
-    const userId = getDbUserId();
-    this.position = userId === sender.id ? 'right' : 'left';
-    this.status = unread ? 'received' : 'read';
+    getDbUserId().then(userId => {
+      this.position = userId === sender.id ? 'right' : 'left';
+      this.status = unread ? 'received' : 'read';
 
-    this.title = userId === sender.id ? 'You' : sender.getFullName();
+      this.title = userId === sender.id ? 'You' : sender.getFullName();
+    });
 
     this.type = 'text';
   }
