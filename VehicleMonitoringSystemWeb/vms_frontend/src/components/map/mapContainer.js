@@ -110,7 +110,7 @@ function MapContainer(props) {
                     icon={{
                         anchor: new google.maps.Point(24, 24),
                         scaledSize: new google.maps.Size(30, 30),
-                        url: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png'
+                        url: '/trajectoryMarker.webp'
                     }}
                 />
             );
