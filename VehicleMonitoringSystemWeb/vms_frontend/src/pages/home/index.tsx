@@ -7,15 +7,21 @@ import VehicleData from "../../models/vehicleData";
 import MapContainer from "../../components/map/mapContainer";
 import 'react-minimal-datetime-range/lib/react-minimal-datetime-range.min.css';
 import { RangePicker } from 'react-minimal-datetime-range';
-import {formatDateTime, getDate, getDefaultDateTime, getTime} from "../../utils/dateFunctions";
+import {
+    formatDateTime,
+    getDate,
+    getDefaultEndDateTime,
+    getDefaultStartDateTime,
+    getTime
+} from "../../utils/dateFunctions";
 import {IconButton} from "@material-ui/core";
 import RefreshIcon from "@material-ui/icons/Refresh";
 
 export const HomeComponent: React.FunctionComponent = (props) => {
     const [markersData, setMarkersData] = useState<VehicleData[]|null>();
     const [trajectoryData, setTrajectoryData] = useState<VehicleData[]|null>();
-    const [startDateTime, setStartDateTime] = useState<string>(getDefaultDateTime());
-    const [endDateTime, setEndDateTime] = useState<string>(getDefaultDateTime());
+    const [startDateTime, setStartDateTime] = useState<string>(getDefaultStartDateTime());
+    const [endDateTime, setEndDateTime] = useState<string>(getDefaultEndDateTime());
 
     useEffect(() => {
         (async function() {
@@ -24,7 +30,7 @@ export const HomeComponent: React.FunctionComponent = (props) => {
     }, [startDateTime, endDateTime]);
 
     const updateMapData = async () => {
-        await setMarkersData(await VehicleDataApi.getVehiclesLastData());
+        await setMarkersData(await VehicleDataApi.getVehiclesLastData(startDateTime, endDateTime));
         await setTrajectoryData(
             await VehicleDataApi.getVehiclesRangeData(startDateTime, endDateTime)
         );

@@ -18,7 +18,7 @@ namespace VMS_Backend.Services.Database
             DefaultConnectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
-        public async Task<List<VehicleData>> GetVehiclesLastData(int companyId)
+        public async Task<List<VehicleData>> GetVehiclesLastData(int companyId, string startDateTime, string endDateTime)
         {
             await using var con = new NpgsqlConnection(DefaultConnectionString);
             var res = await con.QueryAsync<VehicleData, Vehicle, VehicleData>(
@@ -26,13 +26,15 @@ namespace VMS_Backend.Services.Database
                     vd.*, v.*
                     FROM vehicle_data vd
                     JOIN vehicle v on v.id = vd.vehicle_id and v.company_id = @companyId
+                    WHERE  vd.datetime >= to_timestamp(@startDateTime, 'YYYY-MM-DD hh24:mi') 
+                      and vd.datetime <= to_timestamp(@endDateTime, 'YYYY-MM-DD hh24:mi')
                     ORDER BY vd.vehicle_id, vd.datetime DESC",
                 (vehicleData, vehicle) =>
                 {
                     vehicleData.Vehicle = vehicle;
                     return vehicleData;
                 },
-                new {companyId});
+                new {companyId, startDateTime, endDateTime});
             return res.ToList();
         }
 

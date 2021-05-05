@@ -19,10 +19,10 @@ namespace VMS_Backend.Controllers
         }
 
         [HttpGet]
-        [Route("getVehiclesLastData/{companyId}")]
-        public async Task<ActionResult<List<VehicleData>>> GetVehiclesLastData(int companyId)
+        [Route("getVehiclesLastData/{companyId}/{startDateTime}/{endDateTime}")]
+        public async Task<ActionResult<List<VehicleData>>> GetVehiclesLastData(int companyId, string startDateTime, string endDateTime)
         {
-            return Ok(await _vehicleDataService.GetVehiclesLastData(companyId));
+            return Ok(await _vehicleDataService.GetVehiclesLastData(companyId, startDateTime, endDateTime));
         }
         
         [HttpGet]
