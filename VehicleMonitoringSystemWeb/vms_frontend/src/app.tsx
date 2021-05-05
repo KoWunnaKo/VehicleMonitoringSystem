@@ -18,6 +18,8 @@ import {Chat} from "./pages/chat";
 import {SignalRService} from "./services/signalR/signalRService";
 import { Notifications } from 'react-push-notification';
 import {CompanySettings} from "./pages/companySettings";
+import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
+import Colors from "./constants/colors";
 
 interface AppComponentState {
   firebaseUser: any;
@@ -25,6 +27,14 @@ interface AppComponentState {
   sidebarDisplay: boolean;
   sidebarComponent: React.ReactNode;
 }
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: Colors.primaryBlue
+    },
+  },
+});
 
 class AppComponent extends React.Component<{}, AppComponentState> {
   constructor(props: any) {
@@ -76,35 +86,36 @@ class AppComponent extends React.Component<{}, AppComponentState> {
 
   public render() {
     return (
-      <BrowserRouter>
-        <div>
-          <Navigation dbUser={this.state.dbUser}
-                      setSidebarDisplay={this.setSidebarDisplay}
-                      setSidebarComponent={this.setSidebarComponent}/>
-          <div style={styles.container}>
-            <Notifications/>
-            <Sidebar childComp={this.state.sidebarComponent} display={this.state.sidebarDisplay}/>
-            <Switch>
-              {/*No auth*/}
-              <Route exact={true} path={routes.LANDING} component={Landing} />
-              <Route exact={true} path={routes.SIGN_IN} component={SignIn} />
-              <Route exact={true} path={routes.PASSWORD_FORGET} component={PasswordForget}/>
+      <MuiThemeProvider theme={theme}>
+        <BrowserRouter>
+          <div>
+            <Navigation dbUser={this.state.dbUser}
+                        setSidebarDisplay={this.setSidebarDisplay}
+                        setSidebarComponent={this.setSidebarComponent}/>
+            <div style={styles.container}>
+              <Notifications/>
+              <Sidebar childComp={this.state.sidebarComponent} display={this.state.sidebarDisplay}/>
+              <Switch>
+                {/*No auth*/}
+                <Route exact={true} path={routes.LANDING} component={Landing} />
+                <Route exact={true} path={routes.SIGN_IN} component={SignIn} />
+                <Route exact={true} path={routes.PASSWORD_FORGET} component={PasswordForget}/>
 
-              {/*Auth*/}
-              <Route exact={true} path={routes.HOME} render={(props => <HomeScreen key={this.state.dbUser && this.state.dbUser.id}/>)} />
-              <Route exact={true} path={routes.ACCOUNT} render={props => <Account key={this.state.dbUser && this.state.dbUser.id}/>} />
-              <Route exact={true} path={routes.CHAT} render={props => <Chat key={this.state.dbUser && this.state.dbUser.id}/>} />
-              <Route exact={true} path={routes.COMPANY_SETTINGS} render={props => <CompanySettings key={this.state.dbUser && this.state.dbUser.id}/>} />
-
-              {/*Administrator*/}
-            </Switch>
+                {/*Auth*/}
+                <Route exact={true} path={routes.HOME} render={(props => <HomeScreen key={this.state.dbUser && this.state.dbUser.id}/>)} />
+                <Route exact={true} path={routes.ACCOUNT} render={props => <Account key={this.state.dbUser && this.state.dbUser.id}/>} />
+                <Route exact={true} path={routes.CHAT} render={props => <Chat key={this.state.dbUser && this.state.dbUser.id}/>} />
+                <Route exact={true} path={routes.COMPANY_SETTINGS} render={props => <CompanySettings key={this.state.dbUser && this.state.dbUser.id}/>} />
+              </Switch>
+            </div>
           </div>
-        </div>
-      </BrowserRouter>
+        </BrowserRouter>
+      </MuiThemeProvider>
     );
   }
 }
 
+// TODO can scroll the map out to the right
 const styles: StylesDictionary  = {
   container: {
     display: 'flex',

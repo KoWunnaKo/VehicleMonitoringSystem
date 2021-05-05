@@ -3,7 +3,6 @@ import {useEffect, useState} from "react";
 import {Button, List} from "@material-ui/core";
 import {StylesDictionary} from "../../utils/stylesDictionary";
 import * as VehicleApi from "../../api/vehicleApi";
-import Colors from "../../constants/colors";
 import Popup from "reactjs-popup";
 import Vehicle from "../../models/vehicle";
 import {VehicleListItem} from "./vehicleListItem";
@@ -65,8 +64,7 @@ const styles: StylesDictionary  = {
     addButton: {
         flex: 1,
         marginTop: 10,
-        marginBottom: 10,
-        backgroundColor: Colors.primaryBlue
+        marginBottom: 10
     },
     timeRangePicker: {
         width: '300px',
