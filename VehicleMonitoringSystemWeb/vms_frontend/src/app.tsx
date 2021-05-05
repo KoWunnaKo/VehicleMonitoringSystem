@@ -12,7 +12,7 @@ import { SignIn } from "./pages/signIn";
 import { Navigation } from "./components/navigation/navigation";
 import Employee from "./models/employee";
 import {Sidebar} from "./components/sidebar/sidebar";
-import {StylesDictionary} from "./utils/stylesDictionary";
+import {StylesDictionary} from "./components/utils/stylesDictionary";
 import {clearUsers, setDbUser, setFirebaseUser} from "./utils/userUtil";
 import {Chat} from "./pages/chat";
 import {SignalRService} from "./services/signalR/signalRService";

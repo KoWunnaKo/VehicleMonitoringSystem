@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useEffect, useState} from "react";
 import {Button, List} from "@material-ui/core";
-import {StylesDictionary} from "../../utils/stylesDictionary";
+import {StylesDictionary} from "../utils/stylesDictionary";
 import * as TaskApi from "../../api/taskApi";
 import Colors from "../../constants/colors";
 import Popup from "reactjs-popup";

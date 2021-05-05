@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Button, FormControl, FormHelperText, MenuItem, TextField} from '@material-ui/core';
 import Colors from "../../constants/colors";
-import {StylesDictionary} from "../../utils/stylesDictionary";
+import {StylesDictionary} from "../utils/stylesDictionary";
 import {useEffect, useState} from "react";
 import Task from "../../models/task";
 import * as TaskApi from "../../api/taskApi";

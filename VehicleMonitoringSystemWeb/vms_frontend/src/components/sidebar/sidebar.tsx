@@ -1,5 +1,5 @@
 import * as React from "react";
-import {StylesDictionary} from "../../utils/stylesDictionary";
+import {StylesDictionary} from "../utils/stylesDictionary";
 import Colors from "../../constants/colors";
 
 interface InterfaceProps {

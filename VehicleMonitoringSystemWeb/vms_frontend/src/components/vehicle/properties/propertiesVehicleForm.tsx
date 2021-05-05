@@ -1,5 +1,5 @@
 import * as React from "react";
-import {StylesDictionary} from "../../../utils/stylesDictionary";
+import {StylesDictionary} from "../../utils/stylesDictionary";
 import {useState} from "react";
 import {PropertiesGeneralVehicleForm, PropertiesGeneralVehicleFormName} from "./propertiesGeneralVehicleForm";
 import {PropertiesDriversVehicleForm, PropertiesDriversVehicleFormName} from "./propertiesDriversVehicleForm";

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { IconButton, ListItem, ListItemSecondaryAction} from "@material-ui/core";
 import SettingsIcon from "@material-ui/icons/Settings";
-import {StylesDictionary} from "../../utils/stylesDictionary";
+import {StylesDictionary} from "../utils/stylesDictionary";
 import Popup from "reactjs-popup";
 import Task from "../../models/task";
 import {PropertiesTaskForm} from "./properties/propertiesTaskForm";

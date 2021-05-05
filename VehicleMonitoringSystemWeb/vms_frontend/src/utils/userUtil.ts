@@ -2,6 +2,7 @@ import Employee from "../models/employee";
 import {STORAGE_KEY_FIREBASE_USER, STORAGE_KEY_DB_USER} from "../constants/asyncStorageKeys";
 import firebase from "firebase";
 import User = firebase.User;
+import Role from "../models/role";
 
 export async function setFirebaseUser(dbUser: User) {
     await localStorage.setItem(STORAGE_KEY_FIREBASE_USER, JSON.stringify(dbUser));
@@ -38,4 +39,20 @@ export async function getDbUserCompanyId(): Promise<number | null> {
 export async function clearUsers() {
     await localStorage.removeItem(STORAGE_KEY_FIREBASE_USER);
     await localStorage.removeItem(STORAGE_KEY_DB_USER);
+}
+
+export function isUserAdministrator(dbUser: Employee|null|undefined): boolean {
+    if (!dbUser) {
+        return false;
+    }
+
+    return Role.isAdministrator(dbUser.roleId);
+}
+
+export function isUserOperator(dbUser: Employee|null|undefined): boolean {
+    if (!dbUser) {
+        return false;
+    }
+
+    return !Role.isAdministrator(dbUser.roleId);
 }

@@ -2,7 +2,7 @@ import * as React from "react";
 import * as VehicleApi from "../../api/vehicleApi";
 import {Button, TextField} from '@material-ui/core';
 import Colors from "../../constants/colors";
-import {StylesDictionary} from "../../utils/stylesDictionary";
+import {StylesDictionary} from "../utils/stylesDictionary";
 import Vehicle from "../../models/vehicle";
 import {useState} from "react";
 import {getDbUserCompanyId} from "../../utils/userUtil";

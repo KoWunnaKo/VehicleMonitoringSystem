@@ -1,7 +1,7 @@
 import * as React from "react";
 import Employee from "../../models/employee";
 import {IconButton, ListItem, ListItemSecondaryAction} from "@material-ui/core";
-import {StylesDictionary} from "../../utils/stylesDictionary";
+import {StylesDictionary} from "../utils/stylesDictionary";
 import SettingsIcon from "@material-ui/icons/Settings";
 import Popup from "reactjs-popup";
 import {PropertiesEmployeeForm} from "./properties/propertiesEmployeeForm";

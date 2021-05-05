@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Button, TextField} from '@material-ui/core';
-import {StylesDictionary} from "../../utils/stylesDictionary";
+import {StylesDictionary} from "../../components/utils/stylesDictionary";
 import {useEffect, useState} from "react";
 import * as CompanySettingsApi from "../../api/companySettingsApi";
 import {getDbUserCompanyId} from "../../utils/userUtil";

@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as TaskApi from "../../../api/taskApi";
 import {Button, FormControl, FormHelperText, IconButton, MenuItem, TextField} from '@material-ui/core';
-import {StylesDictionary} from "../../../utils/stylesDictionary";
+import {StylesDictionary} from "../../utils/stylesDictionary";
 import {useEffect, useState} from "react";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Task from "../../../models/task";

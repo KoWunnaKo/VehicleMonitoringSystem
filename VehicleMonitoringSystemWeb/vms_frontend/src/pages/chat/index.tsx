@@ -2,7 +2,7 @@ import * as React from "react";
 import { withAuthorization } from "../../firebase/withAuthorization";
 import 'react-chat-elements/dist/main.css';
 import { MessageList, ChatList, Input, Button,  } from 'react-chat-elements'
-import {StylesDictionary} from "../../utils/stylesDictionary";
+import {StylesDictionary} from "../../components/utils/stylesDictionary";
 import {useEffect, useState} from "react";
 import * as ChatApi from "../../api/chatApi";
 import ChatContact from "../../models/chatContact";

@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Button, FormControl, MenuItem, Select} from '@material-ui/core';
-import {StylesDictionary} from "../../../utils/stylesDictionary";
+import {StylesDictionary} from "../../utils/stylesDictionary";
 import Vehicle from "../../../models/vehicle";
 import {useEffect, useState} from "react";
 import * as EmployeeApi from "../../../api/employeeApi";

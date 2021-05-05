@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useEffect, useState} from "react";
 import {Button, List} from "@material-ui/core";
-import {StylesDictionary} from "../../utils/stylesDictionary";
+import {StylesDictionary} from "../utils/stylesDictionary";
 import * as VehicleApi from "../../api/vehicleApi";
 import Popup from "reactjs-popup";
 import Vehicle from "../../models/vehicle";

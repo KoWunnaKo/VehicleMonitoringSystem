@@ -6,7 +6,7 @@ import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from '@mat
 import Role from "../../models/role";
 import Employee from "../../models/employee";
 import Colors from "../../constants/colors";
-import {StylesDictionary} from "../../utils/stylesDictionary";
+import {StylesDictionary} from "../utils/stylesDictionary";
 import {useEffect, useState} from "react";
 import {getDbUserCompanyId} from "../../utils/userUtil";
 

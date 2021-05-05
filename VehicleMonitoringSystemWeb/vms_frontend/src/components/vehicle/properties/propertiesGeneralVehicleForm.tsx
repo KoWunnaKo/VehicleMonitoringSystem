@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as VehicleApi from "../../../api/vehicleApi";
 import {Button, IconButton, TextField} from '@material-ui/core';
-import {StylesDictionary} from "../../../utils/stylesDictionary";
+import {StylesDictionary} from "../../utils/stylesDictionary";
 import Vehicle from "../../../models/vehicle";
 import {useState} from "react";
 import DeleteIcon from "@material-ui/icons/Delete";

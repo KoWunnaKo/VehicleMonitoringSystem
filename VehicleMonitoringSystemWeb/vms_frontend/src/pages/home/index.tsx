@@ -1,6 +1,6 @@
 import * as React from "react";
 import { withAuthorization } from "../../firebase/withAuthorization";
-import {StylesDictionary} from "../../utils/stylesDictionary";
+import {StylesDictionary} from "../../components/utils/stylesDictionary";
 import * as VehicleDataApi from "../../api/vehicleDataApi";
 import {useEffect, useState} from "react";
 import VehicleData from "../../models/vehicleData";

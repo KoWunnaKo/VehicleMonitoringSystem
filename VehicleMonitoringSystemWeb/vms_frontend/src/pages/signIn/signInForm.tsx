@@ -2,7 +2,7 @@ import * as React from "react";
 import * as routes from "../../constants/routes";
 import { auth } from "../../firebase";
 import {Button, TextField} from "@material-ui/core";
-import {StylesDictionary} from "../../utils/stylesDictionary";
+import {StylesDictionary} from "../../components/utils/stylesDictionary";
 import Colors from "../../constants/colors";
 import {PasswordForgetLink} from "../passwordForget";
 import {STORAGE_KEY_FIREBASE_USER} from "../../constants/asyncStorageKeys";

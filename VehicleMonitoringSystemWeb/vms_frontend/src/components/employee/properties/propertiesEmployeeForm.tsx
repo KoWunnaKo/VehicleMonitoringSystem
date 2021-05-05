@@ -1,5 +1,5 @@
 import * as React from "react";
-import {StylesDictionary} from "../../../utils/stylesDictionary";
+import {StylesDictionary} from "../../utils/stylesDictionary";
 import {useState} from "react";
 import {PropertiesGeneralEmployeeForm, PropertiesGeneralEmployeeFormName} from "./propertiesGeneralEmployeeForm";
 import Task from "../../../models/task";
