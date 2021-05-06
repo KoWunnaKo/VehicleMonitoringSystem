@@ -10,33 +10,50 @@ import Popup from "reactjs-popup";
 import {CreateEmployeeForm} from "./createEmployeeForm";
 import "../../styles/sidebarDrivers.scss";
 import {getDbUser, getRoleRestrictionTooltip, isUserOperator} from "../../utils/userUtil";
+import Role from "../../models/role";
+import Collapsible from "react-collapsible";
 
-// TODO sidebar employees with filters
-export const SidebarDrivers: React.FunctionComponent = () => {
+export const SidebarEmployees: React.FunctionComponent = () => {
+    const roles = Role.getAllRoles();
+
     const [dbUser, setDbUser] = useState<Employee|null>();
-    const [drivers, setDrivers] = useState<Employee[]|null>(null);
+    const [employees, setEmployees] = useState<Employee[]|null>(null);
 
     useEffect(() => {
         (async function() {
             await setDbUser(await getDbUser());
-            await updateDrivers();
+            await updateEmployees();
         })();
     }, []);
 
-    const updateDrivers = async () => {
-        setDrivers(await EmployeeApi.getAllDrivers());
+    const updateEmployees = async () => {
+        await setEmployees(await EmployeeApi.getAllEmployees());
+    }
+
+    function compareEmployeesForSort(a: Employee, b: Employee): number {
+        if (!a.id || !b.id) {
+            return 0;
+        }
+
+        if (a.id < b.id) {
+            return -1;
+        }
+        if (a.id > b.id) {
+            return 1;
+        }
+        return 0;
     }
 
     return (
         <div style={styles.container}>
-            <h2>Drivers</h2>
+            <h2>Employees</h2>
             <Popup
                 trigger={
                     <div style={styles.flexible}>
                         <Tooltip title={getRoleRestrictionTooltip(dbUser)}>
                             <div style={styles.flexible}>
                                 <Button variant="contained" color='primary' style={styles.addButton} disabled={isUserOperator(dbUser)} >
-                                    Create driver
+                                    Create employee
                                 </Button>
                             </div>
                         </Tooltip>
@@ -51,7 +68,7 @@ export const SidebarDrivers: React.FunctionComponent = () => {
                             <button className="close" onClick={close}>
                                 &times;
                             </button>
-                            <div className="header"> Create driver</div>
+                            <div className="header"> Create employee</div>
                             <div className="content">
                                 <CreateEmployeeForm closeModal={close}/>
                             </div>
@@ -60,11 +77,21 @@ export const SidebarDrivers: React.FunctionComponent = () => {
                 }}
             </Popup>
 
-            <List>
-                {drivers && drivers.map((driver) => (
-                    <EmployeeListItem key={driver.id} employee={driver} updateDrivers={updateDrivers}/>
-                ))}
-            </List>
+            {
+                roles.map(r =>
+                    <Collapsible
+                        trigger={`${r.name}: ${employees && employees.filter((e) => e.roleId === r.id).length || 0}`}
+                        key={r.id}>
+                        <List style={{backgroundColor: Colors.white}}>
+                            {employees && employees
+                                .filter((e) => e.roleId === r.id)
+                                .sort((a, b) => compareEmployeesForSort(a, b))
+                                .map((e) => (<EmployeeListItem key={e.id} employee={e} updateEmployees={updateEmployees}/>))
+                            }
+                        </List>
+                    </Collapsible>)
+            }
+            
         </div>
     );
 }

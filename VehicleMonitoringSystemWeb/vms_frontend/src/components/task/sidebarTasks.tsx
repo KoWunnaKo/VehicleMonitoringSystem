@@ -29,10 +29,6 @@ export const SidebarTasks: React.FunctionComponent = () => {
         // console.log(`updateTask: ${JSON.stringify(resTasks)}`);
     }
 
-    // function onStatusClick(status: string) {
-    //
-    // }
-
     function compareTasksForSort(a: Task, b: Task): number {
         if (!a.id || !b.id) {
             return 0;
@@ -51,7 +47,11 @@ export const SidebarTasks: React.FunctionComponent = () => {
         <div style={styles.container}>
             <h2>Tasks</h2>
             <Popup
-                trigger={<Button variant="contained" color='primary' style={styles.addButton}>Create task</Button>}
+                trigger={
+                    <Button variant="contained" color='primary' style={styles.addButton}>
+                        Create task
+                    </Button>
+                }
                 modal={true}
                 nested={true}
             >

@@ -19,9 +19,16 @@ namespace VMS_Backend.Controllers
         
         [HttpGet]
         [Route("getAllDrivers/{companyId}")]
-        public async Task<ActionResult<List<Employee>>> GetAll(int companyId)
+        public async Task<ActionResult<List<Employee>>> GetAllDrivers(int companyId)
         {
             return Ok(await _employeeService.GetAllDrivers(companyId));
+        }
+        
+        [HttpGet]
+        [Route("getAllEmployees/{companyId}")]
+        public async Task<ActionResult<List<Employee>>> GetAllEmployees(int companyId)
+        {
+            return Ok(await _employeeService.GetAllEmployees(companyId));
         }
 
         [HttpDelete]

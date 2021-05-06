@@ -20,6 +20,23 @@ export async function getAllDrivers(): Promise<Employee[] | null> {
   }
 }
 
+export async function getAllEmployees(): Promise<Employee[] | null> {
+  const companyId = await getDbUserCompanyId();
+  if (!companyId) {
+    return null;
+  }
+
+  try {
+    const response = await axios.get<Employee[]>(`employee/getAllEmployees/${companyId}`);
+    const employees = response.data;
+    employees.map(driver => Object.setPrototypeOf(driver, Employee.prototype))
+    return employees;
+  } catch (e) {
+    console.log("Error:getAllEmployees ", e.response);
+    return null;
+  }
+}
+
 export async function deleteEmployee(employeeId: string): Promise<boolean | null> {
   try {
     // TODO delete user from firebase?

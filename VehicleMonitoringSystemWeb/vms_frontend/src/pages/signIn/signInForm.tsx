@@ -54,7 +54,7 @@ export class SignInForm extends React.Component<InterfaceProps, InterfaceState> 
       .doSignInWithEmailAndPassword(email, password)
       .then(async () => {
         this.setState(() => ({ ...SignInForm.INITIAL_STATE }));
-        
+
         const dbUser = await AuthApi.getCurrentUser();
         if (!dbUser) {
             this.setState(SignInForm.propKey("error", {message: 'User is not found in database'}));

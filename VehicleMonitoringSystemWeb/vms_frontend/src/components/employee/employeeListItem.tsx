@@ -8,7 +8,7 @@ import {PropertiesEmployeeForm} from "./properties/propertiesEmployeeForm";
 
 interface InterfaceProps {
     employee: Employee;
-    updateDrivers: () => void;
+    updateEmployees: () => void;
 }
 
 export const EmployeeListItem: React.FunctionComponent<InterfaceProps> = (props) => {
@@ -43,7 +43,7 @@ export const EmployeeListItem: React.FunctionComponent<InterfaceProps> = (props)
                                     &times;
                                 </button>
                                 <div>
-                                    <PropertiesEmployeeForm employee={employee} closeModal={close} updateDrivers={props.updateDrivers}/>
+                                    <PropertiesEmployeeForm employee={employee} closeModal={close} updateDrivers={props.updateEmployees}/>
                                 </div>
                             </div>
                         )

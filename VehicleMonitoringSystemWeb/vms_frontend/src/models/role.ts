@@ -1,5 +1,13 @@
 
 export default class Role {
+  public static getAllRoles() {
+    return [
+      new Role(1, 'Adminstrator'),
+      new Role(2, 'Operator'),
+      new Role(3, 'Driver'),
+    ]
+  }
+
   public static isAdministrator(id: number | undefined): boolean {
     return id === 1;
   }
@@ -14,4 +22,9 @@ export default class Role {
 
   public id: number | undefined;
   public name: string | undefined;
+
+  constructor(id: number, name: string) {
+    this.id = id;
+    this.name = name;
+  }
 }

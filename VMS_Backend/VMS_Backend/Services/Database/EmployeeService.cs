@@ -23,12 +23,21 @@ namespace VMS_Backend.Services.Database
         public async Task<List<Employee>> GetAllDrivers(int companyId)
         {
             var employees = await _dbContext.Employee
-                .Include((e => e.Role))
-                .Where((e => e.CompanyId.Equals(companyId) && e.Role.Name.Equals("Driver")))
+                .Include(e => e.Role)
+                .Where(e => e.CompanyId.Equals(companyId) && e.Role.Name.Equals("Driver"))
                 .ToListAsync();
             return employees;
         }
         
+        
+        public async Task<List<Employee>> GetAllEmployees(int companyId)
+        {
+            var employees = await _dbContext.Employee
+                .Include(e => e.Role)
+                .Where(e => e.CompanyId.Equals(companyId))
+                .ToListAsync();
+            return employees;
+        }
         public async Task<Employee> Edit(Employee employee)
         {
             var dbEmployee = await _dbContext.FindAsync<Employee>(employee.Id);

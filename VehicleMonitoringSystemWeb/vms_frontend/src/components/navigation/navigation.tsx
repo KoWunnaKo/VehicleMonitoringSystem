@@ -4,7 +4,7 @@ import "../../styles/navigation.scss";
 import {auth} from "../../firebase";
 import Employee from "../../models/employee";
 import {ACCOUNT, CHAT, COMPANY_SETTINGS, HOME, LANDING, SIGN_IN} from "../../constants/routes";
-import {SidebarDrivers} from "../employee/sidebarDrivers";
+import {SidebarEmployees} from "../employee/sidebarEmployees";
 import {SidebarVehicles} from "../vehicle/sidebarVehicles";
 import {SidebarTasks} from "../task/sidebarTasks";
 import {isUserAdministrator, isUserOperator} from "../../utils/userUtil";
@@ -36,7 +36,7 @@ export const Navigation: React.FunctionComponent<InterfaceProps> = (props) => {
                     <a onClick={homeClick}>Home</a>
                 </li>
                 <li>
-                    <a onClick={driversClick}>Drivers</a>
+                    <a onClick={employeesClick}>Employees</a>
                 </li>
                 <li>
                     <a onClick={vehiclesClick}>Vehicles</a>
@@ -64,7 +64,7 @@ export const Navigation: React.FunctionComponent<InterfaceProps> = (props) => {
                     <a onClick={homeClick}>Home</a>
                 </li>
                 <li>
-                    <a onClick={driversClick}>Drivers</a>
+                    <a onClick={employeesClick}>Employees</a>
                 </li>
                 <li>
                     <a onClick={vehiclesClick}>Vehicles</a>
@@ -111,10 +111,10 @@ export const Navigation: React.FunctionComponent<InterfaceProps> = (props) => {
         props.setSidebarDisplay(false);
     }
 
-    function driversClick() {
+    function employeesClick() {
         history.push(HOME);
         props.setSidebarDisplay(true);
-        props.setSidebarComponent(<SidebarDrivers/>);
+        props.setSidebarComponent(<SidebarEmployees/>);
     }
 
     function vehiclesClick() {
