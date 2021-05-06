@@ -40,8 +40,7 @@ public class CompanySettingsController {
 
     // Get and set company settings
     public void configureCompanySettings() {
-        // TODO companyId
-        int companyId = 1;
+        int companyId = AppController.getInstance().getDbUser().getCompanyId();
 
         apiController.getJSONObjectResponse(
                 Request.Method.GET,

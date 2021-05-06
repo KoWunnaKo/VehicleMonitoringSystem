@@ -14,6 +14,7 @@ import com.firebase.ui.auth.util.ExtraConstants;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.siroytman.vehiclemonitoringsystemmobile.R;
+import com.siroytman.vehiclemonitoringsystemmobile.controller.EmployeeController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,8 +113,7 @@ public class AuthActivity extends AppCompatActivity {
         super.onResume();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null && getIntent().getExtras() == null) {
-            startSignedInActivity(null);
-            finish();
+            configureDbUserAndStart();
         }
     }
 
@@ -122,8 +122,7 @@ public class AuthActivity extends AppCompatActivity {
 
         // Successfully signed in
         if (resultCode == RESULT_OK) {
-            startSignedInActivity(response);
-            finish();
+            configureDbUserAndStart();
         } else {
             // Sign in failed
             if (response == null) {
@@ -147,7 +146,13 @@ public class AuthActivity extends AppCompatActivity {
         }
     }
 
-    private void startSignedInActivity(@Nullable IdpResponse response) {
+    // Configure dbUser and startSignedInActivity on callback
+    private void configureDbUserAndStart() {
+        EmployeeController.getInstance().configureCurrentDbUser(this);
+    }
+
+    public void startSignedInActivity() {
+        finish();
         startActivity(new Intent(this, NavigationActivity.class));
     }
 

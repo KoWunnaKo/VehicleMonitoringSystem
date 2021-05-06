@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.siroytman.vehiclemonitoringsystemmobile.controller.AppController;
 import com.siroytman.vehiclemonitoringsystemmobile.interfaces.IChatMessage;
 import com.stfalcon.chatkit.commons.models.IMessage;
 import com.stfalcon.chatkit.commons.models.IUser;
@@ -46,8 +47,7 @@ public class ChatMessage implements Parcelable,
     };
 
     public static ChatMessage parseChatMessage(JSONObject json) {
-        // TODO userId
-        String userId = "6rCZ9FrOAMd4SdEDNaNENoY1Gku2";
+        String userId = AppController.getInstance().getDbUser().getId();
 
         ChatMessage chatMessage = new ChatMessage();
 

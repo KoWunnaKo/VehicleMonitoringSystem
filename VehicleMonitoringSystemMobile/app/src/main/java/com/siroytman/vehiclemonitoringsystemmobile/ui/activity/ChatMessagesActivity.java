@@ -11,9 +11,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.siroytman.vehiclemonitoringsystemmobile.R;
+import com.siroytman.vehiclemonitoringsystemmobile.controller.AppController;
 import com.siroytman.vehiclemonitoringsystemmobile.controller.ChatController;
 import com.siroytman.vehiclemonitoringsystemmobile.model.ChatDialog;
 import com.siroytman.vehiclemonitoringsystemmobile.model.ChatMessage;
+import com.siroytman.vehiclemonitoringsystemmobile.model.Employee;
 import com.siroytman.vehiclemonitoringsystemmobile.sampleData.MessagesFixtures;
 import com.siroytman.vehiclemonitoringsystemmobile.ui.fragments.ChatDialogFragment;
 import com.squareup.picasso.Picasso;
@@ -97,9 +99,10 @@ public class ChatMessagesActivity extends AppCompatActivity implements MessageIn
 
     @Override
     public boolean onSubmit(CharSequence input) {
-        // TODO userId, companyId
-        String userId = "6rCZ9FrOAMd4SdEDNaNENoY1Gku2";
-        int companyId = 1;
+        Employee user = AppController.getInstance().getDbUser();
+        String userId = user.getId();
+        int companyId = user.getCompanyId();
+
         ChatMessage message = new ChatMessage(companyId, userId, dialog.getId(), input.toString());
         chatController.sendMessage(message);
 

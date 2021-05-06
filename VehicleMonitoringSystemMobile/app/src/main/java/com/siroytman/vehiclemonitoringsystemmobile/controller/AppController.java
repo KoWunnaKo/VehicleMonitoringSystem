@@ -10,7 +10,7 @@ import com.siroytman.vehiclemonitoringsystemmobile.room.AppRoomDatabase;
 
 public class AppController extends Application {
     private static final String TAG = "AppController";
-    public Employee user;
+    private Employee dbUser;
     private static AppController mInstance;
     private AppRoomDatabase roomDatabase;
 
@@ -40,5 +40,13 @@ public class AppController extends Application {
 
     public Context getAppContext() {
         return getApplicationContext();
+    }
+
+    public Employee getDbUser() {
+        return dbUser;
+    }
+
+    public void setDbUser(Employee user) {
+        this.dbUser = user;
     }
 }

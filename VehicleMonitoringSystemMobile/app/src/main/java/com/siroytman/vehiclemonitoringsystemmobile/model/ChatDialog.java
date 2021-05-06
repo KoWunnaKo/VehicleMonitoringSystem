@@ -3,6 +3,7 @@ package com.siroytman.vehiclemonitoringsystemmobile.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.siroytman.vehiclemonitoringsystemmobile.controller.AppController;
 import com.stfalcon.chatkit.commons.models.IDialog;
 import com.stfalcon.chatkit.commons.models.IUser;
 
@@ -16,8 +17,7 @@ public class ChatDialog implements IDialog<ChatMessage>, Parcelable {
         ArrayList<ChatDialog> dialogs = new ArrayList<>();
 
         if (!messages.isEmpty()) {
-            // TODO userId
-            String userId = "6rCZ9FrOAMd4SdEDNaNENoY1Gku2";
+            String userId = AppController.getInstance().getDbUser().getId();
 
             HashMap<String, Employee> contacts = new HashMap<>();
             HashMap<String, ArrayList<ChatMessage>> contactsMessages = new HashMap<>();

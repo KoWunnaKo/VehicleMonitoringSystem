@@ -9,6 +9,7 @@ import com.siroytman.vehiclemonitoringsystemmobile.api.VolleyCallbackJSONArray;
 import com.siroytman.vehiclemonitoringsystemmobile.api.VolleyCallbackJSONObject;
 import com.siroytman.vehiclemonitoringsystemmobile.model.ChatDialog;
 import com.siroytman.vehiclemonitoringsystemmobile.model.ChatMessage;
+import com.siroytman.vehiclemonitoringsystemmobile.model.Employee;
 import com.siroytman.vehiclemonitoringsystemmobile.ui.activity.ChatMessagesActivity;
 import com.siroytman.vehiclemonitoringsystemmobile.ui.fragments.ChatDialogFragment;
 
@@ -37,11 +38,10 @@ public class ChatController {
     }
 
     public void getDialogs() {
-        // TODO companyId and senderId
-        int companyId = 1;
-        String senderId = "6rCZ9FrOAMd4SdEDNaNENoY1Gku2";
+        Employee user = AppController.getInstance().getDbUser();
+        String senderId = user.getId();
+        int companyId = user.getCompanyId();
 
-//        Log.d(TAG, "chat/getAllEmployeeMessages/" + companyId + "/" + senderId);
         apiController.getJSONArrayResponse(Request.Method.GET,
                         ApiController.BACKEND_URL,
                         "chat/getAllEmployeeMessages/" + companyId + "/" + senderId,

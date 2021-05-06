@@ -16,6 +16,8 @@ public class Employee implements IUser, Parcelable {
         id = in.readString();
         firstName = in.readString();
         lastName = in.readString();
+        roleId = in.readInt();
+        companyId = in.readInt();
     }
 
     public static final Creator<Employee> CREATOR = new Creator<Employee>() {
@@ -36,6 +38,8 @@ public class Employee implements IUser, Parcelable {
             user.setId(json.getString("id"));
             user.setFirstName(json.getString("firstName"));
             user.setLastName(json.getString("lastName"));
+            user.setRoleId(json.getInt("roleId"));
+            user.setCompanyId(json.getInt("companyId"));
 
             return user;
         } catch (JSONException e)
@@ -51,7 +55,15 @@ public class Employee implements IUser, Parcelable {
 
     private String lastName;
 
+    private int roleId;
+
+    private int companyId;
+
     private Employee() { }
+
+    public boolean isDriverRole() {
+        return this.roleId == 3;
+    }
 
     public String getId() {
         return id;
@@ -78,6 +90,18 @@ public class Employee implements IUser, Parcelable {
         this.lastName = lastName;
     }
 
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
+
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
+    }
+
+    public int getCompanyId() {
+        return this.companyId;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -88,5 +112,7 @@ public class Employee implements IUser, Parcelable {
         dest.writeString(id);
         dest.writeString(firstName);
         dest.writeString(lastName);
+        dest.writeInt(roleId);
+        dest.writeInt(companyId);
     }
 }
