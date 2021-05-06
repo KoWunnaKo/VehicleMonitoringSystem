@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useEffect, useState} from "react";
-import {Button, List} from "@material-ui/core";
+import {Button, List, Tooltip} from "@material-ui/core";
 import {StylesDictionary} from "../utils/stylesDictionary";
 import * as VehicleApi from "../../api/vehicleApi";
 import Popup from "reactjs-popup";
@@ -9,12 +9,16 @@ import {VehicleListItem} from "./vehicleListItem";
 import {CreateVehicleForm} from "./createVehicleForm";
 import "../../styles/sidebarDrivers.scss";
 import 'react-minimal-datetime-range/lib/react-minimal-datetime-range.min.css';
+import Employee from "../../models/employee";
+import {getDbUser, getRoleRestrictionTooltip, isUserOperator} from "../../utils/userUtil";
 
 export const SidebarVehicles: React.FunctionComponent = () => {
+    const [dbUser, setDbUser] = useState<Employee|null>();
     const [vehicles, setVehicles] = useState<Vehicle[]|null>(null);
 
     useEffect(() => {
         (async function() {
+            await setDbUser(await getDbUser());
             await updateVehicles();
         })();
     }, []);
@@ -28,7 +32,17 @@ export const SidebarVehicles: React.FunctionComponent = () => {
         <div style={styles.container}>
             <h2>Vehicles</h2>
             <Popup
-                trigger={<Button variant="contained" color='primary' style={styles.addButton}>Create vehicle</Button>}
+                trigger={
+                    <div style={styles.flexible}>
+                        <Tooltip title={getRoleRestrictionTooltip(dbUser)}>
+                            <div style={styles.flexible}>
+                                <Button variant="contained" color='primary' style={styles.addButton} disabled={isUserOperator(dbUser)} >
+                                    Create vehicle
+                                </Button>
+                            </div>
+                        </Tooltip>
+                    </div>
+                }
                 modal={true}
                 nested={true}
             >
@@ -69,6 +83,10 @@ const styles: StylesDictionary  = {
     timeRangePicker: {
         width: '300px',
         margin: '0 auto'
+    },
+    flexible: {
+        flex: 1,
+        display: 'flex'
     }
 };
 

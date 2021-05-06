@@ -9,12 +9,11 @@ import {EmployeeListItem} from "./employeeListItem";
 import Popup from "reactjs-popup";
 import {CreateEmployeeForm} from "./createEmployeeForm";
 import "../../styles/sidebarDrivers.scss";
-import {getDbUser, isUserOperator} from "../../utils/userUtil";
+import {getDbUser, getRoleRestrictionTooltip, isUserOperator} from "../../utils/userUtil";
 
 // TODO sidebar employees with filters
 export const SidebarDrivers: React.FunctionComponent = () => {
     const [dbUser, setDbUser] = useState<Employee|null>();
-
     const [drivers, setDrivers] = useState<Employee[]|null>(null);
 
     useEffect(() => {
@@ -34,7 +33,7 @@ export const SidebarDrivers: React.FunctionComponent = () => {
             <Popup
                 trigger={
                     <div style={styles.flexible}>
-                        <Tooltip title={isUserOperator(dbUser) ? 'Access only for the Administrators' : ''}>
+                        <Tooltip title={getRoleRestrictionTooltip(dbUser)}>
                             <div style={styles.flexible}>
                                 <Button variant="contained" color='primary' style={styles.addButton} disabled={isUserOperator(dbUser)} >
                                     Create driver

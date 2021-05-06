@@ -25,7 +25,6 @@ export const PropertiesGeneralEmployeeForm: React.FunctionComponent<InterfacePro
     const [lastName, setLastName] = useState<string>(employee.lastName);
     const [email, setEmail] = useState<string>(employee.email);
 
-
     useEffect(() => {
         (async function() {
             await setDbUser(await getDbUser());

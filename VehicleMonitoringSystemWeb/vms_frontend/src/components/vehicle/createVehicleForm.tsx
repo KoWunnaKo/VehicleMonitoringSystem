@@ -5,7 +5,6 @@ import Colors from "../../constants/colors";
 import {StylesDictionary} from "../utils/stylesDictionary";
 import Vehicle from "../../models/vehicle";
 import {useState} from "react";
-import {getDbUserCompanyId} from "../../utils/userUtil";
 
 interface InterfaceProps {
   closeModal: () => void;

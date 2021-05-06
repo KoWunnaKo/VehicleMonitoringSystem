@@ -49,7 +49,7 @@ const styles: StylesDictionary  = {
     container: {
         flexDirection: 'column',
         width: 400,
-        height: 350
+        height: 400
     },
     content: {
         flexDirection: 'column'

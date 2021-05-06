@@ -56,3 +56,7 @@ export function isUserOperator(dbUser: Employee|null|undefined): boolean {
 
     return !Role.isAdministrator(dbUser.roleId);
 }
+
+export function getRoleRestrictionTooltip(dbUser: Employee|null|undefined): string {
+    return isUserOperator(dbUser) ? 'Access only for the Administrators' : '';
+}
