@@ -91,7 +91,7 @@ export const SidebarEmployees: React.FunctionComponent = () => {
                         </List>
                     </Collapsible>)
             }
-            
+
         </div>
     );
 }
