@@ -3,11 +3,11 @@ import { useHistory } from "react-router-dom";
 import "../../styles/navigation.scss";
 import {auth} from "../../firebase";
 import Employee from "../../models/employee";
-import Role from "../../models/role";
 import {ACCOUNT, CHAT, COMPANY_SETTINGS, HOME, LANDING, SIGN_IN} from "../../constants/routes";
 import {SidebarDrivers} from "../employee/sidebarDrivers";
 import {SidebarVehicles} from "../vehicle/sidebarVehicles";
 import {SidebarTasks} from "../task/sidebarTasks";
+import {isUserAdministrator, isUserOperator} from "../../utils/userUtil";
 
 interface InterfaceProps {
     dbUser: Employee|null;
@@ -20,15 +20,13 @@ export const Navigation: React.FunctionComponent<InterfaceProps> = (props) => {
     const dbUser = props.dbUser;
 
     const getNavigationByRole = () => {
-        if (dbUser && dbUser.roleId) {
-            if (Role.isAdministrator(dbUser.roleId)) {
-                return (<NavigationAuthAdministrator/>);
-            } else {
-                return (<NavigationAuthOperator/>);
-            }
-        } else {
-            return (<NavigationNonAuth/>);
+        if (isUserAdministrator(dbUser)) {
+            return (<NavigationAuthAdministrator/>);
+        } else if (isUserOperator(dbUser)) {
+            return (<NavigationAuthOperator/>);
         }
+
+        return (<NavigationNonAuth/>);
     }
 
     const NavigationAuthOperator = () => (
@@ -103,8 +101,8 @@ export const Navigation: React.FunctionComponent<InterfaceProps> = (props) => {
         </div>
     );
 
-    function signOutClick() {
-        auth.doSignOut();
+    async function signOutClick() {
+        await auth.doSignOut();
         props.setSidebarDisplay(false);
     }
 

@@ -54,7 +54,15 @@ export function isUserOperator(dbUser: Employee|null|undefined): boolean {
         return false;
     }
 
-    return !Role.isAdministrator(dbUser.roleId);
+    return Role.isOperator(dbUser.roleId);
+}
+
+export function isUserDriver(dbUser: Employee|null|undefined): boolean {
+    if (!dbUser) {
+        return false;
+    }
+
+    return Role.isDriver(dbUser.roleId);
 }
 
 export function getRoleRestrictionTooltip(dbUser: Employee|null|undefined): string {

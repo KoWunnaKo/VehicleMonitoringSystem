@@ -3,11 +3,10 @@ import * as routes from "../../constants/routes";
 import { auth } from "../../firebase";
 import {Button, TextField} from "@material-ui/core";
 import {StylesDictionary} from "../../components/utils/stylesDictionary";
-import Colors from "../../constants/colors";
 import {PasswordForgetLink} from "../passwordForget";
-import {STORAGE_KEY_FIREBASE_USER} from "../../constants/asyncStorageKeys";
 import {HOME} from "../../constants/routes";
 import * as AuthApi from "../../api/authApi";
+import {getDbUser, isUserDriver} from "../../utils/userUtil";
 
 interface InterfaceProps {
   error?: any;
@@ -36,18 +35,18 @@ export class SignInForm extends React.Component<InterfaceProps, InterfaceState> 
     this.state = { ...SignInForm.INITIAL_STATE };
   }
 
-   public componentDidMount() {
-    // console.log('signIn.componentDidMount');
-    // Redirect back to home if user is logged in
-    const dbUser = localStorage.getItem(STORAGE_KEY_FIREBASE_USER);
-    if (!!dbUser) {
-      // console.log(`signIn.componentDidMount, dbUser: ${JSON.stringify(dbUser)}`);
-      const { history } = this.props;
-      history.push(HOME);
-    }
-  }
+   public async componentDidMount() {
+       // Redirect back to home if user is logged in
+       const dbUser = await getDbUser();
+       if (!!dbUser && !isUserDriver(dbUser)) {
+           const {history} = this.props;
+           history.push(HOME);
+       }
+   }
 
   public onSubmit = (event: any) => {
+    event.preventDefault();
+
     const { email, password } = this.state;
     const { history } = this.props;
 
@@ -55,16 +54,25 @@ export class SignInForm extends React.Component<InterfaceProps, InterfaceState> 
       .doSignInWithEmailAndPassword(email, password)
       .then(async () => {
         this.setState(() => ({ ...SignInForm.INITIAL_STATE }));
+        
         const dbUser = await AuthApi.getCurrentUser();
-        if(!!dbUser) {
-          history.push(routes.HOME);
+        if (!dbUser) {
+            this.setState(SignInForm.propKey("error", {message: 'User is not found in database'}));
+            await auth.doSignOut();
+            return;
         }
+
+        if (isUserDriver(dbUser)) {
+            this.setState(SignInForm.propKey("error", {message: 'Drivers can\'t login web-app'}));
+            await auth.doSignOut();
+            return;
+        }
+
+        history.push(routes.HOME);
       })
       .catch(error => {
         this.setState(SignInForm.propKey("error", error));
       });
-
-    event.preventDefault();
   };
 
   public render() {
