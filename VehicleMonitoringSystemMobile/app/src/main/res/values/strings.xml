@@ -30,10 +30,9 @@
 
     <!-- Auth UI - Signed in -->
     <string name="signed_in_header">You are signed in!</string>
+    <string name="signed_in_role_error">Role restriction: only drivers can access the mobile app!</string>
     <string name="sign_out">Sign out</string>
-
     <string name="sign_out_failed">Sign out failed</string>
-
     <string name="user_profile_header">User profile:</string>
 
     <!-- Database -->

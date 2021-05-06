@@ -37,14 +37,6 @@ export async function signUp(employee: Employee) {
   }
 }
 
-// export async function signOut() {
-//   try {
-//     const logoutResponse = await axios.post(`auth/logout`);
-//   } catch (error) {
-//     // console.log("Error:signOut ", error.response);
-//   }
-// }
-
 export async function getCurrentUser(): Promise<Employee | null> {
   try {
     let firebaseUserId: string|null = null;

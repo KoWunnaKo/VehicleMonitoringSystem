@@ -1,25 +1,18 @@
 package com.siroytman.vehiclemonitoringsystemmobile.controller;
 
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.siroytman.vehiclemonitoringsystemmobile.R;
 import com.siroytman.vehiclemonitoringsystemmobile.api.ApiController;
 import com.siroytman.vehiclemonitoringsystemmobile.api.VolleyCallbackJSONObject;
-import com.siroytman.vehiclemonitoringsystemmobile.model.CompanySettings;
 import com.siroytman.vehiclemonitoringsystemmobile.model.Employee;
-import com.siroytman.vehiclemonitoringsystemmobile.services.LocationService;
-import com.siroytman.vehiclemonitoringsystemmobile.services.VehicleDataSynchronizationService;
 import com.siroytman.vehiclemonitoringsystemmobile.ui.activity.AuthActivity;
-import com.siroytman.vehiclemonitoringsystemmobile.ui.activity.NavigationActivity;
 
 import org.json.JSONObject;
-
-import static androidx.core.content.ContextCompat.startActivity;
 
 
 public class EmployeeController {
@@ -40,7 +33,7 @@ public class EmployeeController {
     }
 
     // Gets and sets current dbUser via firebaseAuthUserId
-    public void configureCurrentDbUser(AuthActivity authActivity) {
+    public void configureCurrentDbUser(AuthActivity authActivity, boolean isSilentLogin) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
             return;
@@ -56,8 +49,19 @@ public class EmployeeController {
                             @Override
                             public void onSuccessResponse(JSONObject result) {
                                 Employee user = Employee.parseEmployee(result);
+                                if (user == null) {
+                                    String msg = "User with id = " + firebaseUserId + " was not found in database";
+                                    throw new IllegalArgumentException(msg);
+                                }
+
                                 AppController.getInstance().setDbUser(user);
-                                authActivity.startSignedInActivity();
+                                if (user.isDriverRole()) {
+                                    authActivity.startSignedInActivity();
+                                } else {
+                                    if (!isSilentLogin) {
+                                        authActivity.showSignInError(R.string.signed_in_role_error);
+                                    }
+                                }
                             }
 
                             @Override

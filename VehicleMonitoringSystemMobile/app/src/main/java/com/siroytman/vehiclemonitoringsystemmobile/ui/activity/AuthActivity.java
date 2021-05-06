@@ -54,6 +54,9 @@ public class AuthActivity extends AppCompatActivity {
         catchEmailLinkSignIn();
     }
 
+    @Override
+    public void onBackPressed(){ }
+
     public void catchEmailLinkSignIn() {
         if (getIntent().getExtras() == null) {
             return;
@@ -100,6 +103,16 @@ public class AuthActivity extends AppCompatActivity {
         return builder.build();
     }
 
+    public void showSignInError(int error) {
+        showSnackbar(error);
+    }
+
+    public void startSignedInActivity() {
+        finish();
+        startActivity(new Intent(this, NavigationActivity.class));
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -113,7 +126,7 @@ public class AuthActivity extends AppCompatActivity {
         super.onResume();
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null && getIntent().getExtras() == null) {
-            configureDbUserAndStart();
+            configureDbUserAndStart(true);
         }
     }
 
@@ -122,7 +135,7 @@ public class AuthActivity extends AppCompatActivity {
 
         // Successfully signed in
         if (resultCode == RESULT_OK) {
-            configureDbUserAndStart();
+            configureDbUserAndStart(false);
         } else {
             // Sign in failed
             if (response == null) {
@@ -146,14 +159,9 @@ public class AuthActivity extends AppCompatActivity {
         }
     }
 
-    // Configure dbUser and startSignedInActivity on callback
-    private void configureDbUserAndStart() {
-        EmployeeController.getInstance().configureCurrentDbUser(this);
-    }
-
-    public void startSignedInActivity() {
-        finish();
-        startActivity(new Intent(this, NavigationActivity.class));
+    // Configure dbUser and startSignedInActivity on success or show error on failure
+    private void configureDbUserAndStart(boolean isSilentLogin) {
+        EmployeeController.getInstance().configureCurrentDbUser(this, isSilentLogin);
     }
 
     @StyleRes
