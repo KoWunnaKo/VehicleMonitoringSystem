@@ -14,7 +14,7 @@ export const RoleRestriction: React.FunctionComponent<InterfaceProps> = (props) 
         <div style={styles.container}>
             {
                 isUserOperator(props.dbUser)
-                && <text style={styles.textStyle}>Access only for the Administrators</text>
+                && <div style={styles.textStyle}>Access only for the Administrators</div>
             }
         </div>
     );
