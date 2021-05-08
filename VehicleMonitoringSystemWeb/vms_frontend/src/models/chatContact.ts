@@ -28,9 +28,11 @@ export default class ChatContact {
     this.title = employee.getFullName();
     this.avatar = standardAvatarUrl;
     this.alt = standardAvatarAlt;
-    this.date = chatMessages[chatMessages.length - 1].date;
-    this.subtitle = chatMessages[chatMessages.length - 1].text;
-    countUnreadMessages(chatMessages)
-        .then(unreadCount => this.unread = unreadCount);
+    if (chatMessages.length) {
+      this.date = chatMessages[chatMessages.length - 1].date;
+      this.subtitle = chatMessages[chatMessages.length - 1].text;
+      countUnreadMessages(chatMessages)
+          .then(unreadCount => this.unread = unreadCount);
+    }
   }
 }
