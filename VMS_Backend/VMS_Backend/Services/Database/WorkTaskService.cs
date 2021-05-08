@@ -30,7 +30,7 @@ namespace VMS_Backend.Services.Database
 
             dbTask.DriverId = task.DriverId;
             dbTask.OperatorId = task.OperatorId;
-            dbTask.DueDate = task.DueDate;
+            dbTask.DueDate = task.DueDate.ToLocalTime();
             dbTask.StatusId = task.StatusId;
             dbTask.Comment = task.Comment;
             dbTask.Description = task.Description;

@@ -92,8 +92,8 @@ export const PropertiesGeneralTaskForm: React.FunctionComponent<InterfaceProps> 
                 label="Due datetime"
                 type="datetime-local"
                 style={styles.textInput}
-                // value={dueDatetime}
-                onChange={event => setDueDatetime(moment(event.target.value, 'DD.MM.YY HH:mm').toDate())}
+                value={moment(dueDatetime).format('yyyy-MM-DDTHH:mm')}
+                onChange={event => setDueDatetime(moment(event.target.value, 'yyyy-MM-DDTHH:mm').toDate())}
                 InputLabelProps={{shrink: true}}
             />
 
