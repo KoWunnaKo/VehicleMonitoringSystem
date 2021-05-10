@@ -40,14 +40,17 @@ public class AuthActivity extends AppCompatActivity {
     private static final boolean ENABLE_CREDENTIALS = true;
     private static final boolean ENABLE_HINTS = true;
 
+    private boolean signingIn = false;
+
+    @BindView(R.id.root) View mRootView;
     @BindView(R.id.auth_activity__sign_in_button) Button loginButton;
     @BindView(R.id.auth_activity__loading_progress_bar) ProgressBar progressBar;
 
-    @BindView(R.id.root) View mRootView;
-
     @NonNull
     public static Intent createIntent(@NonNull Context context) {
-        return new Intent(context, AuthActivity.class);
+        Intent intent = new Intent(context, AuthActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        return intent;
     }
 
     @Override
@@ -58,10 +61,7 @@ public class AuthActivity extends AppCompatActivity {
 
         catchEmailLinkSignIn();
     }
-
-    @Override
-    public void onBackPressed(){ }
-
+    
     public void catchEmailLinkSignIn() {
         if (getIntent().getExtras() == null) {
             return;
@@ -84,12 +84,13 @@ public class AuthActivity extends AppCompatActivity {
 
     @NonNull
     public AuthUI getAuthUI() {
-        AuthUI authUI = AuthUI.getInstance();
-        return authUI;
+        return AuthUI.getInstance();
     }
 
     @NonNull
     public Intent buildSignInIntent(@Nullable String link) {
+        signingIn = true;
+
         AuthUI.SignInIntentBuilder builder = getAuthUI().createSignInIntentBuilder()
                 .setTheme(getSelectedTheme())
                 .setLogo(getSelectedLogo())
@@ -104,7 +105,6 @@ public class AuthActivity extends AppCompatActivity {
     }
 
     public void startSignedInActivity() {
-        // TODO runs twice from authController - maybe cause activity is passed there
         Log.d(TAG, "startSignedInActivity");
         stopLoadingProgressBar();
         finish();
@@ -119,6 +119,7 @@ public class AuthActivity extends AppCompatActivity {
 
     public void stopLoadingProgressBar() {
         Log.d(TAG, "stopLoadingProgressBar");
+        signingIn = false;
         loginButton.setEnabled(true);
         progressBar.setVisibility(View.GONE);
     }
@@ -138,9 +139,8 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume");
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        if (auth.getCurrentUser() != null && getIntent().getExtras() == null) {
+        if (auth.getCurrentUser() != null && getIntent().getExtras() == null && !signingIn) {
             Log.d(TAG, "SilentLogin");
             startLoadingProgressBar();
             configureDbUserAndStart(true);
@@ -150,11 +150,11 @@ public class AuthActivity extends AppCompatActivity {
     private void handleSignInResponse(int resultCode, @Nullable Intent data) {
         IdpResponse response = IdpResponse.fromResultIntent(data);
 
-        // Successfully signed in
+        // Successfully signed in firebase
         if (resultCode == RESULT_OK) {
+            startLoadingProgressBar();
             configureDbUserAndStart(false);
         } else {
-            stopLoadingProgressBar();
             // Sign in failed
             if (response == null) {
                 // User pressed back button
