@@ -15,25 +15,26 @@ import com.siroytman.vehiclemonitoringsystemmobile.ui.activity.AuthActivity;
 import org.json.JSONObject;
 
 
-public class EmployeeController {
-    private static final String TAG = "EmployeeController";
+public class AuthController {
+    private static final String TAG = "AuthController";
     private final ApiController apiController;
 
-    private static EmployeeController instance;
+    private static AuthController instance;
 
-    private EmployeeController() {
+    private AuthController() {
         apiController = ApiController.getInstance();
     }
 
-    public static synchronized EmployeeController getInstance() {
+    public static synchronized AuthController getInstance() {
         if (instance == null) {
-            instance = new EmployeeController();
+            instance = new AuthController();
         }
         return instance;
     }
 
     // Gets and sets current dbUser via firebaseAuthUserId
     public void configureCurrentDbUser(AuthActivity authActivity, boolean isSilentLogin) {
+        Log.d(TAG, "configureCurrentDbUser, silentLogin = " + isSilentLogin);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
             return;
@@ -58,6 +59,7 @@ public class EmployeeController {
                                 if (user.isDriverRole()) {
                                     authActivity.startSignedInActivity();
                                 } else {
+                                    authActivity.stopLoadingProgressBar();
                                     if (!isSilentLogin) {
                                         authActivity.showSignInError(R.string.signed_in_role_error);
                                     }
@@ -66,6 +68,7 @@ public class EmployeeController {
 
                             @Override
                             public void onErrorResponse(VolleyError error) {
+                                authActivity.stopLoadingProgressBar();
                                 Log.d(TAG, "Current db user not recieved: " + error.getMessage());
                             }
                         }

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ProgressBar;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.AuthUI.IdpConfig;
@@ -14,7 +16,7 @@ import com.firebase.ui.auth.util.ExtraConstants;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.siroytman.vehiclemonitoringsystemmobile.R;
-import com.siroytman.vehiclemonitoringsystemmobile.controller.EmployeeController;
+import com.siroytman.vehiclemonitoringsystemmobile.controller.AuthController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +38,10 @@ public class AuthActivity extends AppCompatActivity {
     private static final boolean ALLOW_NEW_EMAIL_ACCOUNTS = false;
     private static final boolean REQUIRE_EMAIL_NAME = false;
     private static final boolean ENABLE_CREDENTIALS = true;
-    private static final boolean ENABLE_HINTS= true;
+    private static final boolean ENABLE_HINTS = true;
+
+    @BindView(R.id.auth_activity__sign_in_button) Button loginButton;
+    @BindView(R.id.auth_activity__loading_progress_bar) ProgressBar progressBar;
 
     @BindView(R.id.root) View mRootView;
 
@@ -67,11 +72,12 @@ public class AuthActivity extends AppCompatActivity {
         }
     }
 
-    @OnClick(R.id.sign_in)
+    @OnClick(R.id.auth_activity__sign_in_button)
     public void signIn() {
         startActivityForResult(buildSignInIntent(/*link=*/null), RC_SIGN_IN);
     }
 
+    // Silent auth
     public void signInWithEmailLink(@Nullable String link) {
         startActivityForResult(buildSignInIntent(link), RC_SIGN_IN);
     }
@@ -94,24 +100,32 @@ public class AuthActivity extends AppCompatActivity {
             builder.setEmailLink(link);
         }
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-
-        if (auth.getCurrentUser() != null && auth.getCurrentUser().isAnonymous()) {
-            builder.enableAnonymousUsersAutoUpgrade();
-        }
-
         return builder.build();
     }
 
-    public void showSignInError(int error) {
-        showSnackbar(error);
-    }
-
     public void startSignedInActivity() {
+        // TODO runs twice from authController - maybe cause activity is passed there
+        Log.d(TAG, "startSignedInActivity");
+        stopLoadingProgressBar();
         finish();
         startActivity(new Intent(this, NavigationActivity.class));
     }
 
+    public void startLoadingProgressBar() {
+        Log.d(TAG, "startLoadingProgressBar");
+        loginButton.setEnabled(false);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void stopLoadingProgressBar() {
+        Log.d(TAG, "stopLoadingProgressBar");
+        loginButton.setEnabled(true);
+        progressBar.setVisibility(View.GONE);
+    }
+
+    public void showSignInError(@StringRes int error) {
+        showSnackbar(error);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -124,8 +138,11 @@ public class AuthActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume");
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null && getIntent().getExtras() == null) {
+            Log.d(TAG, "SilentLogin");
+            startLoadingProgressBar();
             configureDbUserAndStart(true);
         }
     }
@@ -137,6 +154,7 @@ public class AuthActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             configureDbUserAndStart(false);
         } else {
+            stopLoadingProgressBar();
             // Sign in failed
             if (response == null) {
                 // User pressed back button
@@ -161,7 +179,7 @@ public class AuthActivity extends AppCompatActivity {
 
     // Configure dbUser and startSignedInActivity on success or show error on failure
     private void configureDbUserAndStart(boolean isSilentLogin) {
-        EmployeeController.getInstance().configureCurrentDbUser(this, isSilentLogin);
+        AuthController.getInstance().configureCurrentDbUser(this, isSilentLogin);
     }
 
     @StyleRes
