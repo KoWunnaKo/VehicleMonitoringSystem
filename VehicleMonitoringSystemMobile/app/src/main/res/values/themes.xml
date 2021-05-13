@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.VehicleMonitoringSystemMobile" parent="Theme.MaterialComponents.Light.DarkActionBar">
+    <style name="Theme.VehicleMonitoringSystemMobile" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -11,11 +11,16 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+
     </style>
 
-    <!-- Base application theme. -->
+    <style name="BigText" parent="@android:style/TextAppearance">
+        <item name="android:textSize">21sp</item>
+    </style>
 
-    <!-- Theme used in custom layout example -->
+    <style name="SmallText" parent="@android:style/TextAppearance">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/grey_500</item>
+    </style>
 
 </resources>

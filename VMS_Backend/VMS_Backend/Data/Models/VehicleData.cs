@@ -14,12 +14,12 @@ namespace VMS_Backend.Data.Models
         
         [Column("vehicle_id")]
         public int VehicleId { get; set; }
-        [ForeignKey("vehicle_id")]
+        [ForeignKey("VehicleId")]
         public Vehicle Vehicle { get; set; }
         
-        [Column("user_id")]
-        public string UserId { get; set; }
-        [ForeignKey("user_id")]
+        [Column("employee_id")]
+        public string EmployeeId { get; set; }
+        [ForeignKey("EmployeeId")]
         public Employee Employee { get; set; }
 
         [Column("datetime")] 

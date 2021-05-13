@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/task_status__all"
+        android:title="All"/>
+    <item
+        android:id="@+id/task_status__created"
+        android:title="Created"/>
+    <item
+        android:id="@+id/task_status__in_progress"
+        android:title="In progress"/>
+    <item
+        android:id="@+id/task_status__resolved"
+        android:title="Resolved"/>
+    <item
+        android:id="@+id/task_status__closed"
+        android:title="Closed"/>
+</menu>

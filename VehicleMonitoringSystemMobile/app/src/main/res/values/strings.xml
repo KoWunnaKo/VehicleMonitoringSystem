@@ -50,4 +50,9 @@
     <string name="navigation__title_navigation">Navigation</string>
     <string name="navigation__title_chat">Chat</string>
 
+    <!--    Material Toolbar (Top)-->
+    <string name="toolbar__title_tasks">Tasks: All</string>
+    <string name="task__next_status">Next status</string>
+    <string name="task__prev_status">Prev status</string>
+
 </resources>

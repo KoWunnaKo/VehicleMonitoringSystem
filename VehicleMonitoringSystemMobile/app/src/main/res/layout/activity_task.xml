@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activity.TaskActivity">
+
+
+    <TextView
+        android:id="@+id/task_activity__name"
+        android:text="Task name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:textSize="22sp"
+        android:layout_centerHorizontal="true"
+        style="@style/BigText" />
+
+
+    <TextView
+        android:id="@+id/task_activity__status"
+        android:text="Status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/task_activity__name"
+        android:layout_toEndOf="@+id/task_activity__status_title"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="6dp"
+        android:textSize="18sp"/>
+    <TextView
+        android:id="@+id/task_activity__status_title"
+        android:text="Status:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/task_activity__name"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="6dp"
+        android:textSize="18sp"/>
+
+
+    <TextView
+        android:id="@+id/task_activity__description"
+        android:text="Description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/task_activity__status"
+        android:layout_toEndOf="@id/task_activity__description_title"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="6dp"
+        android:textSize="18sp"/>
+    android:textSize="18sp"/>
+    <TextView
+        android:id="@+id/task_activity__description_title"
+        android:text="Description:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/task_activity__status"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="6dp"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/task_activity__create_date"
+        android:text="Create date: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/task_activity__description"
+        android:layout_toEndOf="@id/task_activity__create_date_title"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="6dp"
+        android:textSize="18sp"/>
+    <TextView
+        android:id="@+id/task_activity__create_date_title"
+        android:text="Create date: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/task_activity__description"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="6dp"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/task_activity__operator"
+        android:text="Operator: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/task_activity__create_date"
+        android:layout_toEndOf="@id/task_activity__operator_title"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="6dp"
+        android:textSize="18sp"/>
+    <TextView
+        android:id="@+id/task_activity__operator_title"
+        android:text="Operator: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/task_activity__create_date"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="6dp"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/task_activity__due_date"
+        android:text="Due date: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/task_activity__operator"
+        android:layout_toEndOf="@id/task_activity__due_date_title"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="6dp"
+        android:textSize="18sp"/>
+    <TextView
+        android:id="@+id/task_activity__due_date_title"
+        android:text="Due date: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/task_activity__operator"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="6dp"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/task_activity__comment"
+        android:text="Comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/task_activity__due_date"
+        android:layout_toEndOf="@id/task_activity__comment_title"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="6dp"
+        android:textSize="18sp"/>
+    <TextView
+        android:id="@+id/task_activity__comment_title"
+        android:text="Comment: "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/task_activity__due_date"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="6dp"
+        android:textSize="18sp"/>
+
+    <Button
+        android:id="@+id/task_activity__prev_status"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/task_activity__comment"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="18dp"
+        android:text="@string/task__prev_status" />
+
+    <Button
+        android:id="@+id/task_activity__next_status"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="30dp"
+        android:layout_below="@id/task_activity__comment"
+        android:layout_marginTop="18dp"
+        android:text="@string/task__next_status"/>
+
+    <com.stfalcon.chatkit.messages.MessagesList
+        android:id="@+id/task_activity__comments_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/task_activity__next_status"
+        android:layout_above="@+id/task_activity__comment_input" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/task_activity__comment_input"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/gray_light" />
+
+    <com.stfalcon.chatkit.messages.MessageInput
+        android:id="@+id/task_activity__comment_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:inputHint="Type a message"
+        app:showAttachmentButton="true" />
+
+</RelativeLayout>

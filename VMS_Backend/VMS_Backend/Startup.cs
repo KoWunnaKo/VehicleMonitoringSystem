@@ -34,6 +34,7 @@ namespace VMS_Backend
             services.AddScoped<VehicleDriverLinkService>();
             services.AddScoped<VehicleService>();
             services.AddScoped<WorkTaskService>();
+            services.AddScoped<WorkTaskCommentService>();
             services.AddScoped<ChatService>();
 
             // SignalR services

@@ -15,65 +15,64 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class ChatMessage implements Parcelable,
+public class TaskComment implements Parcelable,
         IChatMessage,
         MessageContentType.Image, /*this is for default image messages implementation*/
         MessageContentType /*and this one is for custom content type (in this case - voice message)*/ {
-    public static final String TAG = "ChatMessage";
+    public static final String TAG = "TaskComment";
 
-    protected ChatMessage(Parcel in) {
+    protected TaskComment(Parcel in) {
         id = in.readString();
         text = in.readString();
         date = new Date(in.readLong());
-        sender = in.readParcelable(Employee.class.getClassLoader());
-        receiver = in.readParcelable(Employee.class.getClassLoader());
+        author = in.readParcelable(Employee.class.getClassLoader());
+        taskId = in.readInt();
     }
 
-    public static final Creator<ChatMessage> CREATOR = new Creator<ChatMessage>() {
+    public static final Creator<TaskComment> CREATOR = new Creator<TaskComment>() {
         @Override
-        public ChatMessage createFromParcel(Parcel in) {
-            return new ChatMessage(in);
+        public TaskComment createFromParcel(Parcel in) {
+            return new TaskComment(in);
         }
 
         @Override
-        public ChatMessage[] newArray(int size) {
-            return new ChatMessage[size];
+        public TaskComment[] newArray(int size) {
+            return new TaskComment[size];
         }
     };
 
-    public static ChatMessage parseChatMessage(JSONObject json) {
+    public static TaskComment parseTaskComment(JSONObject json) {
         String userId = AppController.getInstance().getDbUser().getId();
 
-        ChatMessage chatMessage = new ChatMessage();
+        TaskComment taskComment = new TaskComment();
 
         try {
-            chatMessage.id = json.getString("id");
-            chatMessage.text = json.getString("text");
-            chatMessage.date = DateUtil.getDateFromString(json.getString("date"));
-            chatMessage.sender = Employee.parseEmployee(json.getJSONObject("sender"));
-            chatMessage.receiver = Employee.parseEmployee(json.getJSONObject("receiver"));
+            taskComment.id = json.getString("id");
+            taskComment.text = json.getString("text");
+            taskComment.date = DateUtil.getDateFromString(json.getString("date"));
+            taskComment.author = Employee.parseEmployee(json.getJSONObject("author"));
+            taskComment.taskId = json.getInt("taskId");
         } catch (JSONException e) {
             Log.d(TAG, "Parse error: " + e.getMessage());
             return null;
         }
 
-        return chatMessage;
+        return taskComment;
     }
 
-    public static ArrayList<ChatMessage> parseChatMessageArray(JSONArray jsonArray)
+    public static ArrayList<TaskComment> parseTaskCommentsArray(JSONArray jsonArray)
     {
-        ArrayList<ChatMessage> result = new ArrayList<>(jsonArray.length());
+        ArrayList<TaskComment> result = new ArrayList<>(jsonArray.length());
         for(int i = 0; i < jsonArray.length(); ++i)
         {
             try {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                ChatMessage message = parseChatMessage(jsonObject);
+                TaskComment message = parseTaskComment(jsonObject);
                 result.add(message);
             }
             catch (JSONException e)
@@ -84,34 +83,23 @@ public class ChatMessage implements Parcelable,
         return result;
     }
 
-    public JSONObject toJSONObject() {
-        HashMap<String, Object> param = new HashMap<>();
-        param.put("companyId", companyId);
-        param.put("senderId", senderId);
-        param.put("receiverId", receiverId);
-        param.put("text", getText());
-        return new JSONObject(param);
-    }
-
     private String id;
     private int companyId;
+    private int taskId;
     private String text;
     private Date date;
-    private Employee sender;
-    private String senderId;
-    private Employee receiver;
-    private String receiverId;
-    private boolean isRead;
+    private Employee author;
+    private String authorId;
 
     private Image image;
 
-    public ChatMessage() {
+    public TaskComment() {
     }
 
-    public ChatMessage(int companyId, String senderId, String receiverId, String text) {
+    public TaskComment(int companyId, String authorId, int taskId, String text) {
         this.companyId = companyId;
-        this.senderId = senderId;
-        this.receiverId = receiverId;
+        this.authorId = authorId;
+        this.taskId = taskId;
         this.text = text;
     }
 
@@ -161,24 +149,16 @@ public class ChatMessage implements Parcelable,
 
     @Override
     public Employee getUser() {
-        return this.sender;
+        return this.author;
     }
 
-    public Employee getSender() {
-        return this.sender;
-    }
-
-    public Employee getReceiver() {
-        return this.receiver;
+    public Employee getAuthor() {
+        return this.author;
     }
 
     @Override
     public String getImageUrl() {
         return image == null ? null : image.url;
-    }
-
-    public boolean getIsRead() {
-        return isRead;
     }
 
     public void setText(String text) {
@@ -203,8 +183,17 @@ public class ChatMessage implements Parcelable,
         dest.writeString(id);
         dest.writeString(text);
         dest.writeLong(date.getTime());
-        dest.writeParcelable(sender, flags);
-        dest.writeParcelable(receiver, flags);
+        dest.writeParcelable(author, flags);
+        dest.writeInt(taskId);
+    }
+
+    public JSONObject toJSONObject() {
+        HashMap<String, Object> param = new HashMap<>();
+        param.put("companyId", companyId);
+        param.put("authorId", authorId);
+        param.put("text", text);
+        param.put("taskId", taskId);
+        return new JSONObject(param);
     }
 
     public static class Image {

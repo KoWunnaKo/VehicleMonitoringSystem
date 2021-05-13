@@ -1,1 +1,11 @@
-<resources></resources>
+<resources>
+    <!--    List item: tasks -->
+    <dimen name="list_item_height">80dp</dimen>
+    <dimen name="list_item_padding">8dp</dimen>
+    <dimen name="list_item_image">65dp</dimen>
+    <dimen name="list_item_options">30dp</dimen>
+    <dimen name="list_item_stroke">0.4dp</dimen>
+
+    <!--    Fragment list-->
+    <dimen name="fragment_list_title">21sp</dimen>
+</resources>

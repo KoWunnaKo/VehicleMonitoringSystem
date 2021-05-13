@@ -19,6 +19,29 @@ namespace VMS_Backend.Services.Database
                 .ToListAsync();
             return tasks;
         }
+        
+        public async Task<List<WorkTask>> GetAllForDriver(int companyId, string driverId)
+        {
+            var tasks = await _dbContext.WorkTask
+                .Include(t => t.Operator)
+                .Where(t => t.CompanyId.Equals(companyId) && t.DriverId.Equals(driverId))
+                .OrderBy(t => t.StatusId)
+                .ToListAsync();
+            return tasks;
+        }
+
+        public async Task<WorkTask> ChangeStatus(int taskId, short statusId)
+        {
+            var dbTask = await _dbContext.FindAsync<WorkTask>(taskId);
+            if (dbTask == null)
+            {
+                return null;
+            }
+
+            dbTask.StatusId = statusId;
+            await _dbContext.SaveChangesAsync();
+            return dbTask;
+        }
 
         public async Task<WorkTask> Edit(WorkTask task)
         {
@@ -32,7 +55,6 @@ namespace VMS_Backend.Services.Database
             dbTask.OperatorId = task.OperatorId;
             dbTask.DueDate = task.DueDate.ToLocalTime();
             dbTask.StatusId = task.StatusId;
-            dbTask.Comment = task.Comment;
             dbTask.Description = task.Description;
             dbTask.Name = task.Name;
             await _dbContext.SaveChangesAsync();

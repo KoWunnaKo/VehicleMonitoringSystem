@@ -22,6 +22,7 @@ dotnet ef database update
         public DbSet<VehicleData> VehicleData { get; set; }
         public DbSet<VehicleDriverLink> VehicleDriverLink { get; set; }
         public DbSet<WorkTask> WorkTask { get; set; }
+        public DbSet<WorkTaskComment> WorkTaskComment { get; set; }
         public DbSet<WorkTaskStatus> WorkTaskStatus { get; set; }
         public DbSet<ChatMessage> ChatMessage { get; set; }
     }

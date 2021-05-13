@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using VMS_Backend.Data.Models;
 using VMS_Backend.Services.Database;
 
@@ -27,12 +28,19 @@ namespace VMS_Backend.Controllers
             var res = await _workTaskService.AddNewItem(task);
             return Ok(res);
         }
-
+        
         [HttpGet]
         [Route("getAll/{companyId}")]
         public async Task<ActionResult<List<WorkTask>>> GetAll(int companyId)
         {
             return Ok(await _workTaskService.GetAll(companyId));
+        }
+        
+        [HttpGet]
+        [Route("getAllForDriver/{companyId}/{driverId}")]
+        public async Task<ActionResult<List<WorkTask>>> GetAllForEmployee(int companyId, string driverId)
+        {
+            return Ok(await _workTaskService.GetAllForDriver(companyId, driverId));
         }
 
         [HttpDelete]
@@ -47,9 +55,25 @@ namespace VMS_Backend.Controllers
 
             return Ok();
         }
+        
+        [HttpPut]
+        [Route("updateStatus/{taskId}/{statusId}")]
+        public async Task<ActionResult<WorkTask>> ChangeStatus(int taskId, short statusId)
+        {
+            var res = await _workTaskService.ChangeStatus(taskId, statusId);
+            if (res != null)
+            {
+                return Ok(res);
+            }
+            else
+            {
+                return NotFound();
+            }
+            
+        }
 
         [HttpPut]
-        public async Task<ActionResult> Edit([FromBody] WorkTask task)
+        public async Task<ActionResult<WorkTask>> Edit([FromBody] WorkTask task)
         {
             var res = await _workTaskService.Edit(task);
             if (res != null)
