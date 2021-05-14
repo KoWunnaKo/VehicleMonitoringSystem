@@ -29,4 +29,8 @@ export default class Vehicle {
     this.model = model;
     this.productionYear = productionYear;
   }
+
+  public getFormattedName() {
+    return `${this.name} ${this.number}`;
+  }
 }

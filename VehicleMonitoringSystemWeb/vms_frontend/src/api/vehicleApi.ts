@@ -2,7 +2,7 @@ import axios from 'axios';
 import Vehicle from "../models/vehicle";
 import {getDbUserCompanyId} from "../utils/userUtil";
 
-export async function getAllVehicles(): Promise<Vehicle[] | null> {
+export async function getAllCompanyVehicles(): Promise<Vehicle[] | null> {
   const companyId = await getDbUserCompanyId();
   if (!companyId) {
     return null;

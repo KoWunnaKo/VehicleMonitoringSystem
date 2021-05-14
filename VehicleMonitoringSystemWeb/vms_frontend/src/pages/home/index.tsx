@@ -14,8 +14,12 @@ import {
     getDefaultStartDateTime,
     getTime
 } from "../../utils/dateFunctions";
-import {IconButton} from "@material-ui/core";
+import {IconButton, MenuItem} from "@material-ui/core";
 import RefreshIcon from "@material-ui/icons/Refresh";
+import Vehicle from "../../models/vehicle";
+import * as VehicleApi from "../../api/vehicleApi";
+import Select from "@material-ui/core/Select/Select";
+import Colors from "../../constants/colors";
 
 export const HomeComponent: React.FunctionComponent = (props) => {
     const [markersData, setMarkersData] = useState<VehicleData[]|null>();
@@ -23,17 +27,32 @@ export const HomeComponent: React.FunctionComponent = (props) => {
     const [startDateTime, setStartDateTime] = useState<string>(getDefaultStartDateTime());
     const [endDateTime, setEndDateTime] = useState<string>(getDefaultEndDateTime());
 
+    const [vehicleOptions, setVehicleOptions] = useState<Vehicle[]|null>(null);
+    const [filterVehicleId, setFilterVehicleId] = useState<number|null>(null);
+
+    useEffect(() => {
+        (async function() {
+            await updateVehicleOptions();
+        })();
+    }, []);
+
     useEffect(() => {
         (async function() {
             await updateMapData();
         })();
-    }, [startDateTime, endDateTime]);
+    }, [startDateTime, endDateTime, filterVehicleId]);
 
     const updateMapData = async () => {
-        await setMarkersData(await VehicleDataApi.getVehiclesLastData(startDateTime, endDateTime));
-        await setTrajectoryData(
-            await VehicleDataApi.getVehiclesRangeData(startDateTime, endDateTime)
+        await setMarkersData(
+            await VehicleDataApi.getVehiclesLastData(filterVehicleId, startDateTime, endDateTime)
         );
+        await setTrajectoryData(
+            await VehicleDataApi.getVehiclesRangeData(filterVehicleId, startDateTime, endDateTime)
+        );
+    }
+
+    const updateVehicleOptions = async () => {
+        await setVehicleOptions(await VehicleApi.getAllCompanyVehicles());
     }
 
     const setDateTimeRange = async (res: string[]) => {
@@ -60,13 +79,26 @@ export const HomeComponent: React.FunctionComponent = (props) => {
                     disabled={false} // default is false
                     allowPageClickToClose={true} // default is true
                     onConfirm={async (res: string[]) => await setDateTimeRange(res)}
-                    // onClose={() => console.log('rangePicker: onClose')}
                     style={styles.timeRangePicker}
                     defaultDates={[getDate(startDateTime), getDate(endDateTime)]}
                     defaultTimes={[getTime(startDateTime), getTime(endDateTime)]}
                     initialDates={[getDate(startDateTime), getDate(endDateTime)]}
                     initialTimes={[getTime(startDateTime), getTime(endDateTime)]}
                 />
+                {/*TODO add clear button*/}
+                {/*TODO styles*/}
+                <Select
+                    color='secondary'
+                    defaultValue=''
+                    onChange={event => setFilterVehicleId(event.target.value)}
+                    style={styles.select}
+                >
+                    {vehicleOptions && vehicleOptions.map((v: Vehicle) => (
+                        <MenuItem key={v.id} value={v.id}>
+                            {v.getFormattedName()}
+                        </MenuItem>
+                    ))}
+                </Select>
                 <IconButton onClick={updateMapData} color='primary' style={styles.refreshIcon}>
                     <RefreshIcon/>
                 </IconButton>
@@ -92,6 +124,12 @@ const styles: StylesDictionary  = {
     },
     refreshIcon: {
         alignSelf: 'flex-end',
+    },
+    select: {
+        width: 300,
+        alignSelf: 'flex-end',
+        marginTop: 5,
+        marginBottom: 5
     }
 };
 

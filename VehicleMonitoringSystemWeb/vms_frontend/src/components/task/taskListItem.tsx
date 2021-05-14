@@ -5,7 +5,6 @@ import {StylesDictionary} from "../utils/stylesDictionary";
 import Popup from "reactjs-popup";
 import Task from "../../models/task";
 import {PropertiesTaskForm} from "./properties/propertiesTaskForm";
-import Colors from "../../constants/colors";
 
 interface InterfaceProps {
     updateTasks: () => void;

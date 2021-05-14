@@ -25,7 +25,7 @@ export const SidebarVehicles: React.FunctionComponent = () => {
 
     const updateVehicles = async () => {
         // TODO driver links not updates, cause drivers are fetching separetly - need to think it through
-        setVehicles(await VehicleApi.getAllVehicles());
+        setVehicles(await VehicleApi.getAllCompanyVehicles());
     }
 
     return (

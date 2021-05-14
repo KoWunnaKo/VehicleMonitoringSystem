@@ -35,7 +35,7 @@ export const VehicleListItem: React.FunctionComponent<InterfaceProps> = (props) 
                 style={styles.listItem}
             >
                 <div>
-                    {`${vehicle.name} ${vehicle.number}`}
+                    {vehicle.getFormattedName()}
                     {<br/>}
                     {`Driver: ${!!driver ? driver.getFullName() : 'none'}`}
                 </div>

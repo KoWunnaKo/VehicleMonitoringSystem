@@ -88,6 +88,7 @@ export const PropertiesGeneralTaskForm: React.FunctionComponent<InterfaceProps> 
             />
 
             <FormControl>
+                <FormHelperText style={styles.helperText}>Driver</FormHelperText>
                 <Select
                     value={selectedDriver}
                     onChange={event => setSelectedDriver(event.target.value)}
@@ -99,7 +100,6 @@ export const PropertiesGeneralTaskForm: React.FunctionComponent<InterfaceProps> 
                         </MenuItem>
                     ))}
                 </Select>
-                <FormHelperText style={styles.textInput}>Driver</FormHelperText>
             </FormControl>
 
             <Button
@@ -127,7 +127,6 @@ const styles: StylesDictionary  = {
     },
     select: {
         width: 200,
-        marginTop: 5,
         marginBottom: 5,
         alignSelf: 'center'
     },
@@ -138,5 +137,9 @@ const styles: StylesDictionary  = {
     },
     deleteIcon: {
         alignSelf: 'flex-end'
-    }
+    },
+    helperText: {
+        width: 200,
+        alignSelf: 'center'
+    },
 };

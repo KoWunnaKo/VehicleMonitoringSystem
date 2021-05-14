@@ -18,14 +18,16 @@ namespace VMS_Backend.Services.Database
             DefaultConnectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
-        public async Task<List<VehicleData>> GetVehiclesLastData(int companyId, string startDateTime, string endDateTime)
+        public async Task<List<VehicleData>> GetVehiclesLastData(int companyId, int? vehicleId, string startDateTime, string endDateTime)
         {
+            var vehicleFilter = vehicleId.HasValue ? "and v.id = @vehicleId" : string.Empty;
+
             await using var con = new NpgsqlConnection(DefaultConnectionString);
             var res = await con.QueryAsync<VehicleData, Vehicle, VehicleData>(
-                @"SELECT DISTINCT ON (vd.vehicle_id)
+                $@"SELECT DISTINCT ON (vd.vehicle_id)
                     vd.*, v.*
                     FROM vehicle_data vd
-                    JOIN vehicle v on v.id = vd.vehicle_id and v.company_id = @companyId
+                    JOIN vehicle v on v.id = vd.vehicle_id and v.company_id = @companyId {vehicleFilter}
                     WHERE  vd.datetime >= to_timestamp(@startDateTime, 'YYYY-MM-DD hh24:mi') 
                       and vd.datetime <= to_timestamp(@endDateTime, 'YYYY-MM-DD hh24:mi')
                     ORDER BY vd.vehicle_id, vd.datetime DESC",
@@ -34,17 +36,19 @@ namespace VMS_Backend.Services.Database
                     vehicleData.Vehicle = vehicle;
                     return vehicleData;
                 },
-                new {companyId, startDateTime, endDateTime});
+                new {companyId, vehicleId, startDateTime, endDateTime});
             return res.ToList();
         }
 
-        public async Task<Dictionary<int, List<VehicleData>>> GetVehiclesRangeData(int companyId, string startDateTime, string endDateTime)
+        public async Task<Dictionary<int, List<VehicleData>>> GetVehiclesRangeData(int companyId, int? vehicleId, string startDateTime, string endDateTime)
         {
+            var vehicleFilter = vehicleId.HasValue ? "and v.id = @vehicleId" : string.Empty;
+            
             await using var con = new NpgsqlConnection(DefaultConnectionString);
             var vehicleData = (await con.QueryAsync<VehicleData, Vehicle, VehicleData>(
-                @"SELECT vd.*, v.*
+                $@"SELECT vd.*, v.*
                     FROM vehicle_data vd
-                    JOIN vehicle v on vd.vehicle_id = v.id and v.company_id = @companyId
+                    JOIN vehicle v on vd.vehicle_id = v.id and v.company_id = @companyId {vehicleFilter}
                     WHERE  vd.datetime >= to_timestamp(@startDateTime, 'YYYY-MM-DD hh24:mi') 
                       and vd.datetime <= to_timestamp(@endDateTime, 'YYYY-MM-DD hh24:mi')
                     ORDER BY vd.datetime DESC",
@@ -53,7 +57,7 @@ namespace VMS_Backend.Services.Database
                     vd.Vehicle = v;
                     return vd;
                 },
-                new {companyId, startDateTime, endDateTime}))
+                new {companyId, vehicleId, startDateTime, endDateTime}))
                 .ToList();
 
             var res = vehicleData
