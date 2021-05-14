@@ -19,7 +19,6 @@ import RefreshIcon from "@material-ui/icons/Refresh";
 import Vehicle from "../../models/vehicle";
 import * as VehicleApi from "../../api/vehicleApi";
 import Select from "@material-ui/core/Select/Select";
-import Colors from "../../constants/colors";
 
 export const HomeComponent: React.FunctionComponent = (props) => {
     const [markersData, setMarkersData] = useState<VehicleData[]|null>();
@@ -85,14 +84,14 @@ export const HomeComponent: React.FunctionComponent = (props) => {
                     initialDates={[getDate(startDateTime), getDate(endDateTime)]}
                     initialTimes={[getTime(startDateTime), getTime(endDateTime)]}
                 />
-                {/*TODO add clear button*/}
                 {/*TODO styles*/}
                 <Select
                     color='secondary'
-                    defaultValue=''
-                    onChange={event => setFilterVehicleId(event.target.value)}
+                    defaultValue={0}
+                    onChange={event => setFilterVehicleId(event.target.value === 0 ? null : event.target.value)}
                     style={styles.select}
                 >
+                    <MenuItem key='all_item' value={0}>All vehicles</MenuItem>
                     {vehicleOptions && vehicleOptions.map((v: Vehicle) => (
                         <MenuItem key={v.id} value={v.id}>
                             {v.getFormattedName()}

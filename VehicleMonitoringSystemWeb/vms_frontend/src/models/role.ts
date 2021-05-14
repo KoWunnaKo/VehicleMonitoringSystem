@@ -2,7 +2,7 @@
 export default class Role {
   public static getAllRoles() {
     return [
-      new Role(1, 'Adminstrator'),
+      new Role(1, 'Administrator'),
       new Role(2, 'Operator'),
       new Role(3, 'Driver'),
     ]
