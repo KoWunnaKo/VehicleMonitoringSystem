@@ -11,6 +11,7 @@ import com.siroytman.vehiclemonitoringsystemmobile.model.ChatDialog;
 import com.siroytman.vehiclemonitoringsystemmobile.model.ChatMessage;
 import com.siroytman.vehiclemonitoringsystemmobile.model.CompanySettings;
 import com.siroytman.vehiclemonitoringsystemmobile.services.LocationService;
+import com.siroytman.vehiclemonitoringsystemmobile.services.OBDService;
 import com.siroytman.vehiclemonitoringsystemmobile.services.VehicleDataSynchronizationService;
 import com.siroytman.vehiclemonitoringsystemmobile.ui.activity.ChatMessagesActivity;
 import com.siroytman.vehiclemonitoringsystemmobile.ui.fragments.ChatDialogFragment;
@@ -53,6 +54,8 @@ public class CompanySettingsController {
                         CompanySettings companySettings = CompanySettings.parseCompanySettings(result);
                         VehicleDataSynchronizationService.SYNCHRONIZATION_INTERVAL = companySettings.getAndroidIntervalSynchronization();
                         LocationService.RECORDING_INTERVAL_MS = companySettings.getAndroidIntervalRecording();
+                        OBDService.RECORDING_INTERVAL_MS = companySettings.getAndroidIntervalRecording();
+                        Log.d(TAG, "CompanySettings are applied");
                     }
 
                     @Override

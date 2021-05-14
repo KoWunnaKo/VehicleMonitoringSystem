@@ -22,8 +22,8 @@ import androidx.core.content.ContextCompat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.siroytman.vehiclemonitoringsystemmobile.R;
 import com.siroytman.vehiclemonitoringsystemmobile.controller.AppController;
-import com.siroytman.vehiclemonitoringsystemmobile.controller.CompanySettingsController;
 import com.siroytman.vehiclemonitoringsystemmobile.interfaces.ILocationManager;
+import com.siroytman.vehiclemonitoringsystemmobile.interfaces.IObdManager;
 import com.siroytman.vehiclemonitoringsystemmobile.model.VehicleData;
 import com.siroytman.vehiclemonitoringsystemmobile.room.AppRoomDatabase;
 import com.siroytman.vehiclemonitoringsystemmobile.ui.fragments.LocationFragment;
@@ -39,12 +39,16 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
  * Foreground service for running locationService in background
  * Sends location to GeodataProcessingService via volley
  */
-public class LocationForegroundService extends Service implements ILocationManager {
+public class LocationForegroundService extends Service implements ILocationManager, IObdManager {
     public static final String TAG = "LocationForeService";
     public static final String NOTIFICATION_CHANNEL_ID = "ForegroundServiceNotificationChannel";
     public static final int CHANNEL_ID = 420;
     private static final int REQUEST_LOCATION = 1234;
     private static final String[] PERMISSIONS = new String[]{ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION};
+
+    private LocationService locationService;
+    private OBDService obdService;
+    private ILocationManager locationManager;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -62,9 +66,20 @@ public class LocationForegroundService extends Service implements ILocationManag
                 .build();
         startForeground(CHANNEL_ID, notification);
 
+
+        if (AppController.getInstance().useOBD) {
+            obdService = OBDService.getInstance(getApplicationContext(), this);
+
+            // Obd service subscribes on location updates
+            locationManager = obdService;
+        } else {
+            // This service subscribe on location updates
+            locationManager = this;
+        }
+
         // Starts locationService on a background thread
-        LocationService.getInstance(getApplicationContext(), this)
-                .startLocationUpdates(getApplicationContext());
+        locationService = LocationService.getInstance(getApplicationContext(), locationManager);
+        locationService.startLocationUpdates(getApplicationContext());
 
         return START_STICKY;
     }
@@ -94,8 +109,7 @@ public class LocationForegroundService extends Service implements ILocationManag
     @Override
     public void onDestroy() {
         super.onDestroy();
-        LocationService.getInstance(getApplicationContext(), this)
-                .stopLocationUpdates();
+        locationService.stopLocationUpdates();
     }
 
     @Nullable
@@ -105,15 +119,16 @@ public class LocationForegroundService extends Service implements ILocationManag
     }
 
     // Callback for locationService
-    @Override
-    public void getLastKnownLocation(Location location) {
-        String userId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
-        VehicleData vehicleData =
-                new VehicleData(2, userId, new Date(), location.getLatitude(), location.getLongitude());
-
-        Log.d(TAG, "LastKnownLocation: " + vehicleData.toString());
-        saveVehicleDataInDb(vehicleData);
-    }
+//    @Override
+//    public void getLastKnownLocation(Location location) {
+//        String userId = AppController.getInstance().getDbUser().getId();
+//        // TODO vehicleId
+//        VehicleData vehicleData =
+//                new VehicleData(2, userId, new Date(), location.getLatitude(), location.getLongitude());
+//
+//        Log.d(TAG, "LastKnownLocation: " + vehicleData.toString());
+//        saveVehicleDataInDb(vehicleData);
+//    }
 
     // Callback for locationService
     @Override
@@ -124,6 +139,12 @@ public class LocationForegroundService extends Service implements ILocationManag
                 new VehicleData(2, userId, new Date(), location.getLatitude(), location.getLongitude());
 
         Log.d(TAG, "LocationChanged: " + vehicleData.toString());
+        saveVehicleDataInDb(vehicleData);
+    }
+
+    @Override
+    public void onObdDataUpdate(VehicleData vehicleData) {
+        Log.d(TAG, "onObdDataUpdate: " + vehicleData.toString());
         saveVehicleDataInDb(vehicleData);
     }
 

@@ -96,20 +96,20 @@ public class LocationService {
         fusedLocationClient.removeLocationUpdates(locationCallback);
     }
 
-    private void getLastKnownLocation(Context context) {
-        if (fusedLocationClient == null) {
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
-        }
-
-        if (checkSelfPermission(context, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED
-                && checkSelfPermission(context, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
-            return;
-        }
-
-        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
-            if (locationManager != null) {
-                locationManager.getLastKnownLocation(location);
-            }
-        });
-    }
+//    private void getLastKnownLocation(Context context) {
+//        if (fusedLocationClient == null) {
+//            fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
+//        }
+//
+//        if (checkSelfPermission(context, ACCESS_FINE_LOCATION) != PERMISSION_GRANTED
+//                && checkSelfPermission(context, ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
+//            return;
+//        }
+//
+//        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+//            if (locationManager != null) {
+//                locationManager.getLastKnownLocation(location);
+//            }
+//        });
+//    }
 }

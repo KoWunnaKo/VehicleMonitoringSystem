@@ -77,7 +77,7 @@ public class VehicleDataSynchronizationService {
                         Log.d(TAG, "Network is NOT connected");
                     }
                 }
-            }, SYNCHRONIZATION_INTERVAL, SYNCHRONIZATION_INTERVAL);
+            }, 0, SYNCHRONIZATION_INTERVAL);
         }
     }
 

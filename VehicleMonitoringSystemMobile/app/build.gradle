@@ -50,7 +50,7 @@ dependencies {
     implementation 'com.android.volley:volley:1.2.0'
 
     // Play Services: for map and location
-    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
     implementation 'com.google.android.gms:play-services-places:17.0.0'
     implementation 'com.google.android.gms:play-services-basement:17.6.0'
@@ -66,12 +66,15 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
 
     // Android Room
-    implementation "androidx.room:room-runtime:2.2.6"
-    annotationProcessor "androidx.room:room-compiler:2.2.6"
+    implementation "androidx.room:room-runtime:2.3.0"
+    annotationProcessor "androidx.room:room-compiler:2.3.0"
 
     // Chat UI Kit
     implementation 'com.github.stfalcon-studio:Chatkit:0.4.1'
 
     // Picasso - images
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+    // OBD 2
+    implementation 'com.github.pires:obd-java-api:1.0'
 }

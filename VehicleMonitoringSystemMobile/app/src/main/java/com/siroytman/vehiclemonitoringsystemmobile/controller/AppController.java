@@ -14,6 +14,11 @@ public class AppController extends Application {
     private static AppController mInstance;
     private AppRoomDatabase roomDatabase;
 
+    // TODO to settings
+    public boolean useOBD = true;
+    public String deviceNameOBD = "OBDII";
+    public String deviceMacOBD = "AA:BB:CC:11:22:33";
+
     @Override
     public void onCreate() {
         super.onCreate();
