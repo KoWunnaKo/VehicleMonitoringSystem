@@ -19,7 +19,20 @@ import RefreshIcon from "@material-ui/icons/Refresh";
 import Vehicle from "../../models/vehicle";
 import * as VehicleApi from "../../api/vehicleApi";
 import Select from "@material-ui/core/Select/Select";
+import { makeStyles } from "@material-ui/core/styles";
+import Colors from "../../constants/colors";
 
+const useStyles = makeStyles({
+    root: {
+        color: 'black',
+        backgroundColor: Colors.white,
+    },
+    select: {
+        "&.MuiSelect-select:focus": {
+            backgroundColor: Colors.white,
+        },
+    }
+});
 export const HomeComponent: React.FunctionComponent = (props) => {
     const [markersData, setMarkersData] = useState<VehicleData[]|null>();
     const [trajectoryData, setTrajectoryData] = useState<VehicleData[]|null>();
@@ -28,6 +41,8 @@ export const HomeComponent: React.FunctionComponent = (props) => {
 
     const [vehicleOptions, setVehicleOptions] = useState<Vehicle[]|null>(null);
     const [filterVehicleId, setFilterVehicleId] = useState<number|null>(null);
+
+    const classes = useStyles();
 
     useEffect(() => {
         (async function() {
@@ -84,12 +99,13 @@ export const HomeComponent: React.FunctionComponent = (props) => {
                     initialDates={[getDate(startDateTime), getDate(endDateTime)]}
                     initialTimes={[getTime(startDateTime), getTime(endDateTime)]}
                 />
-                {/*TODO styles*/}
                 <Select
-                    color='secondary'
+                    color='primary'
                     defaultValue={0}
                     onChange={event => setFilterVehicleId(event.target.value === 0 ? null : event.target.value)}
+                    variant='outlined'
                     style={styles.select}
+                    classes={{root: classes.root, select: classes.select}}
                 >
                     <MenuItem key='all_item' value={0}>All vehicles</MenuItem>
                     {vehicleOptions && vehicleOptions.map((v: Vehicle) => (
