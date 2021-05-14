@@ -22,7 +22,6 @@ export const PropertiesGeneralTaskForm: React.FunctionComponent<InterfaceProps> 
     const {task} = props;
     const [name, setName] = useState<string|undefined>(task.name);
     const [description, setDescription] = useState<string|undefined>(task.description);
-    const [comment, setComment] = useState<string|undefined>(task.comment);
     const [dueDatetime, setDueDatetime] = useState<Date|undefined>(task.dueDate);
     const [drivers, setDrivers] = useState<Employee[]|null>(null);
     const [selectedDriver, setSelectedDriver] = useState<string|undefined>(task.driverId);
@@ -36,7 +35,6 @@ export const PropertiesGeneralTaskForm: React.FunctionComponent<InterfaceProps> 
     function isSaveButtonDisabled() {
         return name === task.name
             && description === task.description
-            && comment === task.comment
             && dueDatetime === task.dueDate
             && selectedDriver === task.driverId;
     }
@@ -45,7 +43,6 @@ export const PropertiesGeneralTaskForm: React.FunctionComponent<InterfaceProps> 
         const newTask = task;
         newTask.name = name;
         newTask.description = description;
-        newTask.comment = comment;
         newTask.dueDate = dueDatetime;
         newTask.driverId = selectedDriver;
 
@@ -78,13 +75,6 @@ export const PropertiesGeneralTaskForm: React.FunctionComponent<InterfaceProps> 
                 onChange={event => setDescription(event.target.value)}
                 type="text"
                 placeholder="Description"
-                style={styles.textInput}
-            />
-            <TextField
-                value={comment}
-                onChange={event => setComment(event.target.value)}
-                type="text"
-                placeholder="Comment"
                 style={styles.textInput}
             />
 

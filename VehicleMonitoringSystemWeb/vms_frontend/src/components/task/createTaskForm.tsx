@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Button, FormControl, FormHelperText, MenuItem, TextField} from '@material-ui/core';
-import Colors from "../../constants/colors";
 import {StylesDictionary} from "../utils/stylesDictionary";
 import {useEffect, useState} from "react";
 import Task from "../../models/task";
@@ -20,7 +19,6 @@ export const CreateTaskForm: React.FunctionComponent<InterfaceProps> = (props) =
     const [error, setError] = useState<any>(null);
     const [name, setName] = useState<string>('');
     const [description, setDescription] = useState<string>('');
-    const [comment, setComment] = useState<string>('');
     const [dueDatetime, setDueDatetime] = useState<string|undefined >();
     const [drivers, setDrivers] = useState<Employee[]|null>(null);
     const [selectedDriver, setSelectedDriver] = useState<string|undefined>('');
@@ -38,7 +36,7 @@ export const CreateTaskForm: React.FunctionComponent<InterfaceProps> = (props) =
         if (!!dbUser) {
             const dueDate = moment(dueDatetime, 'YYYY-MM-DDTHH:mm').toDate();
             const task = new Task(dbUser.companyId, selectedDriver, dbUser.id, undefined,
-                dueDate, name, description, undefined, comment);
+                dueDate, name, description, undefined);
             await TaskApi.createTask(task)
         }
 
@@ -65,13 +63,6 @@ export const CreateTaskForm: React.FunctionComponent<InterfaceProps> = (props) =
             onChange={event => setDescription(event.target.value)}
             type="text"
             placeholder="Description"
-            style={styles.textInput}
-        />
-        <TextField
-            value={comment}
-            onChange={event => setComment(event.target.value)}
-            type="text"
-            placeholder="Comment"
             style={styles.textInput}
         />
 

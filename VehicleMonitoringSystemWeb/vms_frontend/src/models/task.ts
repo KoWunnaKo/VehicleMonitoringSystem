@@ -11,11 +11,10 @@ export default class Task {
   public name: string | undefined;
   public description: string | undefined;
   public statusId: number | undefined;
-  public comment: string | undefined;
 
   constructor(companyId:number|undefined, driverId:string|undefined,operatorId:string|undefined,
               createDate:Date|undefined,dueDate:Date|undefined,name:string|undefined,
-              description:string|undefined,statusId:number|undefined,comment:string|undefined) {
+              description:string|undefined,statusId:number|undefined) {
     this.companyId = companyId;
     this.driverId = driverId;
     this.operatorId = operatorId;
@@ -24,6 +23,5 @@ export default class Task {
     this.description = description;
     this.name = name;
     this.statusId = statusId;
-    this.comment = comment;
   }
 }
