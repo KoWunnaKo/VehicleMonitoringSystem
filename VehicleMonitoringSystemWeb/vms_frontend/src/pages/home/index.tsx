@@ -24,13 +24,13 @@ import Colors from "../../constants/colors";
 
 const useStyles = makeStyles({
     root: {
-        color: 'black',
+        color: Colors.black,
         backgroundColor: Colors.white,
     },
     select: {
         "&.MuiSelect-select:focus": {
             backgroundColor: Colors.white,
-        },
+        }
     }
 });
 export const HomeComponent: React.FunctionComponent = (props) => {
@@ -147,17 +147,6 @@ const styles: StylesDictionary  = {
         marginBottom: 5
     }
 };
-
-// Administrator auth
-// const authCondition = (authUser: any) => {
-//     if (!!authUser) {
-//         const dbUser = AppController.dbUser;
-//         if (dbUser) {
-//             return Role.isAdministrator(dbUser!.roleId);
-//         }
-//     }
-//     return false;
-// }
 
 const authCondition = (authUser: any) => !!authUser;
 
