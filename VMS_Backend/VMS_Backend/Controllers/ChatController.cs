@@ -46,11 +46,11 @@ namespace VMS_Backend.Controllers
         }
 
         [HttpPost]
-        [Route("withAttachment/{companyId}/{senderId}/{receiverId}")]
-        public async Task<ActionResult<ChatMessage>> UploadFile(int companyId, string senderId, string receiverId, [FromForm] FileModel attachment)
+        [Route("withAttachment/{companyId}/{senderId}/{receiverId}/{text}")]
+        public async Task<ActionResult<ChatMessage>> UploadFile(int companyId, string senderId, string receiverId, string text, [FromForm] FileModel attachment)
         {
             var savedFileName = await FileSaver.SaveFile(attachment);
-            var message = new ChatMessage(companyId, senderId, receiverId, savedFileName);
+            var message = new ChatMessage(companyId, senderId, receiverId, text, savedFileName);
             var res = await _chatService.AddNewItem(message);
                 
             return Ok(res);

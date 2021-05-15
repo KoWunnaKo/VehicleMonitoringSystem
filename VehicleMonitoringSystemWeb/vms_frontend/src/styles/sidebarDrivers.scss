@@ -1,8 +1,8 @@
+@import "colorsConstants";
+
 .modal {
     font-size: 12px;
-    //background-color: white;
-    // TODO constant
-    background-color: #DEE2D6;
+    background-color: $modalBackground;
 }
 .modal > .header {
     width: 100%;

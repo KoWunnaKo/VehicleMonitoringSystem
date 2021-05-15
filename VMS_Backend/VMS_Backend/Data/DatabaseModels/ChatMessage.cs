@@ -1,21 +1,26 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using VMS_Backend.Services.Utils;
 
 namespace VMS_Backend.Data.DatabaseModels
 {
     [Table("chat_message")]
     public class ChatMessage
     {
-        public ChatMessage(int companyId, string senderId, string receiverId, string attachmentPath)
+        public ChatMessage(int companyId, string senderId, string receiverId, string text, string attachmentName)
         {
             CompanyId = companyId;
             Date = DateTime.Now;
             SenderId = senderId;
             ReceiverId = receiverId;
-            AttachmentPath = attachmentPath;
-            Type = "photo";
+            Text = text;
+            AttachmentName = attachmentName;
             Unread = true;
+            if (!string.IsNullOrEmpty(attachmentName))
+            {
+                Type = FileSaver.IsImage(attachmentName) ? "photo" : "file";
+            }
         }
         
         [Key]
@@ -48,12 +53,11 @@ namespace VMS_Backend.Data.DatabaseModels
         [ForeignKey("ReceiverId")]
         public Employee Receiver { get; set; }
         
+        // text, file, photo
         [Column("type")]
-        // text or file
         public string Type { get; set; }
         
-        // TODO rename to attachmentName
-        [Column("attachment_path")]
-        public string AttachmentPath { get; set; }
+        [Column("attachment_name")]
+        public string AttachmentName { get; set; }
     }
 }

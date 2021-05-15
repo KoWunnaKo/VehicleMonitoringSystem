@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {withAuthorization} from "../../firebase/withAuthorization";
 import 'react-chat-elements/dist/main.css';
 import {Button, ChatList, Input, MessageList,} from 'react-chat-elements'
@@ -15,6 +15,9 @@ import Popup from "reactjs-popup";
 import {AddEmployeeContactForm} from "../../components/employee/addEmployeeContact";
 import Employee from "../../models/employee";
 import Colors from "../../constants/colors";
+import {AttachImageForm} from "../../components/utils/attachImageForm";
+import {Simulate} from "react-dom/test-utils";
+import input = Simulate.input;
 
 export const ChatComponent = () => {
     const [chatContacts, setChatContacts] = useState<ChatContact[]>();
@@ -24,6 +27,8 @@ export const ChatComponent = () => {
 
     const [attachmentFile, setAttachmentFile] = useState();
     const [attachmentFileName, setAttachmentFileName] = useState();
+
+    let messageInputRef: HTMLInputElement | null;
 
     // // Receive chat message endpoint
     //  SignalRService.addEndpoint("receiveChatMessage", message => {
@@ -64,11 +69,21 @@ export const ChatComponent = () => {
     const sendMessage = async () => {
         const dbUser = await getDbUser();
         if (!!dbUser && !!receiver) {
-            const msg = new ChatMessage(undefined, dbUser.companyId, inputMessage,
-                undefined, true, dbUser, receiver.employee,
-                MessageTypeConstants.TEXT, null);
-            await ChatApi.createMessage(msg);
-            setInputMessage('');
+
+            if (!attachmentFile) {
+                const msg = new ChatMessage(undefined, dbUser.companyId, inputMessage,
+                    undefined, true, dbUser, receiver.employee,
+                    MessageTypeConstants.TEXT, null);
+                await ChatApi.createMessage(msg);
+                setInputMessage('');
+            } else {
+                const formData = new FormData();
+                formData.append("formFile", attachmentFile);
+                formData.append("fileName", attachmentFileName);
+
+                await ChatApi.createMessageWithAttachment(dbUser.companyId, dbUser.id, receiver.employee.id, inputMessage, formData);
+                await updateChat();
+            }
             await updateChat();
         }
     }
@@ -80,14 +95,20 @@ export const ChatComponent = () => {
             formData.append("formFile", attachmentFile);
             formData.append("fileName", attachmentFileName);
 
-            await ChatApi.createMessageWithAttachment(dbUser.companyId, dbUser.id, receiver.employee.id, formData);
+            await ChatApi.createMessageWithAttachment(dbUser.companyId, dbUser.id, receiver.employee.id, inputMessage, formData);
             await updateChat();
         }
     }
 
-    const saveAttachment = (e) => {
-        setAttachmentFile(e.target.files[0]);
-        setAttachmentFileName(e.target.files[0].name);
+    const saveAttachment = (file: any, fileName: string) => {
+        setAttachmentFile(file);
+        setAttachmentFileName(fileName);
+
+        const inputText = `[${fileName}]`;
+        setInputMessage(inputText);
+        if (messageInputRef) {
+            messageInputRef.value = inputText;
+        }
     }
 
     const selectContact = async (e: Employee) => {
@@ -152,19 +173,38 @@ export const ChatComponent = () => {
           </div>
           <div style={styles.input}>
             <Input
+                inputRef={node => (messageInputRef = node)}
                 placeholder="Type here..."
                 onChange={event => setInputMessage(event.target.value)}
                 multiline={true}
+
                 rightButtons={
                     <div>
                         {/*TODO change on icons*/}
-                        <input type='file' onChange={saveAttachment}/>
-                        <Button
-                            color='white'
-                            backgroundColor={Colors.primary}
-                            text='Attach'
-                            onClick={sendAttachment}
-                        />
+                        <Popup
+                            trigger={
+                                <Button
+                                    color='white'
+                                    backgroundColor={Colors.primary}
+                                    text='Attach'
+                                />
+                            }
+                            modal={true}
+                            nested={true}
+                        >
+                            {(close: any) => {
+                                return (
+                                    <div className="modal">
+                                        <button className="close" onClick={close}>
+                                            &times;
+                                        </button>
+                                        <AttachImageForm closeModal={close} saveAttachment={saveAttachment}/>
+                                    </div>
+                                )
+                            }}
+                        </Popup>
+
+
                         <Button
                             // TODO may be removed
                             color='white'

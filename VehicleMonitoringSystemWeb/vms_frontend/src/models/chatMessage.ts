@@ -5,7 +5,7 @@ import {getBackendServerUrl} from "../api";
 export enum MessageTypeConstants {
   TEXT = 'text',
   PHOTO = 'photo',
-  FILE = 'file'
+  // FILE = 'file'
 }
 
 export default class ChatMessage {
@@ -21,7 +21,7 @@ export default class ChatMessage {
   public status: string;
   public title: string;
   public type: MessageTypeConstants;
-  public attachmentPath: string|null;
+  public attachmentName: string|null;
   public data: any;
 
   constructor(id: number|undefined, companyId: number, text: string,
@@ -49,9 +49,9 @@ export default class ChatMessage {
 
     this.type = type;
     if (type === MessageTypeConstants.PHOTO) {
-      this.attachmentPath = attachmentName;
+      this.attachmentName = attachmentName;
       this.data = {
-        uri: `${getBackendServerUrl()}chat/attachment/${attachmentName}`
+        uri: `${getBackendServerUrl()}chat/attachment/${attachmentName}`,
       };
     }
   }
