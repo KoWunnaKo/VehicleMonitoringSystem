@@ -2,7 +2,8 @@
 
 .TopBarNavigation {
     ul {
-        height: 5%;
+        display: flex;
+        flex: 0.05;
         list-style-type: none;
         margin: 0;
         padding: 0;

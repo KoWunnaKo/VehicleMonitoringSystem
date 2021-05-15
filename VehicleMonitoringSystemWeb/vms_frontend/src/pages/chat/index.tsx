@@ -136,16 +136,16 @@ export const ChatComponent = () => {
                 multiline={true}
                 rightButtons={
                     <div>
+                        {/*TODO change on icons*/}
                         <Button
-                            // TODO change color
                             color='white'
-                            backgroundColor='black'
+                            backgroundColor={Colors.primary}
                             text='Update'
                             onClick={updateChat}
                         />
                         <Button
                             color='white'
-                            backgroundColor='black'
+                            backgroundColor={Colors.primary}
                             text='Send'
                             onClick={sendMessage}
                         />
@@ -162,22 +162,23 @@ const styles: StylesDictionary  = {
     container: {
         display: 'flex',
         flexDirection: 'row',
+        flex: 0.95
     },
     conversationContainer: {
         flexDirection: 'column',
         width: '70vw',
+        display: 'flex'
     },
     contactList: {
         width: '30vw',
         backgroundColor: Colors.contactList
     },
     messageList: {
-        height: '95vh',
+        flex: 0.88,
         backgroundColor: Colors.background
     },
     input: {
-        // width: 300,
-        // alignSelf: 'flex-end'
+        flex: 0.12
     },
     addContactIcon: {
         // blockSize: 50,
