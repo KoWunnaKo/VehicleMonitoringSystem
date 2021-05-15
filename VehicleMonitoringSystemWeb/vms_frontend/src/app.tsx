@@ -31,7 +31,7 @@ interface AppComponentState {
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: Colors.primaryBlue
+      main: Colors.primary
     },
   },
 });

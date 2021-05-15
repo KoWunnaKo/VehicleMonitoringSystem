@@ -1,12 +1,11 @@
-const tintColorLight = '#2f95dc';
-
 export default {
     black: '#000',
     white: '#fff',
-    primaryBlue: '#1050B7',
+    primary: '#5e6f59',
+    primaryHover: '#4d5a49',
+    secondary: '#7EA16B',
+    background: '#f6f4ef',
+    contactList: '#C3C49E',
     grey: '#454545',
-    red: '#ff0000',
-    tint: tintColorLight,
-    tabIconDefault: '#ccc',
-    tabIconSelected: tintColorLight,
+    red: '#772F1A'
 };

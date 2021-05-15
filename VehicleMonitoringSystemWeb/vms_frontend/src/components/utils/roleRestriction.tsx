@@ -22,7 +22,7 @@ export const RoleRestriction: React.FunctionComponent<InterfaceProps> = (props) 
 
 const styles: StylesDictionary  = {
     container: {
-        backgroundColor: Colors.grey,
+        backgroundColor: Colors.red,
         alignSelf: 'center'
     },
     textStyle: {

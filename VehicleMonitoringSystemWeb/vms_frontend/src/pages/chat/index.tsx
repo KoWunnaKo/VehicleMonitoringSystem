@@ -14,6 +14,7 @@ import {PersonAdd} from "@material-ui/icons";
 import Popup from "reactjs-popup";
 import {AddEmployeeContactForm} from "../../components/employee/addEmployeeContact";
 import Employee from "../../models/employee";
+import Colors from "../../constants/colors";
 
 export const ChatComponent = () => {
     const [chatContacts, setChatContacts] = useState<ChatContact[]>();
@@ -136,6 +137,7 @@ export const ChatComponent = () => {
                 rightButtons={
                     <div>
                         <Button
+                            // TODO change color
                             color='white'
                             backgroundColor='black'
                             text='Update'
@@ -160,18 +162,18 @@ const styles: StylesDictionary  = {
     container: {
         display: 'flex',
         flexDirection: 'row',
-        // backgroundColor: Colors.tint,
     },
     conversationContainer: {
         flexDirection: 'column',
         width: '70vw',
     },
     contactList: {
-        width: '30vw'
+        width: '30vw',
+        backgroundColor: Colors.contactList
     },
     messageList: {
         height: '95vh',
-        backgroundColor: 'lightgrey'
+        backgroundColor: Colors.background
     },
     input: {
         // width: 300,

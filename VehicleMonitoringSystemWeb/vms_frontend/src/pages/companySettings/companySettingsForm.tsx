@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 import * as CompanySettingsApi from "../../api/companySettingsApi";
 import {getDbUserCompanyId} from "../../utils/userUtil";
 import CompanySettings from "../../models/companySettings";
+import Colors from "../../constants/colors";
 
 export const CompanySettingsForm: React.FunctionComponent = (props) => {
   // TODO add error on too small values
@@ -61,7 +62,9 @@ const styles: StylesDictionary  = {
     display: 'flex',
     flexDirection: 'column',
     marginLeft: 20,
-    marginRight: 20
+    marginRight: 20,
+    // TODO whole page
+    backgroundColor: Colors.background
   },
   textInput: {
     width: 300,

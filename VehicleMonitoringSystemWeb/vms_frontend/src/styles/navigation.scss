@@ -1,3 +1,5 @@
+@import "colorsConstants";
+
 .TopBarNavigation {
     ul {
         height: 5%;
@@ -5,7 +7,7 @@
         margin: 0;
         padding: 0;
         overflow: hidden;
-        background-color: #354de3;
+        background-color: $primary;
     }
 
     li {
@@ -22,7 +24,7 @@
     }
 
     li a:hover {
-        background-color: #102998;
+        background-color: $primaryHover;
         cursor: pointer;
     }
 }

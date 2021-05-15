@@ -24,6 +24,7 @@ const styles: StylesDictionary  = {
         width: 300,
         overflowX: 'hidden',
         overflowY: 'hidden',
-        padding: 10
+        padding: 10,
+        backgroundColor: Colors.background
     }
 };
