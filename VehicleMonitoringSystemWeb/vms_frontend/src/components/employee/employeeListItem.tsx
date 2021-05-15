@@ -5,6 +5,7 @@ import {StylesDictionary} from "../utils/stylesDictionary";
 import SettingsIcon from "@material-ui/icons/Settings";
 import Popup from "reactjs-popup";
 import {PropertiesEmployeeForm} from "./properties/propertiesEmployeeForm";
+import Colors from "../../constants/colors";
 
 interface InterfaceProps {
     employee: Employee;
@@ -57,7 +58,11 @@ export const EmployeeListItem: React.FunctionComponent<InterfaceProps> = (props)
 const styles: StylesDictionary  = {
     container: {
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        marginLeft: 4,
+        marginRight: 4,
+        marginBottom: 4,
+        backgroundColor: Colors.modalBackground
     },
     listItem: {
         height: 50,

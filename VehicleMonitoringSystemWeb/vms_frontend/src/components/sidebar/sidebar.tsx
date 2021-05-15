@@ -22,6 +22,7 @@ export const Sidebar: React.FunctionComponent<InterfaceProps> = (props) => {
 const styles: StylesDictionary  = {
     container: {
         width: 300,
+        height: '100vh',
         overflowX: 'hidden',
         overflowY: 'hidden',
         padding: 10,

@@ -6,6 +6,7 @@ import Employee from "../../models/employee";
 import {getDbUser, isUserAdministrator} from "../../utils/userUtil";
 import {RoleRestriction} from "../../components/utils/roleRestriction";
 import {StylesDictionary} from "../../components/utils/stylesDictionary";
+import Colors from "../../constants/colors";
 
 export const CompanySettingsComponent : React.FunctionComponent = () => {
     const [dbUser, setDbUser] = useState<Employee|null>();
@@ -30,7 +31,12 @@ export const CompanySettingsComponent : React.FunctionComponent = () => {
 
 const styles: StylesDictionary  = {
     container: {
-        marginLeft: 8
+        display: 'flex',
+        flex: 1,
+        height: '100vh',
+        flexDirection: 'column',
+        marginLeft: 8,
+        backgroundColor: Colors.background
     },
 };
 

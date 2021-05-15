@@ -115,12 +115,12 @@ class AppComponent extends React.Component<{}, AppComponentState> {
   }
 }
 
-// TODO can scroll the map out to the right
 const styles: StylesDictionary  = {
   container: {
     display: 'flex',
     flexFlow: 'row',
-    height: '100vh'
+    flex: 1,
+    backgroundColor: Colors.background
   }
 };
 

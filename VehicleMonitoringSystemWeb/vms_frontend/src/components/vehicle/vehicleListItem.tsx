@@ -9,6 +9,7 @@ import {useEffect, useState} from "react";
 import * as VehicleApi from "../../api/vehicleApi";
 import * as VehicleDriverLinkApi from "../../api/vehicleDriverLinkApi";
 import Employee from "../../models/employee";
+import Colors from "../../constants/colors";
 
 
 interface InterfaceProps {
@@ -73,7 +74,11 @@ export const VehicleListItem: React.FunctionComponent<InterfaceProps> = (props) 
 const styles: StylesDictionary  = {
     container: {
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        marginLeft: 4,
+        marginRight: 4,
+        marginBottom: 4,
+        backgroundColor: Colors.modalBackground
     },
     listItem: {
         height: 50,

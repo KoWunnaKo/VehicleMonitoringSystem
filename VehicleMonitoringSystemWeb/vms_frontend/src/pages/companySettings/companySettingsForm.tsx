@@ -63,8 +63,7 @@ const styles: StylesDictionary  = {
     flexDirection: 'column',
     marginLeft: 20,
     marginRight: 20,
-    // TODO whole page
-    backgroundColor: Colors.background
+    flex: 1,
   },
   textInput: {
     width: 300,
@@ -74,6 +73,7 @@ const styles: StylesDictionary  = {
   button: {
     width: 200,
     marginTop: 20,
-    alignSelf: 'center'
+    marginLeft: 40,
+    alignSelf: 'self-start'
   }
 };

@@ -66,36 +66,22 @@ export const ChatComponent = () => {
         setChatMessages(chatContact.chatMessages);
     }
 
-    const sendMessage = async () => {
+    const onSendMessageClick = async () => {
         const dbUser = await getDbUser();
         if (!!dbUser && !!receiver) {
-
             if (!attachmentFile) {
                 const msg = new ChatMessage(undefined, dbUser.companyId, inputMessage,
                     undefined, true, dbUser, receiver.employee,
                     MessageTypeConstants.TEXT, null);
                 await ChatApi.createMessage(msg);
-                setInputMessage('');
             } else {
                 const formData = new FormData();
                 formData.append("formFile", attachmentFile);
                 formData.append("fileName", attachmentFileName);
 
                 await ChatApi.createMessageWithAttachment(dbUser.companyId, dbUser.id, receiver.employee.id, inputMessage, formData);
-                await updateChat();
             }
-            await updateChat();
-        }
-    }
-
-    const sendAttachment = async () => {
-        const dbUser = await getDbUser();
-        if (!!dbUser && !!receiver) {
-            const formData = new FormData();
-            formData.append("formFile", attachmentFile);
-            formData.append("fileName", attachmentFileName);
-
-            await ChatApi.createMessageWithAttachment(dbUser.companyId, dbUser.id, receiver.employee.id, inputMessage, formData);
+            setInputMessage('');
             await updateChat();
         }
     }
@@ -216,7 +202,7 @@ export const ChatComponent = () => {
                             color='white'
                             backgroundColor={Colors.primary}
                             text='Send'
-                            onClick={sendMessage}
+                            onClick={onSendMessageClick}
                         />
                     </div>
                 }

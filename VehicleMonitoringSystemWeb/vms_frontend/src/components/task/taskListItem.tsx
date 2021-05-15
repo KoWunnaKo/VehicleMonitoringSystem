@@ -5,6 +5,7 @@ import {StylesDictionary} from "../utils/stylesDictionary";
 import Popup from "reactjs-popup";
 import Task from "../../models/task";
 import {PropertiesTaskForm} from "./properties/propertiesTaskForm";
+import Colors from "../../constants/colors";
 
 interface InterfaceProps {
     updateTasks: () => void;
@@ -61,8 +62,10 @@ const styles: StylesDictionary  = {
     container: {
         display: 'flex',
         flexDirection: 'column',
-        marginTop: 4,
-        marginBottom: 4
+        marginLeft: 4,
+        marginRight: 4,
+        marginBottom: 4,
+        backgroundColor: Colors.modalBackground
     },
     listItem: {
         height: 50,
