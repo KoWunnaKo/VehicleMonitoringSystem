@@ -1,10 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace VMS_Backend.Data.Models
+namespace VMS_Backend.Data.DatabaseModels
 {
-    [Table("work_task_status")]
-    public class WorkTaskStatus
+    [Table("role")]
+    public class Role
     {
         [Key]
         [Column("id")]

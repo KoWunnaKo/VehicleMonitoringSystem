@@ -1,13 +1,13 @@
 import * as React from "react";
-import { withAuthorization } from "../../firebase/withAuthorization";
-import 'react-chat-elements/dist/main.css';
-import { MessageList, ChatList, Input, Button,  } from 'react-chat-elements'
-import {StylesDictionary} from "../../components/utils/stylesDictionary";
 import {useEffect, useState} from "react";
+import {withAuthorization} from "../../firebase/withAuthorization";
+import 'react-chat-elements/dist/main.css';
+import {Button, ChatList, Input, MessageList,} from 'react-chat-elements'
+import {StylesDictionary} from "../../components/utils/stylesDictionary";
 import * as ChatApi from "../../api/chatApi";
 import ChatContact from "../../models/chatContact";
 import {getContactsList} from "../../utils/chatUtil";
-import ChatMessage from "../../models/chatMessage";
+import ChatMessage, {MessageTypeConstants} from "../../models/chatMessage";
 import {getDbUser} from "../../utils/userUtil";
 import {IconButton} from "@material-ui/core";
 import {PersonAdd} from "@material-ui/icons";
@@ -21,6 +21,9 @@ export const ChatComponent = () => {
     const [chatMessages, setChatMessages] = useState<ChatMessage[]>();
     const [receiver, setReceiver] = useState<ChatContact|null>();
     const [inputMessage, setInputMessage] = useState<string>('');
+
+    const [attachmentFile, setAttachmentFile] = useState();
+    const [attachmentFileName, setAttachmentFileName] = useState();
 
     // // Receive chat message endpoint
     //  SignalRService.addEndpoint("receiveChatMessage", message => {
@@ -62,11 +65,29 @@ export const ChatComponent = () => {
         const dbUser = await getDbUser();
         if (!!dbUser && !!receiver) {
             const msg = new ChatMessage(undefined, dbUser.companyId, inputMessage,
-                undefined, true, dbUser, receiver.employee);
+                undefined, true, dbUser, receiver.employee,
+                MessageTypeConstants.TEXT, null);
             await ChatApi.createMessage(msg);
             setInputMessage('');
             await updateChat();
         }
+    }
+
+    const sendAttachment = async () => {
+        const dbUser = await getDbUser();
+        if (!!dbUser && !!receiver) {
+            const formData = new FormData();
+            formData.append("formFile", attachmentFile);
+            formData.append("fileName", attachmentFileName);
+
+            await ChatApi.createMessageWithAttachment(dbUser.companyId, dbUser.id, receiver.employee.id, formData);
+            await updateChat();
+        }
+    }
+
+    const saveAttachment = (e) => {
+        setAttachmentFile(e.target.files[0]);
+        setAttachmentFileName(e.target.files[0].name);
     }
 
     const selectContact = async (e: Employee) => {
@@ -137,7 +158,15 @@ export const ChatComponent = () => {
                 rightButtons={
                     <div>
                         {/*TODO change on icons*/}
+                        <input type='file' onChange={saveAttachment}/>
                         <Button
+                            color='white'
+                            backgroundColor={Colors.primary}
+                            text='Attach'
+                            onClick={sendAttachment}
+                        />
+                        <Button
+                            // TODO may be removed
                             color='white'
                             backgroundColor={Colors.primary}
                             text='Update'
@@ -175,7 +204,8 @@ const styles: StylesDictionary  = {
     },
     messageList: {
         flex: 0.88,
-        backgroundColor: Colors.background
+        backgroundColor: Colors.background,
+        overflowY: 'scroll'
     },
     input: {
         flex: 0.12

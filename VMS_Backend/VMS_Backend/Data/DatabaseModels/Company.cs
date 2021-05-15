@@ -1,18 +1,18 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace VMS_Backend.Data.Models
+namespace VMS_Backend.Data.DatabaseModels
 {
-    [Table("role")]
-    public class Role
+    [Table("company")]
+    public class Company
     {
         [Key]
         [Column("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public short Id { get; set; }
+        public int Id { get; set; }
         
         [Column("name")]
-        [MaxLength(30)]
+        [MaxLength(50)]
         public string Name { get; set; }
     }
 }

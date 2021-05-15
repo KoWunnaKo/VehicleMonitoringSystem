@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Identity;
 
-namespace VMS_Backend.Data.Models
+namespace VMS_Backend.Data.DatabaseModels
 {
     [Table("employee")]
     public class Employee

@@ -12,6 +12,10 @@ export function configureAxios() {
     axios.defaults.headers.post['Cache-Control'] = 'no-cache';
 }
 
+export function getBackendServerUrl() {
+    return axios.defaults.baseURL;
+}
+
 // const ASYNC_STORAGE_COOKIE_KEY = 'authCookie';
 
 // Not used 'cause all axios requests have Authorization header

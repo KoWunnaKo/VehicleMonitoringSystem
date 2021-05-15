@@ -1,8 +1,7 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace VMS_Backend.Data.Models
+namespace VMS_Backend.Data.DatabaseModels
 {
     [Table("vehicle")]
     public class Vehicle

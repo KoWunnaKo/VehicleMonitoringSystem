@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using VMS_Backend.Data;
-using VMS_Backend.Data.Models;
+using VMS_Backend.Data.DatabaseModels;
 
 namespace VMS_Backend.Services.Database
 {

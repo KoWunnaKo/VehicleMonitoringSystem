@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using VMS_Backend.Data.Models;
+using VMS_Backend.Data.DatabaseModels;
 
 namespace VMS_Backend.Data
 {

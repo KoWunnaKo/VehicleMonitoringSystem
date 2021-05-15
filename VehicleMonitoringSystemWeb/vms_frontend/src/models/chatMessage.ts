@@ -1,5 +1,12 @@
 import Employee from "./employee";
 import {getDbUserId} from "../utils/userUtil";
+import {getBackendServerUrl} from "../api";
+
+export enum MessageTypeConstants {
+  TEXT = 'text',
+  PHOTO = 'photo',
+  FILE = 'file'
+}
 
 export default class ChatMessage {
   public id: number|undefined;
@@ -11,13 +18,15 @@ export default class ChatMessage {
   public receiver: Employee;
 
   public position: string;
-  public type: string;
   public status: string;
   public title: string;
+  public type: MessageTypeConstants;
+  public attachmentPath: string|null;
+  public data: any;
 
   constructor(id: number|undefined, companyId: number, text: string,
               date: Date|undefined, unread: boolean, sender: Employee,
-              receiver: Employee) {
+              receiver: Employee, type: MessageTypeConstants, attachmentName: string|null) {
     this.id = id;
     this.companyId = companyId;
     this.text = text;
@@ -38,6 +47,12 @@ export default class ChatMessage {
       this.title = userId === sender.id ? 'You' : sender.getFullName();
     });
 
-    this.type = 'text';
+    this.type = type;
+    if (type === MessageTypeConstants.PHOTO) {
+      this.attachmentPath = attachmentName;
+      this.data = {
+        uri: `${getBackendServerUrl()}chat/attachment/${attachmentName}`
+      };
+    }
   }
 }

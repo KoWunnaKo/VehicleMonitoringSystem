@@ -2,10 +2,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace VMS_Backend.Data.Models
+namespace VMS_Backend.Data.DatabaseModels
 {
-    [Table("chat_message")]
-    public class ChatMessage
+    [Table("work_task_comment")]
+    public class WorkTaskComment
     {
         [Key]
         [Column("id")]
@@ -17,24 +17,25 @@ namespace VMS_Backend.Data.Models
         [ForeignKey("CompanyId")]
         public Company Company { get; set; }       
         
+        [Column("author_id")]
+        public string AuthorId { get; set; }
+        [ForeignKey("AuthorId")]
+        public Employee Author { get; set; }
+        
         [Column("text")]
-        [MaxLength(2000)]
+        [MaxLength(5000)]
         public string Text { get; set; }
         
         [Column("date")] 
         public DateTime Date { get; set; }
         
-        [Column("unread")]
-        public bool Unread { get; set; }
+        // [Column("file_path")]
+        // [MaxLength(200)]
+        // public string FilePath { get; set; }
         
-        [Column("sender_id")] 
-        public string SenderId { get; set; }
-        [ForeignKey("SenderId")]
-        public Employee Sender { get; set; }  
-        
-        [Column("receiver_id")] 
-        public string ReceiverId { get; set; }
-        [ForeignKey("ReceiverId")]
-        public Employee Receiver { get; set; }
+        [Column("task_id")] 
+        public int TaskId { get; set; }
+        [ForeignKey("TaskId")]
+        public WorkTask Task { get; set; }
     }
 }

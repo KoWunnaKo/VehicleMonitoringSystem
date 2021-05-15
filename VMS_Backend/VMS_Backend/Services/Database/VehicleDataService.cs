@@ -5,7 +5,7 @@ using Dapper;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
 using VMS_Backend.Data;
-using VMS_Backend.Data.Models;
+using VMS_Backend.Data.DatabaseModels;
 
 namespace VMS_Backend.Services.Database
 {

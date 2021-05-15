@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using VMS_Backend.Data.Models;
+using VMS_Backend.Data.DatabaseModels;
 using VMS_Backend.Services.Database;
 
 namespace VMS_Backend.Controllers

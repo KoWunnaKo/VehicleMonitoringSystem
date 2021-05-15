@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
-using VMS_Backend.Data.Models;
+using VMS_Backend.Data.DatabaseModels;
 
 namespace VMS_Backend.Services.SignalR
 {

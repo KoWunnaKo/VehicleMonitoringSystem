@@ -67,9 +67,9 @@ namespace VMS_Backend
             {
                 builder
                     .WithOrigins("http://localhost:3000") //Web-frontend Source
-                    .WithOrigins("http://192.168.1.111")
+                    .WithOrigins("http://192.168.1.111") // Mobile source
                     .AllowAnyHeader()
-                    .AllowAnyMethod()
+                    .WithMethods("GET", "POST", "DELETE", "PUT")
                     .AllowCredentials();
             });
 
